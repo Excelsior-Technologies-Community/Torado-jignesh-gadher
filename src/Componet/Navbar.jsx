@@ -326,53 +326,44 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* 4. Desktop Bottom Nav row (Hidden on Mobile) */}
-            <div className="w-full bg-white hidden md:block">
-                <div className="w-full px-4 bg-gray-100 flex items-center justify-between">
-                    <div className="relative py-2">
-                        <button className="bg-[#f17840] text-white px-6 py-3 rounded-t-[5px] flex items-center gap-3 text-sm font-bold min-w-[280px]">
-                            <FaBars size={14} /> Browse All Categories <ChevronDown size={16} className="ml-auto" />
+            {/* 4. Desktop Bottom Nav row (Premium Refined) */}
+            <div className="w-full bg-white hidden md:block border-b border-gray-100 shadow-sm relative z-30">
+                <div className="max-w-[1400px] mx-auto px-4 lg:px-6 flex items-center justify-between">
+
+                    {/* Browse Categories - More defined button */}
+                    <div className="relative py-2 flex-shrink-0">
+                        <button className="bg-[#f17840] hover:bg-[#e06b35] text-white px-7 py-3.5 rounded-[5px] flex items-center gap-3 text-sm font-bold min-w-[280px] transition-all duration-300 shadow-md">
+                            <FaBars size={16} />
+                            <span className="tracking-wide">Browse All Categories</span>
+                            <ChevronDown size={18} className="ml-auto" />
                         </button>
                     </div>
-                    <nav className="flex items-center gap-8 ml-8">
-                        {menuItems.map((item, index) => (
-                            <div key={index} className="relative group py-5 cursor-pointer">
 
+                    {/* Central Navigation Menu */}
+                    <nav className="flex items-center gap-7 lg:gap-10 mx-8">
+                        {menuItems.map((item, index) => (
+                            <div key={index} className="relative group py-6 cursor-pointer">
                                 {/* Main Menu */}
-                                <div className="flex items-center gap-1">
-                                    <span className="text-[15px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">
+                                <div className="flex items-center gap-1.5 group-hover:text-[#f17840] transition-colors duration-300">
+                                    <span className="text-[15px] font-extrabold text-[#253d4e] group-hover:text-[#f17840]">
                                         {item.name}
                                     </span>
-
                                     {item.submenu.length > 0 && (
                                         <ChevronDown
                                             size={14}
-                                            className="text-gray-400 group-hover:text-[#f17840]
-                           transition-all duration-300 group-hover:rotate-180"
+                                            className="text-gray-400 group-hover:text-[#f17840] transition-all duration-300 group-hover:rotate-180"
                                         />
                                     )}
                                 </div>
 
-                                {/* Dropdown */}
+                                {/* Refined Dropdown */}
                                 {item.submenu.length > 0 && (
-                                    <div
-                                        className="absolute left-0 top-full mt-2 w-60
-                         bg-white shadow-xl rounded-md
-                         opacity-0 invisible
-                         group-hover:opacity-100 group-hover:visible
-                         transition-all duration-300 z-50"
-                                    >
-                                        <ul className="py-3">
+                                    <div className="absolute left-0 top-full mt-0 w-64 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 overflow-hidden border-t-2 border-[#f17840]">
+                                        <ul className="py-2">
                                             {item.submenu.map((sub, i) => (
-                                                <li
-                                                    key={i}
-                                                    className="flex justify-between items-center px-5 py-3
-                               text-[15px] font-semibold text-[#253d4e]
-                               hover:bg-gray-100 hover:text-[#f17840]
-                               transition cursor-pointer"
-                                                >
+                                                <li key={i} className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] hover:bg-orange-50 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0">
                                                     {sub}
-                                                    <ChevronRight size={14} className="text-gray-400" />
+                                                    <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840]" />
                                                 </li>
                                             ))}
                                         </ul>
@@ -381,35 +372,42 @@ const Navbar = () => {
                             </div>
                         ))}
                     </nav>
-                    <div className="flex items-center gap-6 ml-auto">
+
+                    {/* Actions / Utility Icons - Better Spacing & Premium Badges */}
+                    <div className="flex items-center gap-5 lg:gap-7 ml-auto">
                         {/* Compare */}
-                        <div className="flex items-center gap-2 cursor-pointer group">
-                            <div className="relative">
-                                <GitCompare size={26} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1 -right-1 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                            <div className="relative bg-gray-50 p-2.5 rounded-full group-hover:bg-orange-50 transition-colors duration-300">
+                                <GitCompare size={24} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">1</span>
                             </div>
-                            <span className="text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Compare</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Compare</span>
                         </div>
+
                         {/* Wishlist */}
-                        <div className="flex items-center gap-2 cursor-pointer group">
-                            <div className="relative">
-                                <Heart size={26} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1 -right-1 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                            <div className="relative bg-gray-50 p-2.5 rounded-full group-hover:bg-orange-50 transition-colors duration-300">
+                                <Heart size={24} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">3</span>
                             </div>
-                            <span className="text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Wishlist</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Wishlist</span>
                         </div>
+
                         {/* Cart */}
-                        <div className="flex items-center gap-2 cursor-pointer group">
-                            <div className="relative">
-                                <ShoppingCart size={26} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1 -right-1 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">5</span>
+                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                            <div className="relative bg-gray-50 p-2.5 rounded-full group-hover:bg-orange-50 transition-colors duration-300">
+                                <ShoppingCart size={24} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">5</span>
                             </div>
-                            <span className="text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Cart</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Cart</span>
                         </div>
+
                         {/* Account */}
-                        <div className="flex items-center gap-2 cursor-pointer group">
-                            <User size={26} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                            <span className="text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Account</span>
+                        <div className="flex items-center gap-2.5 cursor-pointer group pr-2">
+                            <div className="bg-gray-50 p-2.5 rounded-full group-hover:bg-orange-50 transition-colors duration-300">
+                                <User size={24} className="text-[#253d4e] group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                            </div>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] group-hover:text-[#f17840] transition-colors">Account</span>
                         </div>
                     </div>
                 </div>

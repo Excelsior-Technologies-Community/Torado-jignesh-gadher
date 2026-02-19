@@ -9,7 +9,7 @@ import {
     Wrench
 } from "lucide-react";
 import { useEffect, useRef } from "react";
-import React from "react";
+import React from "react";  
 
 const Section2 = () => {
     const scrollRef = useRef(null);
@@ -37,12 +37,16 @@ const Section2 = () => {
     const handleInfiniteScroll = () => {
         if (!scrollRef.current) return;
         const container = scrollRef.current;
-        const singleSetWidth = container.scrollWidth / 3;
+        const { scrollLeft, scrollWidth, clientWidth } = container;
+        const setWidth = scrollWidth / 3;
 
-        if (container.scrollLeft >= singleSetWidth * 2) {
-            container.scrollLeft -= singleSetWidth;
-        } else if (container.scrollLeft <= 0) {
-            container.scrollLeft += singleSetWidth;
+        // Seamless loop: Jump instantly when crossing copies boundaries
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+            // Near right end, shift back by one set width
+            container.scrollLeft = scrollLeft - setWidth;
+        } else if (scrollLeft <= 5) {
+            // Near left end, shift forward by one set width
+            container.scrollLeft = scrollLeft + setWidth;
         }
     };
 
@@ -86,7 +90,7 @@ const Section2 = () => {
                 <div
                     ref={scrollRef}
                     onScroll={handleInfiniteScroll}
-                    className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth no-scrollbar"
+                    className="flex gap-6 overflow-x-auto scrollbar-hide no-scrollbar"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {categories.map((category, index) => (
