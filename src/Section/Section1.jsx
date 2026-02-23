@@ -3,11 +3,11 @@ import React from "react";
 
 const Section1 = () => {
     return (
-        <section className="w-full bg-white py-8">
-            <div className="w-full px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section className="w-full bg-white dark:bg-[#0b0c0d] py-8 px-4 md:px-6 transition-colors duration-300">
+            <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* LEFT CATEGORY MENU */}
-                <div className="lg:col-span-2 bg-[#f8f9fa] rounded-sm border border-gray-100 overflow-hidden hidden lg:block self-start">
+                <div className="lg:col-span-2 bg-[#f8f9fa] dark:bg-[#151618] rounded-sm border border-gray-100 overflow-hidden hidden lg:block self-start transition-colors duration-300">
                     <ul className="flex flex-col">
                         {[
                             "Measuring Tools",
@@ -25,9 +25,9 @@ const Section1 = () => {
                                 key={index}
                                 className="group border-b border-gray-100 last:border-0"
                             >
-                                <div className="px-6 py-4 flex items-center justify-between text-[#253d4e] hover:text-[#f17840] cursor-pointer transition-all duration-300 font-medium">
+                                <div className="px-6 py-4 flex items-center justify-between text-[#253d4e] dark:text-gray-300 hover:text-[#f17840] cursor-pointer transition-all duration-300 font-medium">
                                     <span className="text-[15px]">{item}</span>
-                                    <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840] group-hover:translate-x-1 transition-all" />
+                                    <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840] dark:group-hover:text-[#f17840] group-hover:translate-x-1 transition-all" />
                                 </div>
                             </li>
                         ))}
@@ -35,9 +35,9 @@ const Section1 = () => {
                 </div>
 
                 {/* CENTER HERO SECTION */}
-                <div className="lg:col-span-7 bg-[#f1efe6] rounded-[10px] relative overflow-hidden 
-                min-h-[600px] sm:min-h-[500px] lg:min-h-[520px] 
-                flex flex-col lg:flex-row lg:items-center px-6 sm:px-10 lg:px-14 pt-16 lg:py-16">
+                <div className="lg:col-span-7 bg-[#f1efe6] dark:bg-[#1f2022] rounded-[10px] relative overflow-hidden 
+                min-h-[500px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[520px] 
+                flex flex-col lg:flex-row lg:items-center px-6 sm:px-10 lg:px-14 pt-12 sm:pt-16 lg:py-16 transition-colors duration-300">
 
                     {/* TEXT CONTENT */}
                     <div className="z-10 w-full lg:max-w-md text-left">
@@ -45,32 +45,32 @@ const Section1 = () => {
                             NEW IN STOCK
                         </p>
 
-                        <h1 className="text-[28px] sm:text-4xl lg:text-5xl font-black text-[#253d4e] 
+                        <h1 className="text-[28px] sm:text-4xl lg:text-5xl font-black text-[#253d4e] dark:text-white
                        mb-4 sm:mb-6 leading-[1.1] sm:leading-[1.2]">
                             All Types Of Premium <br className="hidden sm:block" />
                             Quality Tools
                         </h1>
 
-                        <p className="text-[#7e7e7e] text-sm sm:text-base lg:text-lg 
+                        <p className="text-[#7e7e7e] dark:text-gray-400 text-sm sm:text-base lg:text-lg 
                       mb-8 sm:mb-10 font-medium">
                             Free shipping & discount 50% on products
                         </p>
 
                         <div className="flex items-center gap-4 sm:gap-8">
                             <div className="relative group overflow-hidden">
-                                <button className="bg-[#f17840] group-hover:bg-white group-hover:text-[#f17840] 
-                               text-white px-6 sm:px-10  
-                               py-3 sm:py-4 
-                               rounded-[5px] font-bold text-sm sm:text-base 
-                               transition-all duration-500 shadow-lg  w-fit cursor-pointer">
+                                <button className="bg-[#f17840] group-hover:bg-white dark:group-hover:bg-[#1a1c1e] group-hover:text-[#f17840] 
+                                text-white px-6 sm:px-10  
+                                py-3 sm:py-4 
+                                rounded-[5px] font-bold text-sm sm:text-base 
+                                transition-all duration-500 shadow-lg  w-fit cursor-pointer">
                                     <p>Shop Now</p>
                                 </button>
-                                <div className="absolute top-14  -right-20 rounded-[5px] w-full h-full bg-[#fff] opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-[#f17840] cursor-pointer"> Shop Now</div>
+                                <div className="absolute top-14  -right-20 rounded-[5px] w-full h-full bg-[#fff] dark:bg-[#1a1c1e] opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-[#f17840] cursor-pointer"> Shop Now</div>
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <span className="text-[#7e7e7e] text-sm sm:text-base">From</span>
-                                <span className="text-[#253d4e] font-extrabold 
+                                <span className="text-[#7e7e7e] dark:text-gray-400 text-sm sm:text-base">From</span>
+                                <span className="text-[#253d4e] dark:text-white font-extrabold 
                                  text-xl sm:text-3xl">
                                     $20.14
                                 </span>
@@ -79,7 +79,7 @@ const Section1 = () => {
                     </div>
 
                     {/* HERO IMAGE (Responsive: Bottom for mobile, Right for desktop) */}
-                    <div className="absolute left-0 -bottom-8 w-full lg:left-auto lg:right-0 lg:w-[60%] h-[350px] sm:h-[450px] lg:h-full pointer-events-none">
+                    <div className="absolute left-0 -bottom-8 w-full lg:left-auto lg:right-0 lg:w-[60%] h-[300px] sm:h-[350px] md:h-[400px] lg:h-full pointer-events-none">
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/hero/hero-img-1.webp"
                             alt="Professional Worker"
@@ -109,10 +109,10 @@ const Section1 = () => {
                 </div>
 
                 {/* RIGHT PROMO CARDS */}
-                <div className="lg:col-span-3 flex flex-col gap-6">
+                <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
 
                     {/* TOP CARD */}
-                    <div className="bg-[#def1ff] rounded-[10px] p-8 relative  flex-1 min-h-[240px] flex flex-col justify-center ">
+                    <div className="bg-[#def1ff] rounded-[10px] p-6 sm:p-8 relative flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center overflow-hidden">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">SPECIAL OFFER</p>
                             <h3 className="text-2xl font-extrabold text-[#253d4e] mb-6 leading-tight">
@@ -136,7 +136,7 @@ const Section1 = () => {
                     </div>
 
                     {/* BOTTOM CARD */}
-                    <div className="bg-[#e9eff4] rounded-[10px] p-8 relative overflow-hidden flex-1 min-h-[240px] flex flex-col justify-center ">
+                    <div className="bg-[#e9eff4] rounded-[10px] p-6 sm:p-8 relative overflow-hidden flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center ">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">BEST DEALS</p>
                             <h3 className="text-2xl font-extrabold text-[#253d4e] mb-6 leading-tight">

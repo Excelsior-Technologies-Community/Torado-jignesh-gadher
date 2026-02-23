@@ -9,7 +9,7 @@ import {
     Wrench
 } from "lucide-react";
 import { useEffect, useRef } from "react";
-import React from "react";  
+import React from "react";
 
 const Section2 = () => {
     const scrollRef = useRef(null);
@@ -62,24 +62,24 @@ const Section2 = () => {
     };
 
     return (
-        <section className="w-full bg-white py-14 px-4 md:px-10 lg:px-16 overflow-hidden">
-            <div className="max-w-[1400px] mx-auto">
+        <section className="w-full bg-white dark:bg-[#0b0c0d] py-14 px-4 md:px-6 overflow-hidden transition-colors duration-300">
+            <div className="max-w-[1440px] mx-auto">
                 {/* Header Section */}
                 <div className="flex items-center justify-between mb-12">
-                    <h2 className="text-[28px] md:text-[32px] font-black text-black">
+                    <h2 className="text-[28px] md:text-[32px] font-black text-black dark:text-white">
                         Trending Categories
                     </h2>
 
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => scroll('left')}
-                            className="w-11 h-11 flex items-center justify-center rounded-full bg-[#f8f9fa] text-black hover:bg-[#f17840] hover:text-white transition-all duration-300"
+                            className="w-11 h-11 flex items-center justify-center rounded-full bg-[#f8f9fa] dark:bg-[#151618] text-black dark:text-white border hover:bg-[#f17840] hover:text-white transition-all duration-300"
                         >
                             <ChevronLeft size={22} />
                         </button>
                         <button
                             onClick={() => scroll('right')}
-                            className="w-11 h-11 flex items-center justify-center rounded-full bg-[#f8f9fa] text-black hover:bg-[#f17840] hover:text-white transition-all duration-300"
+                            className="w-11 h-11 flex items-center justify-center rounded-full bg-[#f8f9fa] dark:bg-[#151618] text-black dark:text-white border hover:bg-[#f17840] hover:text-white transition-all duration-300"
                         >
                             <ChevronRight size={22} />
                         </button>
@@ -99,19 +99,19 @@ const Section2 = () => {
                             className="flex flex-col items-center group cursor-pointer min-w-[200px] flex-shrink-0"
                         >
                             {/* Card Box */}
-                            <div className="w-full aspect-square bg-[#f8f9fa] rounded-[5px] flex items-center justify-center mb-5 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg group-hover:bg-white border border-transparent group-hover:border-gray-100">
+                            <div className="w-full aspect-square bg-[#f8f9fa] dark:bg-[#151618] rounded-[5px] flex items-center justify-center mb-5 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg group-hover:bg-white dark:group-hover:bg-[#1f2022] border border-transparent group-hover:border-gray-100 mb-5">
                                 <category.Icon
                                     strokeWidth={1.2}
-                                    className="w-20 h-20 text-black group-hover:text-[#f17840] transition-colors duration-300"
+                                    className="w-20 h-20 text-black dark:text-white group-hover:text-[#f17840] transition-colors duration-300"
                                 />
                             </div>
 
                             {/* Text Info */}
                             <div className="text-center">
-                                <h3 className="font-extrabold text-[17px] text-black mb-1 group-hover:text-[#f17840] transition-colors whitespace-nowrap">
+                                <h3 className="font-extrabold text-[17px] text-black dark:text-white mb-1 group-hover:text-[#f17840] transition-colors whitespace-nowrap">
                                     {category.name}
                                 </h3>
-                                <p className="text-[14px] text-gray-400 font-medium">
+                                <p className="text-[14px] text-gray-400 dark:text-gray-500 font-medium">
                                     ({category.items} Items)
                                 </p>
                             </div>
