@@ -121,18 +121,18 @@ const Section4 = () => {
                 <div className="md:col-span-3 flex flex-col">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-2xl font-bold text-[#253d4e] dark:text-white">
-                            Featured Products
+                            Best Seller
                         </h2>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => scroll("left")}
-                                className="w-10 h-10 rounded-full border border-gray-200 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all duration-300"
+                                className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all duration-300"
                             >
                                 <ChevronLeft size={20} />
                             </button>
                             <button
                                 onClick={() => scroll("right")}
-                                className="w-10 h-10 rounded-full border border-gray-200 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all duration-300"
+                                className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all duration-300"
                             >
                                 <ChevronRight size={20} />
                             </button>
@@ -147,7 +147,7 @@ const Section4 = () => {
                         {repeatedProducts.map((product, idx) => (
                             <div
                                 key={idx}
-                                className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none border transition duration-300 flex flex-col transition-colors"
+                                className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none transition duration-300 flex flex-col transition-colors"
                             >
                                 {/* Tag */}
                                 <span
@@ -170,7 +170,7 @@ const Section4 = () => {
                                 </div>
 
                                 {/* Image */}
-                                <div className="bg-[#f8f9fa] dark:bg-[#0b0c0d] rounded-lg p-6 mb-6 flex items-center justify-center h-[200px] overflow-hidden group-hover:bg-white dark:group-hover:bg-[#1a1c1e] transition-colors duration-500">
+                                <div className="bg-[#f8f9fa] dark:bg-white rounded-lg p-6 mb-6 flex items-center justify-center h-[200px] overflow-hidden group-hover:bg-white transition-colors duration-500">
                                     <img
                                         src={product.image}
                                         alt={product.title}
@@ -208,9 +208,14 @@ const Section4 = () => {
                                     </div>
 
                                     {/* Button */}
-                                    <button className="mt-auto w-fit px-8 py-2.5 bg-white dark:bg-transparent text-orange-500 border border-gray-100 rounded-[5px] font-bold text-[14px] transition-all duration-300 hover:bg-orange-500 hover:text-white hover:border-orange-500 shadow-sm">
-                                        Add To Cart
-                                    </button>
+                                    <div className="relative group/btn overflow-hidden w-fit h-[40px] mt-auto">
+                                        <button className="w-full h-full px-8 bg-white dark:bg-transparent text-orange-500 border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center">
+                                            Add To Cart
+                                        </button>
+                                        <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-orange-500 opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer">
+                                            Add To Cart
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -218,17 +223,25 @@ const Section4 = () => {
                 </div>
 
                 {/* ================= RIGHT TRENDING SECTION ================= */}
-                <div className="md:col-span-1 bg-white md:bg-orange-50 dark:bg-[#151618] rounded-xl p-6 md:p-8 flex flex-col justify-between group h-auto shadow-sm md:shadow-none border transition-colors duration-300">
+                <div className="md:col-span-1 bg-white md:bg-orange-50 dark:bg-white rounded-xl p-6 md:p-8 flex flex-col justify-between group h-auto shadow-sm md:shadow-none transition-colors duration-300">
                     <div>
                         <p className="text-orange-500 uppercase text-xs font-bold tracking-widest mb-2">
                             Trending Product
                         </p>
-                        <h3 className="text-2xl font-black text-[#253d4e] dark:text-white mt-2 mb-8 leading-tight">
+                        <h3 className="text-2xl font-black text-[#253d4e] dark:text-[#253d4e] mt-2 mb-8 leading-tight">
                             Magnetic Impact Power
                         </h3>
-                        <button className="bg-white dark:bg-[#f17840] text-[#253d4e] dark:text-white font-bold duration-500 px-8 py-3 rounded hover:bg-orange-500 dark:hover:bg-[#e06b35] hover:text-white transition shadow-sm border border-transparent">
-                            Shop Now
-                        </button>
+                        <div className="relative group overflow-hidden w-fit">
+                            <button className="bg-white dark:bg-[#f17840] group-hover:bg-[#f17840] group-hover:text-white 
+                           text-[#253d4e] dark:text-white px-8 py-3  
+                           rounded-[5px] font-bold text-sm shadow-sm 
+                           transition-all duration-700 w-fit cursor-pointer">
+                                <p>Shop Now</p>
+                            </button>
+                            <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer">
+                                Shop Now
+                            </div>
+                        </div>
                     </div>
 
                     <div className="mt-10 overflow-hidden flex-grow flex items-end justify-center">

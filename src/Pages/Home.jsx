@@ -1,3 +1,5 @@
+import StickyActions from '../Components/StickyActions';
+import Footer from '../Componet/Footer';
 import Navbar from '../Componet/Navbar';
 import Section1 from '../Section/Section1';
 import Section2 from '../Section/Section2';
@@ -7,8 +9,7 @@ import Section5 from '../Section/Section5';
 import Section6 from '../Section/Section6';
 import Section7 from '../Section/Section7';
 import Section8 from '../Section/Section8';
-import ThemeToggle from '../Components/ThemeToggle';
-import React from 'react';  
+import React from "react";
 
 const Home = () => {
   return (
@@ -22,7 +23,8 @@ const Home = () => {
       <Section6 />
       <Section7 />
       <Section8 />
-      <ThemeToggle />
+      <Footer />
+      <StickyActions />
     </>
   )
 }

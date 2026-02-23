@@ -2,14 +2,14 @@ import { ChevronLeft, ChevronRight, GitCompare, Heart, Maximize, Star } from "lu
 import React, { useRef } from "react";
 // Product Card Component
 const ProductCard = ({ product }) => (
-    <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 border border-gray-100 hover:border-[#f17840]/30 transition-all duration-500 flex flex-col h-full">
+    <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 border border-gray-100 dark:border-none hover:border-[#f17840]/30 transition-all duration-500 flex flex-col h-full">
         <div className="absolute top-4 left-4 z-10">
             <span className="bg-[#21bf73] text-white text-[12px] font-bold px-3 py-1 rounded-[5px]">
                 {product.discount}% Off
             </span>
         </div>
 
-        <div className="relative bg-[#f8f9fa] dark:bg-[#0b0c0d] rounded-[10px] p-8 mb-6 overflow-hidden flex items-center justify-center min-h-[250px] transition-colors duration-300">
+        <div className="relative bg-[#f8f9fa] dark:bg-white rounded-[10px] p-8 mb-6 overflow-hidden flex items-center justify-center min-h-[250px] transition-colors duration-300">
             <img
                 src={product.image}
                 alt={product.name}
@@ -48,10 +48,10 @@ const ProductCard = ({ product }) => (
             </div>
 
             <div className="relative group/btn overflow-hidden w-full h-[50px]">
-                <button className="w-full h-full bg-white dark:bg-transparent text-[#f17840] rounded-[5px] font-bold text-[15px] transition-all duration-300 border border-gray-100 shadow-sm flex items-center justify-center gap-2">
+                <button className="w-full h-full bg-white dark:bg-transparent text-[#f17840] rounded-[5px] font-bold text-[15px] transition-all duration-700 border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-center gap-2">
                     Add To Cart
                 </button>
-                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-300 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[15px] cursor-pointer">
+                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[15px] cursor-pointer">
                     Add To Cart
                 </div>
             </div>
@@ -152,13 +152,13 @@ const Section3 = () => {
                     <div className="flex gap-3">
                         <button
                             onClick={() => scroll("left")}
-                            className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
+                            className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             onClick={() => scroll("right")}
-                            className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
+                            className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
                         >
                             <ChevronRight size={20} />
                         </button>
@@ -181,16 +181,24 @@ const Section3 = () => {
                 {/* Promo Cards Section */}
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Card 1 */}
-                    <div className="relative overflow-hidden bg-[#f3f4f9] dark:bg-[#151618] rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300 border">
+                    <div className="relative overflow-hidden bg-[#f3f4f9] dark:bg-white rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300">
                         <div className="z-10 text-center md:text-left relative">
                             <span className="text-[#f17840] font-bold text-xs md:text-sm tracking-[2px] uppercase mb-4 block">New Arrivals</span>
-                            <h3 className="text-[#253d4e] dark:text-white font-black text-2xl md:text-2xl lg:text-3xl mb-4 leading-tight max-w-[200px]">
+                            <h3 className="text-[#253d4e] dark:text-[#253d4e] font-black text-2xl md:text-2xl lg:text-3xl mb-4 leading-tight max-w-[200px]">
                                 Wall Polishing Square Box
                             </h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base mb-8">In accessories At Best Price</p>
-                            <button className="bg-white dark:bg-[#f17840] text-[#253d4e] dark:text-white font-extrabold py-3 px-8 rounded-[5px] hover:bg-[#f17840] dark:hover:bg-[#e06b35] hover:text-white transition-all duration-300 shadow-sm text-sm uppercase">
-                                Shop Now
-                            </button>
+                            <p className="text-gray-500 dark:text-gray-600 text-sm md:text-base mb-8">In accessories At Best Price</p>
+                            <div className="relative group overflow-hidden w-fit">
+                                <button className="bg-white dark:bg-[#f17840] group-hover:bg-[#f17840] group-hover:text-white 
+                               text-[#253d4e] px-8 py-3  
+                               rounded-[5px] font-bold text-sm shadow-sm 
+                               transition-all duration-700 w-fit cursor-pointer uppercase">
+                                    <p>Shop Now</p>
+                                </button>
+                                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer uppercase">
+                                    Shop Now
+                                </div>
+                            </div>
                         </div>
                         <div className="relative mt-8 md:mt-0 flex items-center justify-center">
                             <img
@@ -206,16 +214,21 @@ const Section3 = () => {
                     </div>
 
                     {/* Card 2 */}
-                    <div className="relative overflow-hidden bg-[#edf4f3] dark:bg-[#1a1c1e] rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300 border">
+                    <div className="relative overflow-hidden bg-[#edf4f3] dark:bg-white rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300">
                         <div className="z-10 text-center md:text-left relative">
                             <span className="text-[#f17840] font-bold text-xs md:text-sm tracking-[2px] uppercase mb-4 block">Flash Deals</span>
-                            <h3 className="text-[#253d4e] dark:text-white font-black text-2xl md:text-2xl lg:text-3xl mb-4 leading-tight max-w-[250px]">
+                            <h3 className="text-[#253d4e] dark:text-[#253d4e] font-black text-2xl md:text-2xl lg:text-3xl mb-4 leading-tight max-w-[250px]">
                                 Adjustable Hand Rubber Tools
                             </h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base mb-8">In accessories At Best Price</p>
-                            <button className="bg-[#f17840] text-white font-extrabold py-3 px-8 rounded-[5px] hover:bg-[#253d4e] dark:hover:bg-white dark:hover:text-[#253d4e] transition-all duration-300 shadow-sm text-sm uppercase">
-                                Shop Now
-                            </button>
+                            <p className="text-gray-500 dark:text-gray-600 text-sm md:text-base mb-8">In accessories At Best Price</p>
+                            <div className="relative group overflow-hidden w-fit">
+                                <button className="bg-[#f17840] group-hover:bg-white dark:group-hover:bg-white text-white group-hover:text-[#f17840] dark:group-hover:text-[#253d4e] px-8 py-3 rounded-[5px] font-extrabold text-sm transition-all duration-700 w-fit cursor-pointer shadow-sm border border-transparent uppercase">
+                                    <p>Shop Now</p>
+                                </button>
+                                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] group-hover:bg-white dark:group-hover:bg-white opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white group-hover:text-[#f17840] dark:group-hover:text-[#253d4e] text-sm cursor-pointer uppercase">
+                                    Shop Now
+                                </div>
+                            </div>
                         </div>
                         <div className="relative mt-8 md:mt-0 flex items-center justify-center">
                             <img

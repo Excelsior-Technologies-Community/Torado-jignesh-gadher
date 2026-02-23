@@ -1,5 +1,6 @@
-import { ChevronRight, FileText, Layers, ShoppingBag } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import React from "react";
+
 
 const Section1 = () => {
     return (
@@ -7,7 +8,7 @@ const Section1 = () => {
             <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* LEFT CATEGORY MENU */}
-                <div className="lg:col-span-2 bg-[#f8f9fa] dark:bg-[#151618] rounded-sm border border-gray-100 overflow-hidden hidden lg:block self-start transition-colors duration-300">
+                <div className="lg:col-span-2 bg-[#f8f9fa] dark:bg-[#151618] rounded-sm overflow-hidden hidden lg:block self-start transition-colors duration-300">
                     <ul className="flex flex-col">
                         {[
                             "Measuring Tools",
@@ -23,7 +24,7 @@ const Section1 = () => {
                         ].map((item, index) => (
                             <li
                                 key={index}
-                                className="group border-b border-gray-100 last:border-0"
+                                className="group border-b border-gray-100 dark:border-gray-800 last:border-0"
                             >
                                 <div className="px-6 py-4 flex items-center justify-between text-[#253d4e] dark:text-gray-300 hover:text-[#f17840] cursor-pointer transition-all duration-300 font-medium">
                                     <span className="text-[15px]">{item}</span>
@@ -57,15 +58,13 @@ const Section1 = () => {
                         </p>
 
                         <div className="flex items-center gap-4 sm:gap-8">
-                            <div className="relative group overflow-hidden">
-                                <button className="bg-[#f17840] group-hover:bg-white dark:group-hover:bg-[#1a1c1e] group-hover:text-[#f17840] 
-                                text-white px-6 sm:px-10  
-                                py-3 sm:py-4 
-                                rounded-[5px] font-bold text-sm sm:text-base 
-                                transition-all duration-500 shadow-lg  w-fit cursor-pointer">
+                            <div className="relative group overflow-hidden w-fit">
+                                <button className="bg-[#f17840] group-hover:bg-white dark:group-hover:bg-[#1a1c1e] text-white group-hover:text-[#f17840] px-10 py-4 rounded-[5px] font-bold text-base transition-all duration-700 w-fit cursor-pointer shadow-lg outline-none border-none">
                                     <p>Shop Now</p>
                                 </button>
-                                <div className="absolute top-14  -right-20 rounded-[5px] w-full h-full bg-[#fff] dark:bg-[#1a1c1e] opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-[#f17840] cursor-pointer"> Shop Now</div>
+                                <div className="absolute top-14 -right-20 rounded-[5px] w-full h-full bg-white dark:bg-[#1a1c1e] text-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-base cursor-pointer">
+                                    Shop Now
+                                </div>
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -112,10 +111,10 @@ const Section1 = () => {
                 <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
 
                     {/* TOP CARD */}
-                    <div className="bg-[#def1ff] rounded-[10px] p-6 sm:p-8 relative flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center overflow-hidden">
+                    <div className="bg-[#def1ff] dark:bg-white rounded-[10px] p-6 sm:p-8 relative flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center overflow-hidden transition-colors">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">SPECIAL OFFER</p>
-                            <h3 className="text-2xl font-extrabold text-[#253d4e] mb-6 leading-tight">
+                            <h3 className="text-2xl font-extrabold text-[#253d4e] dark:text-[#253d4e] mb-6 leading-tight">
                                 New Lower <br /> Prices
                             </h3>
                             <div className="relative group overflow-hidden w-fit">
@@ -136,10 +135,10 @@ const Section1 = () => {
                     </div>
 
                     {/* BOTTOM CARD */}
-                    <div className="bg-[#e9eff4] rounded-[10px] p-6 sm:p-8 relative overflow-hidden flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center ">
+                    <div className="bg-[#e9eff4] dark:bg-white rounded-[10px] p-6 sm:p-8 relative overflow-hidden flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center transition-colors">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">BEST DEALS</p>
-                            <h3 className="text-2xl font-extrabold text-[#253d4e] mb-6 leading-tight">
+                            <h3 className="text-2xl font-extrabold text-[#253d4e] dark:text-[#253d4e] mb-6 leading-tight">
                                 Socket <br /> Wrenches
                             </h3>
                             <div className="relative group overflow-hidden w-fit">
@@ -161,21 +160,7 @@ const Section1 = () => {
 
                 </div>
 
-                {/* FLOATING ACTION BUTTONS (Optional but visible in image) */}
-                <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] hidden lg:flex flex-col gap-[2px]">
-                    <div className="w-16 h-16 bg-white shadow-xl flex flex-col items-center justify-center p-2 cursor-pointer hover:bg-[#f17840] hover:text-white transition-all group rounded-l-[5px]">
-                        <Layers size={20} className="mb-1 text-gray-700 group-hover:text-white" />
-                        <span className="text-[10px] font-bold uppercase">Demos</span>
-                    </div>
-                    <div className="w-16 h-16 bg-white shadow-xl flex flex-col items-center justify-center p-2 cursor-pointer hover:bg-[#f17840] hover:text-white transition-all group rounded-l-[5px]">
-                        <FileText size={20} className="mb-1 text-gray-700 group-hover:text-white" />
-                        <span className="text-[10px] font-bold uppercase">Docs</span>
-                    </div>
-                    <div className="w-16 h-16 bg-white shadow-xl flex flex-col items-center justify-center p-2 cursor-pointer hover:bg-[#f17840] hover:text-white transition-all group rounded-l-[5px]">
-                        <ShoppingBag size={20} className="mb-1 text-gray-700 group-hover:text-white" />
-                        <span className="text-[10px] font-bold uppercase">Buy Now</span>
-                    </div>
-                </div>
+
 
             </div>
         </section>

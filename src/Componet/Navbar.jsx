@@ -4,7 +4,8 @@ import { FaBars, FaEnvelope, FaPhoneAlt, FaTimes } from "react-icons/fa";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import React from "react";  
 
 const Navbar = () => {
 
@@ -18,15 +19,11 @@ const Navbar = () => {
             ],
         },
         {
-            name: "About",
-            submenu: [],
-        },
-        {
             name: "Pages",
             submenu: [
-                "About Us",
+                "Store Locations",
                 "FAQ",
-                "Terms & Conditions",
+                "Terms of Service",
                 "Privacy Policy",
                 "404 Error Page",
             ],
@@ -34,19 +31,21 @@ const Navbar = () => {
         {
             name: "Shop",
             submenu: [
-                "Shop Grid",
-                "Shop List",
+                "Shop Layout",
                 "Shop Details",
                 "Cart",
-                "Checkout",
                 "Wishlist",
+                "Compare Products",
+                "Checkout",
+                "Track Orders",
+                "My Account",
             ],
         },
         {
             name: "Blog",
             submenu: [
                 "Blog Layout",
-                "Single Blog",
+                "Blog Details",
             ],
         },
         {
@@ -65,6 +64,20 @@ const Navbar = () => {
     const categories = ["Machine Tools", "Hand Tools"];
     const locations = ["New York", "Florida", "Georgia"];
     const [searchModalOpen, setSearchModalOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmenuClick = (sub) => {
+        if (sub === "Store Locations") {
+            navigate("/storelocation");
+            setMobileOpen(false);
+        } else if (sub === "Home One") {
+            navigate("/");
+            setMobileOpen(false);
+        } else if (sub === "FAQ") {
+            navigate("/faq");
+            setMobileOpen(false);
+        }
+    };
 
 
     return (
@@ -210,7 +223,7 @@ const Navbar = () => {
                         <input
                             type="text"
                             placeholder="Search Products"
-                            className="w-full px-4 py-3 text-sm focus:outline-none placeholder:text-gray-400 dark:placeholder:text-gray-600 border-b border-gray-100 font-medium bg-transparent dark:text-white"
+                            className="w-full px-4 py-3 text-sm focus:outline-none placeholder:text-gray-400 dark:placeholder:text-gray-400 border-b border-gray-100 font-medium bg-transparent dark:text-white"
                         />
                         <button className="w-[calc(100%-32px)] m-4 bg-[#f17840] hover:bg-[#e06b35] text-white py-3.5 rounded-[5px] flex items-center justify-center gap-3 text-base font-bold transition-all shadow-md">
                             <Search size={22} strokeWidth={2.5} />
@@ -249,14 +262,14 @@ const Navbar = () => {
                         </div>
                         <div className="flex flex-col">
                             <span className="text-[#f17840] font-extrabold text-2xl leading-tight">+ 0020 500</span>
-                            <span className="text-gray-500 dark:text-gray-400 text-sm font-medium">24/7 Support Center</span>
+                            <span className="text-gray-500 dark:text-white text-sm font-medium">24/7 Support Center</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* 3. Logo & Main Header Row */}
-            <div className="w-full bg-white dark:bg-[#0b0c0d] sticky top-0 z-40 transition-colors duration-300 border-b">
+            <div className="w-full bg-white dark:bg-[#0b0c0d] sticky top-0 z-40 transition-colors duration-300 ">
                 <div className="w-full py-4 px-4 flex items-center justify-between gap-4">
 
                     {/* Logo (Centered on mobile if needed, but left in screenshot) */}
@@ -264,26 +277,26 @@ const Navbar = () => {
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
                             alt="logo"
-                            className="h-10 sm:h-12 dark:invert-[0.1]"
+                            className="h-10 sm:h-12 dark:brightness-0 dark:invert"
                         />
                     </div>
 
                     {/* Desktop Search Section (Hidden on Mobile/Tablet) */}
                     <div className="hidden lg:flex flex-1 items-center max-w-[700px] h-12 bg-white dark:bg-[#151618] border border-gray-200 rounded-[5px] transition-colors duration-300 overflow-hidden">
                         <div className="relative">
-                            <button onClick={() => setCategoryOpen(!categoryOpen)} className="flex items-center gap-2 px-4 h-full text-sm font-medium whitespace-nowrap text-[#253d4e] dark:text-gray-300">
+                            <button onClick={() => setCategoryOpen(!categoryOpen)} className="flex items-center gap-2 px-4 h-full text-sm font-medium whitespace-nowrap text-[#253d4e] dark:!text-white">
                                 {selectedCategory} <ChevronDown size={14} className="text-gray-400" />
                             </button>
                             {categoryOpen && (
                                 <div className="absolute left-0 top-full mt-1 w-48 bg-white dark:bg-[#1a1c1e] border rounded-md shadow-lg z-50 py-1">
                                     {categories.map(cat => (
-                                        <div key={cat} onClick={() => { setSelectedCategory(cat); setCategoryOpen(false); }} className="px-4 py-2 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm dark:text-gray-300">{cat}</div>
+                                        <div key={cat} onClick={() => { setSelectedCategory(cat); setCategoryOpen(false); }} className="px-4 py-2 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm dark:!text-white">{cat}</div>
                                     ))}
                                 </div>
                             )}
                         </div>
                         <div className="h-6 w-[1px] bg-gray-200 mx-1"></div>
-                        <input type="text" placeholder="Search Products" className="flex-1 px-4 h-full text-sm focus:outline-none bg-transparent dark:text-white dark:placeholder:text-gray-600" />
+                        <input type="text" placeholder="Search Products" className="flex-1 px-4 h-full text-sm focus:outline-none bg-transparent dark:text-white dark:placeholder:text-gray-400" />
                         <button className="bg-[#f17840] text-white px-5 h-[calc(100%-8px)] mr-1 rounded-[4px] flex items-center gap-2 text-sm font-semibold">
                             <Search size={18} strokeWidth={2.5} /> Search
                         </button>
@@ -291,7 +304,7 @@ const Navbar = () => {
 
                     {/* Desktop Location Selection (Hidden on Mobile) */}
                     <div className="hidden lg:block relative min-w-[160px]">
-                        <button onClick={() => setLocationOpen(!locationOpen)} className="w-full flex items-center justify-between border border-gray-200 rounded-[5px] px-4 py-3 text-sm dark:text-gray-300">
+                        <button onClick={() => setLocationOpen(!locationOpen)} className="w-full flex items-center justify-between border border-gray-200 rounded-[5px] px-4 py-3 text-sm dark:!text-white">
                             <div className="flex items-center gap-2">
                                 <MapPin size={18} className="text-[#f17840]" strokeWidth={2} />
                                 <span className="font-medium">{selectedLocation}</span>
@@ -312,7 +325,7 @@ const Navbar = () => {
                         <Headphones className="text-gray-900 dark:text-white" size={36} strokeWidth={1} />
                         <div className="flex flex-col">
                             <span className="text-[#f17840] font-bold text-xl leading-none">+ 0020 500</span>
-                            <span className="text-gray-500 dark:text-gray-400 text-xs font-medium mt-1">24/7 Support Center</span>
+                            <span className="text-gray-500 dark:text-white text-xs font-medium mt-1">24/7 Support Center</span>
                         </div>
                     </div>
 
@@ -328,7 +341,7 @@ const Navbar = () => {
             </div>
 
             {/* 4. Desktop Bottom Nav row (Premium Refined) */}
-            <div className="w-full bg-white dark:bg-[#0b0c0d] hidden lg:block border-b border-gray-100 shadow-sm relative z-30 transition-colors duration-300">
+            <div className="w-full bg-gray-50 dark:bg-[#0b0c0d] hidden lg:block border-b border-gray-100 shadow-sm relative z-30 transition-colors duration-300">
                 <div className="max-w-[1400px] mx-auto px-4 lg:px-6 flex items-center justify-between">
 
                     {/* Browse Categories - More defined button */}
@@ -346,7 +359,7 @@ const Navbar = () => {
                             <div key={index} className="relative group py-6 cursor-pointer">
                                 {/* Main Menu */}
                                 <div className="flex items-center gap-1.5 group-hover:text-[#f17840] transition-colors duration-300">
-                                    <span className="text-[15px] font-extrabold text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840]">
+                                    <span className="text-[15px] font-extrabold text-[#253d4e] dark:!text-white group-hover:text-[#f17840]">
                                         {item.name}
                                     </span>
                                     {item.submenu.length > 0 && (
@@ -362,8 +375,15 @@ const Navbar = () => {
                                     <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 overflow-hidden border-t-2 border-[#f17840]">
                                         <ul className="py-2">
                                             {item.submenu.map((sub, i) => (
-                                                <li key={i} className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0">
-                                                    {sub}
+                                                <li
+                                                    key={i}
+                                                    onClick={() => handleSubmenuClick(sub)}
+                                                    className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        {sub === "FAQ" && <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>}
+                                                        <span className={sub === "FAQ" ? "text-[#f17840]" : ""}>{sub}</span>
+                                                    </div>
                                                     <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840]" />
                                                 </li>
                                             ))}
@@ -379,36 +399,36 @@ const Navbar = () => {
                         {/* Compare */}
                         <div className="flex items-center gap-2.5 cursor-pointer group">
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
-                                <GitCompare size={24} className="text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <GitCompare size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">1</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors">Compare</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Compare</span>
                         </div>
 
                         {/* Wishlist */}
                         <div className="flex items-center gap-2.5 cursor-pointer group">
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
-                                <Heart size={24} className="text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <Heart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">3</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors">Wishlist</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Wishlist</span>
                         </div>
 
                         {/* Cart */}
                         <div className="flex items-center gap-2.5 cursor-pointer group">
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
-                                <ShoppingCart size={24} className="text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <ShoppingCart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">5</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors">Cart</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Cart</span>
                         </div>
 
                         {/* Account */}
                         <div className="flex items-center gap-2.5 cursor-pointer group pr-2">
                             <div className="bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
-                                <User size={24} className="text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
+                                <User size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:text-gray-200 group-hover:text-[#f17840] transition-colors">Account</span>
+                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Account</span>
                         </div>
                     </div>
                 </div>
@@ -422,11 +442,23 @@ const Navbar = () => {
                             <span className="font-bold text-xl text-purple-900 dark:text-white">Torado</span>
                             <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full cursor-pointer" onClick={() => setMobileOpen(false)}><FaTimes size={18} className="text-gray-600 dark:text-gray-400" /></div>
                         </div>
-                        <div className="space-y-4 text-gray-700 dark:text-gray-300 font-medium">
+                        <div className="space-y-4 text-gray-700 dark:text-white font-medium">
                             <div className="flex items-center gap-3 py-2 border-b"><FaPhoneAlt className="text-[#f17840]" /> +11 222 3333</div>
                             <div className="flex items-center gap-3 py-2 border-b"><FaEnvelope className="text-[#f17840]" /> hello@torado.com</div>
                             {['Home', 'Shop', 'Pages', 'Blogs', 'Contact'].map(link => (
-                                <div key={link} className="py-2 border-b flex justify-between items-center cursor-pointer">{link} <ChevronDown size={14} className="text-gray-400" /></div>
+                                <div
+                                    key={link}
+                                    className="py-2 border-b flex justify-between items-center cursor-pointer"
+                                    onClick={() => {
+                                        if (link === 'Pages') {
+                                            // Optional: If you want clicking 'Pages' itself to navigate
+                                            // navigate("/storelocation");
+                                            // setMobileOpen(false);
+                                        }
+                                    }}
+                                >
+                                    {link} <ChevronDown size={14} className="text-gray-400 dark:text-white" />
+                                </div>
                             ))}
                         </div>
                     </div>

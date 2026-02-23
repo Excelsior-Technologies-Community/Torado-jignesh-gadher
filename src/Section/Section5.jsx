@@ -2,9 +2,9 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import React, { useRef } from "react";
 
 const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
-    <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl border border-gray-100 md:border-transparent h-full w-full">
+    <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl md:border-transparent h-full w-full">
         {/* Image Container - Taller on mobile */}
-        <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-[#0b0c0d] rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white dark:group-hover:bg-[#1a1c1e] border border-transparent group-hover:border-gray-100">
+        <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-white rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white border-transparent group-hover:border-gray-100">
             <img
                 src={image}
                 alt={title}
@@ -32,9 +32,14 @@ const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
                 <span className="text-gray-500 dark:text-gray-500 text-[12px] md:text-[13px] font-medium ml-1">({ratings})</span>
             </div>
 
-            <button className="w-full md:w-fit px-8 py-3 bg-white dark:bg-transparent text-[#f17840] border border-gray-100 rounded-[5px] font-bold text-[14px] transition-all duration-300 hover:bg-[#f17840] hover:text-white shadow-sm">
-                Add To Cart
-            </button>
+            <div className="relative group/btn overflow-hidden w-full md:w-fit h-[45px] mt-2">
+                <button className="w-full h-full px-8 bg-white dark:bg-transparent text-[#f17840] border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center">
+                    Add To Cart
+                </button>
+                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer">
+                    Add To Cart
+                </div>
+            </div>
         </div>
     </div>
 );
@@ -142,17 +147,25 @@ const Section5 = () => {
             <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
 
                 {/* Promo Banner */}
-                <div className="w-full lg:w-[28%] bg-[#eaf5ff] dark:bg-[#151618] rounded-[20px] p-8 md:p-10 relative overflow-hidden flex flex-col border border-blue-50 group transition-colors duration-300">
+                <div className="w-full lg:w-[28%] bg-[#eaf5ff] dark:bg-white rounded-[20px] p-8 md:p-10 relative overflow-hidden flex flex-col group transition-colors duration-300">
                     <div className="relative z-20 text-center md:text-left">
                         <span className="text-[#f17840] font-bold text-[13px] tracking-[2px] uppercase mb-3 block">
                             Popular Now
                         </span>
-                        <h3 className="text-black dark:text-white font-extrabold text-[26px] md:text-[30px] leading-tight mb-6">
+                        <h3 className="text-black dark:text-black font-extrabold text-[26px] md:text-[30px] leading-tight mb-6">
                             Good Quality Tools
                         </h3>
-                        <button className="bg-white dark:bg-[#f17840] text-black dark:text-white font-bold py-3 px-8 rounded-[4px] hover:bg-[#f17840] dark:hover:bg-[#e06b35] hover:text-white transition-all duration-300 shadow-sm text-[15px] border border-transparent">
-                            Shop Now
-                        </button>
+                        <div className="relative group overflow-hidden w-fit">
+                            <button className="bg-white dark:bg-[#f17840] group-hover:bg-[#f17840] group-hover:text-white 
+                           text-black dark:text-white px-8 py-3  
+                           rounded-[4px] font-bold text-sm shadow-sm 
+                           transition-all duration-700 w-fit cursor-pointer">
+                                <p>Shop Now</p>
+                            </button>
+                            <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer">
+                                Shop Now
+                            </div>
+                        </div>
                     </div>
 
                     <div className="mt-8 md:mt-auto relative z-10 flex justify-center">
@@ -173,7 +186,7 @@ const Section5 = () => {
                                 <h2 className="text-[26px] md:text-[30px] font-black text-[#1a123a] dark:text-white">Flash Deals</h2>
 
                                 {/* Timer */}
-                                <div className="bg-[#1a123a] dark:bg-[#1a1c1e] text-white px-5 py-2.5 rounded-[5px] flex items-center gap-2 font-bold text-[13px] md:text-[14px] shadow-lg border">
+                                <div className="bg-[#1a123a] dark:bg-[#1a1c1e] text-white px-5 py-2.5 rounded-[5px] flex items-center gap-2 font-bold text-[13px] md:text-[14px] shadow-lg">
                                     <span className="text-gray-400 font-medium whitespace-nowrap">End In</span>
                                     <span className="tracking-wider whitespace-nowrap">0 d : 0 h : 00m : 00 s</span>
                                 </div>
@@ -181,10 +194,10 @@ const Section5 = () => {
 
                             {/* Nav - Hidden on mobile */}
                             <div className="hidden md:flex gap-2">
-                                <button onClick={() => scroll('left')} className="w-10 h-10 rounded-full border border-gray-100 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-sm">
+                                <button onClick={() => scroll('left')} className="w-10 h-10 rounded-full border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-sm">
                                     <ChevronLeft size={20} />
                                 </button>
-                                <button onClick={() => scroll('right')} className="w-10 h-10 rounded-full border border-gray-100 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-sm">
+                                <button onClick={() => scroll('right')} className="w-10 h-10 rounded-full border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-sm">
                                     <ChevronRight size={20} />
                                 </button>
                             </div>

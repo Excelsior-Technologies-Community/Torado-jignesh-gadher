@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 
 // Product Card Component
 const ProductCard = ({ product }) => (
-    <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 border border-gray-100 hover:border-[#f17840]/30 hover:shadow-xl transition-all duration-500 flex flex-col h-full w-[300px]">
+    <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 hover:border-[#f17840]/30 hover:shadow-xl transition-all duration-500 flex flex-col h-full w-[300px]">
         {/* Badge - Dynamically colored from product data */}
         <div className="absolute top-4 left-4 z-10">
             <span className={`${product.badge.color} text-white text-[12px] font-bold px-3 py-1 rounded-[5px]`}>
@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => (
             </span>
         </div>
 
-        <div className="relative bg-[#f8f9fa] dark:bg-[#0b0c0d] rounded-[10px] p-8 mb-6 overflow-hidden flex items-center justify-center min-h-[250px] transition-colors duration-300">
+        <div className="relative bg-[#f8f9fa] dark:bg-white rounded-[10px] p-8 mb-6 overflow-hidden flex items-center justify-center min-h-[250px] transition-colors duration-300">
             <img
                 src={product.image}
                 alt={product.name}
@@ -55,10 +55,10 @@ const ProductCard = ({ product }) => (
 
             {/* Add to Cart Button */}
             <div className="relative group/btn overflow-hidden w-full h-[50px]">
-                <button className="w-full h-full bg-white dark:bg-transparent text-[#f17840] rounded-[5px] font-bold text-[15px] transition-all duration-300 border border-gray-100 shadow-sm flex items-center justify-center gap-2">
+                <button className="w-full h-full bg-white dark:bg-transparent text-[#f17840] rounded-[5px] font-bold text-[15px] transition-all duration-700 border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-center gap-2">
                     Add To Cart
                 </button>
-                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-300 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[15px] cursor-pointer">
+                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[15px] cursor-pointer">
                     Add To Cart
                 </div>
             </div>
@@ -159,13 +159,13 @@ const Section6 = () => {
                     <div className="flex gap-3">
                         <button
                             onClick={() => scroll("left")}
-                            className="w-10 h-10 rounded-full border border-gray-200 bg-white dark:bg-[#151618] flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
+                            className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             onClick={() => scroll("right")}
-                            className="w-10 h-10 rounded-full border border-gray-200 bg-white dark:bg-[#151618] flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
+                            className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white hover:border-[#f17840] transition"
                         >
                             <ChevronRight size={20} />
                         </button>
