@@ -31,7 +31,10 @@ const Navbar = () => {
         {
             name: "Shop",
             submenu: [
-                "Shop Layout",
+                {
+                    name: "Shop Layout",
+                    submenu: ["Shop Grid", "Shop Left sidebar", "Shop Right sidebar"]
+                },
                 "Shop Details",
                 "Cart",
                 "Wishlist",
@@ -75,6 +78,21 @@ const Navbar = () => {
             setMobileOpen(false);
         } else if (sub === "FAQ") {
             navigate("/faq");
+            setMobileOpen(false);
+        } else if (sub === "Terms of Service") {
+            navigate("/terms-of-service");
+            setMobileOpen(false);
+        } else if (sub === "Privacy Policy") {
+            navigate("/privacy-policy");
+            setMobileOpen(false);
+        } else if (sub === "404 Error Page") {
+            navigate("/404");
+            setMobileOpen(false);
+        } else if (sub === "Shop Grid") {
+            navigate("/shop-grid");
+            setMobileOpen(false);
+        } else if (sub === "Cart") {
+            navigate("/cart");
             setMobileOpen(false);
         }
     };
@@ -269,7 +287,7 @@ const Navbar = () => {
             </div>
 
             {/* 3. Logo & Main Header Row */}
-            <div className="w-full bg-white dark:bg-[#0b0c0d] sticky top-0 z-40 transition-colors duration-300 ">
+            <div className="w-full bg-white dark:bg-[#0b0c0d] transition-colors duration-300 border-b lg:border-none">
                 <div className="w-full py-4 px-4 flex items-center justify-between gap-4">
 
                     {/* Logo (Centered on mobile if needed, but left in screenshot) */}
@@ -341,7 +359,7 @@ const Navbar = () => {
             </div>
 
             {/* 4. Desktop Bottom Nav row (Premium Refined) */}
-            <div className="w-full bg-gray-50 dark:bg-[#0b0c0d] hidden lg:block border-b border-gray-100 shadow-sm relative z-30 transition-colors duration-300">
+            <div className="w-full bg-white dark:bg-[#0b0c0d] hidden lg:block border-b border-gray-100 dark:border-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
                 <div className="max-w-[1400px] mx-auto px-4 lg:px-6 flex items-center justify-between">
 
                     {/* Browse Categories - More defined button */}
@@ -372,21 +390,53 @@ const Navbar = () => {
 
                                 {/* Refined Dropdown */}
                                 {item.submenu.length > 0 && (
-                                    <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 overflow-hidden border-t-2 border-[#f17840]">
+                                    <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 border-t-2 border-[#f17840]">
                                         <ul className="py-2">
-                                            {item.submenu.map((sub, i) => (
-                                                <li
-                                                    key={i}
-                                                    onClick={() => handleSubmenuClick(sub)}
-                                                    className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        {sub === "FAQ" && <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>}
-                                                        <span className={sub === "FAQ" ? "text-[#f17840]" : ""}>{sub}</span>
-                                                    </div>
-                                                    <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840]" />
-                                                </li>
-                                            ))}
+                                            {item.submenu.map((sub, i) => {
+                                                const hasNested = typeof sub === "object" && sub.submenu;
+                                                const subName = hasNested ? sub.name : sub;
+
+                                                return (
+                                                    <li
+                                                        key={i}
+                                                        onClick={() => !hasNested && handleSubmenuClick(subName)}
+                                                        className="group/sub relative flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            {(subName === "FAQ" || hasNested) && (
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>
+                                                            )}
+                                                            <span className={(subName === "FAQ" || hasNested) ? "text-[#f17840]" : ""}>{subName}</span>
+                                                        </div>
+                                                        <ChevronRight size={14} className={`transition-all duration-300 ${hasNested ? "text-[#f17840]" : "text-gray-300"}`} />
+
+                                                        {/* Nested Submenu (Appears on the left) */}
+                                                        {hasNested && (
+                                                            <div className="absolute right-full top-0 w-60 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible -translate-x-2 group-hover/sub:translate-x-0 transition-all duration-300 z-[60] overflow-hidden">
+                                                                <ul className="py-2">
+                                                                    {sub.submenu.map((nested, j) => (
+                                                                        <li
+                                                                            key={j}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                handleSubmenuClick(nested);
+                                                                            }}
+                                                                            className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
+                                                                        >
+                                                                            <div className="flex items-center gap-2">
+                                                                                {nested === "Shop Grid" && (
+                                                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>
+                                                                                )}
+                                                                                <span className={nested === "Shop Grid" ? "text-[#f17840]" : ""}>{nested}</span>
+                                                                            </div>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                    </li>
+                                                );
+                                            })}
                                         </ul>
                                     </div>
                                 )}
@@ -415,7 +465,10 @@ const Navbar = () => {
                         </div>
 
                         {/* Cart */}
-                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                        <div
+                            className="flex items-center gap-2.5 cursor-pointer group"
+                            onClick={() => navigate("/cart")}
+                        >
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <ShoppingCart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">5</span>
