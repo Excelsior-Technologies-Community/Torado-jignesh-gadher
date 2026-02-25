@@ -1,5 +1,5 @@
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React from "react";  
 
 
 const Section1 = () => {
@@ -40,7 +40,6 @@ const Section1 = () => {
                 min-h-[500px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[520px] 
                 flex flex-col lg:flex-row lg:items-center px-6 sm:px-10 lg:px-14 pt-12 sm:pt-16 lg:py-16 transition-colors duration-300">
 
-                    {/* TEXT CONTENT */}
                     <div className="z-10 w-full lg:max-w-md text-left">
                         <p className="text-[#f17840] font-bold text-[12px] sm:text-sm tracking-[.2em] uppercase mb-4">
                             NEW IN STOCK
@@ -77,7 +76,6 @@ const Section1 = () => {
                         </div>
                     </div>
 
-                    {/* HERO IMAGE (Responsive: Bottom for mobile, Right for desktop) */}
                     <div className="absolute left-0 -bottom-8 w-full lg:left-auto lg:right-0 lg:w-[60%] h-[300px] sm:h-[350px] md:h-[400px] lg:h-full pointer-events-none">
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/hero/hero-img-1.webp"
@@ -87,7 +85,6 @@ const Section1 = () => {
                         />
                     </div>
 
-                    {/* DISCOUNT BADGE */}
                     <div className="absolute 
                     right-[5%] sm:right-[8%] lg:right-[5%] 
                     top-[60%] sm:top-[42%] lg:top-[39%] 
@@ -110,7 +107,6 @@ const Section1 = () => {
                 {/* RIGHT PROMO CARDS */}
                 <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
 
-                    {/* TOP CARD */}
                     <div className="bg-[#def1ff] dark:bg-white rounded-[10px] p-6 sm:p-8 relative flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center overflow-hidden transition-colors">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">SPECIAL OFFER</p>
@@ -134,7 +130,6 @@ const Section1 = () => {
                         />
                     </div>
 
-                    {/* BOTTOM CARD */}
                     <div className="bg-[#e9eff4] dark:bg-white rounded-[10px] p-6 sm:p-8 relative overflow-hidden flex-1 min-h-[220px] sm:min-h-[240px] flex flex-col justify-center transition-colors">
                         <div className="z-10 relative">
                             <p className="text-[#f17840] font-bold text-[13px] tracking-widest uppercase mb-3">BEST DEALS</p>

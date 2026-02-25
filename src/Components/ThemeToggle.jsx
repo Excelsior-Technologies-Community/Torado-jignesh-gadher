@@ -1,10 +1,8 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import React from "react";  
 
 const ThemeToggle = () => {
     const [darkMode, setDarkMode] = useState(() => {
-        // Check local storage or system preference
         const savedTheme = localStorage.getItem("theme");
         return savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
     });
@@ -27,7 +25,6 @@ const ThemeToggle = () => {
         >
             {darkMode ? <Sun size={24} /> : <Moon size={24} />}
 
-            {/* Ripple effect background */}
             <span className="absolute inset-0 rounded-full bg-orange-500/10 opacity-0 hover:opacity-100 transition-opacity pointer-events-none" />
         </button>
     );

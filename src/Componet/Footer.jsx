@@ -30,8 +30,6 @@ const Footer = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // SVG Circumference calculation (2 * PI * R)
-    // R = 23 (radius of the circle)
     const radius = 23;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (scrollProgress / 100) * circumference;
@@ -190,7 +188,6 @@ const Footer = () => {
             >
                 <div className="relative w-14 h-14 cursor-pointer group">
                     <svg className="w-full h-full transform -rotate-90">
-                        {/* Background Circle (Path) */}
                         <circle
                             cx="28"
                             cy="28"
@@ -199,7 +196,6 @@ const Footer = () => {
                             strokeWidth="3"
                             fill="transparent"
                         />
-                        {/* Progress Circle (Orange) */}
                         <circle
                             cx="28"
                             cy="28"
@@ -214,7 +210,6 @@ const Footer = () => {
                         />
                     </svg>
 
-                    {/* Arrow Icon */}
                     <div className="absolute inset-0 flex items-center justify-center text-[#f17840] group-hover:text-white group-hover:bg-[#f17840] rounded-full transition-all duration-300 m-1">
                         <FiArrowUp size={22} className="group-hover:-translate-y-1 transition-transform" />
                     </div>

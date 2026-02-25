@@ -80,7 +80,6 @@ const Section4 = () => {
         ...products,
     ];
 
-    // Set initial scroll position to the middle to allow bidirectional infinite scrolling
     React.useEffect(() => {
         if (sliderRef.current) {
             const { scrollWidth } = sliderRef.current;
@@ -93,12 +92,9 @@ const Section4 = () => {
         const { scrollLeft, scrollWidth } = sliderRef.current;
         const setWidth = scrollWidth / 3;
 
-        // Seamless teleportation
         if (scrollLeft <= 0) {
-            // If we hit the absolute start, jump to the middle set's start
             sliderRef.current.scrollTo({ left: setWidth, behavior: 'auto' });
         } else if (scrollLeft >= setWidth * 2) {
-            // If we hit the start of the third set, jump back to the start of the second set
             sliderRef.current.scrollTo({ left: setWidth, behavior: 'auto' });
         }
     };
@@ -149,14 +145,12 @@ const Section4 = () => {
                                 key={idx}
                                 className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none transition duration-300 flex flex-col transition-colors"
                             >
-                                {/* Tag */}
                                 <span
                                     className={`absolute top-4 left-4 text-white text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider z-20 ${product.tagColor}`}
                                 >
                                     {product.tag}
                                 </span>
 
-                                {/* Hover Icons */}
                                 <div className="absolute top-6 right-4 flex flex-col gap-3 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-20">
                                     <button className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#1a1c1e] rounded-full shadow dark:text-white hover:bg-orange-500 hover:text-white transition">
                                         <FiHeart size={18} />
@@ -169,7 +163,6 @@ const Section4 = () => {
                                     </button>
                                 </div>
 
-                                {/* Image */}
                                 <div className="bg-[#f8f9fa] dark:bg-white rounded-lg p-6 mb-6 flex items-center justify-center h-[200px] overflow-hidden group-hover:bg-white transition-colors duration-500">
                                     <img
                                         src={product.image}
@@ -178,9 +171,7 @@ const Section4 = () => {
                                     />
                                 </div>
 
-                                {/* Details Container */}
                                 <div className="flex flex-col flex-grow">
-                                    {/* Price */}
                                     <div className="flex items-center gap-2 mb-2">
                                         <span className="text-orange-500 font-extrabold text-[20px]">
                                             ${product.price}
@@ -190,12 +181,10 @@ const Section4 = () => {
                                         </span>
                                     </div>
 
-                                    {/* Title */}
                                     <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] leading-[1.3] mb-3 line-clamp-2 min-h-[42px] group-hover:text-orange-500 transition-colors">
                                         {product.title}
                                     </h3>
 
-                                    {/* Rating */}
                                     <div className="flex items-center gap-1 mb-6">
                                         <div className="flex items-center text-yellow-500">
                                             {[...Array(5)].map((_, i) => (
@@ -207,7 +196,6 @@ const Section4 = () => {
                                         </span>
                                     </div>
 
-                                    {/* Button */}
                                     <div className="relative group/btn overflow-hidden w-fit h-[40px] mt-auto">
                                         <button className="w-full h-full px-8 bg-white dark:bg-transparent text-orange-500 border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center">
                                             Add To Cart
@@ -254,7 +242,6 @@ const Section4 = () => {
                 </div>
             </div>
 
-            {/* CSS to hide scrollbar */}
             <style dangerouslySetInnerHTML={{
                 __html: `
           .no-scrollbar::-webkit-scrollbar { display: none; }

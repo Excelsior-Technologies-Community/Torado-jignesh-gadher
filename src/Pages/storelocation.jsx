@@ -1,7 +1,8 @@
 import StickyActions from '../Components/StickyActions';
 import Footer from '../Componet/Footer';
 import Navbar from '../Componet/Navbar';
-import React from "react";
+import React from "react";      
+
 
 const StoreLocation = () => {
     const stores = [
@@ -67,7 +68,6 @@ const StoreLocation = () => {
 
             {/* Header Section */}
             <div className="relative h-[300px] flex flex-col items-center justify-center text-center px-4 bg-[#411151]">
-                {/* Background Overlay for a bit of texture/depth */}
                 <div className="absolute inset-0 bg-black/20"></div>
 
                 <div className="relative z-10">

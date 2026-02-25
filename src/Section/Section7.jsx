@@ -118,7 +118,6 @@ const Section7 = () => {
                         key={index}
                         className={`${card.bgColor} dark:bg-white rounded-[5px] p-8 relative flex flex-col justify-center min-h-[250px] w-full md:w-[calc(50%-12px)] lg:w-auto overflow-hidden group cursor-pointer transition-all duration-500`}
                     >
-                        {/* Text Content */}
                         <div className="relative z-10 max-w-[60%]">
                             <p className={`${card.textColor} text-[13px] font-bold tracking-widest uppercase mb-3`}>
                                 {card.subtitle}
@@ -131,7 +130,6 @@ const Section7 = () => {
                                 ))}
                             </h3>
 
-                            {/* Shop Now Button with Hover Effect */}
                             <div className="relative group/btn overflow-hidden w-fit">
                                 <button className="bg-white dark:bg-[#f17840] group-hover/btn:bg-[#f17840] dark:group-hover/btn:bg-[#e06b35] group-hover/btn:text-white text-[#253d4e] dark:text-white px-8 py-2.5 rounded-[4px] font-bold text-sm shadow-sm transition-all duration-700">
                                     Shop Now
@@ -142,14 +140,12 @@ const Section7 = () => {
                             </div>
                         </div>
 
-                        {/* Promo Image */}
                         <img
                             src={card.image}
                             alt={card.title}
                             className="absolute right-0 bottom-2 w-[45%] md:w-[52%] lg:w-[45%] object-contain transition-transform duration-500 group-hover:scale-105"
                         />
 
-                        {/* Optional limited Offer Badge */}
                         {card.hasBadge && (
                             <div className="absolute right-[25%] bottom-[20%] z-20">
                                 <div className="w-14 h-14 rounded-full bg-[#f4534d] text-white flex flex-col items-center justify-center shadow-lg transform -rotate-12 animate-pulse-slow">
@@ -173,7 +169,6 @@ const Section7 = () => {
                             <div className="flex flex-col gap-6">
                                 {section.products.map((product) => (
                                     <div key={product.id} className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-7 group cursor-pointer bg-[#f8f9fa] dark:bg-[#151618] p-5 sm:p-4 rounded-xl transition-all duration-300 border border-transparent dark:border-none hover:border-orange-100 dark:hover:border-orange-900/30">
-                                        {/* Image Box with White Background */}
                                         <div className="w-full sm:w-36 h-56 sm:h-36 flex-shrink-0 bg-white rounded-lg p-4 flex items-center justify-center overflow-hidden transition-colors duration-300">
                                             <img
                                                 src={product.image}
@@ -182,7 +177,6 @@ const Section7 = () => {
                                             />
                                         </div>
 
-                                        {/* Info */}
                                         <div className="flex flex-col w-full">
                                             <div className="flex items-center gap-3 mb-2 sm:mb-1.5 mt-3 sm:mt-0">
                                                 <span className="text-[#f17840] font-black text-xl">${product.price}</span>

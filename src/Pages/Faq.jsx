@@ -3,7 +3,7 @@ import { useState } from 'react';
 import StickyActions from '../Components/StickyActions';
 import Footer from '../Componet/Footer';
 import Navbar from '../Componet/Navbar';
-import React from 'react';
+import React from "react";      
 
 const Faq = () => {
     const [activeIndex, setActiveIndex] = useState(null);
@@ -50,7 +50,6 @@ const Faq = () => {
 
                     {/* Left Side: Images Section */}
                     <div className="lg:w-1/2 relative">
-                        {/* Shape Background with Rotation */}
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/faq/faq-shape.webp"
                             alt="shape"
@@ -58,7 +57,6 @@ const Faq = () => {
                         />
 
                         <div className="relative flex items-center">
-                            {/* Main Image 1 */}
                             <div className="relative z-10 w-[65%] rounded-lg overflow-hidden shadow-2xl">
                                 <img
                                     src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/faq/faq-1.webp"
@@ -67,7 +65,6 @@ const Faq = () => {
                                 />
                             </div>
 
-                            {/* Overlapping Image 2 */}
                             <div className="absolute -bottom-12 -right-4 w-[60%] z-20 rounded-lg overflow-hidden shadow-2xl border-8 border-white dark:border-[#0b0c0d]">
                                 <img
                                     src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/faq/faq-2.webp"

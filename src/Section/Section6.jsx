@@ -1,10 +1,8 @@
 import { ChevronLeft, ChevronRight, GitCompare, Heart, Maximize, Star } from "lucide-react";
 import React, { useRef } from "react";
 
-// Product Card Component
 const ProductCard = ({ product }) => (
     <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 hover:border-[#f17840]/30 hover:shadow-xl transition-all duration-500 flex flex-col h-full w-[300px]">
-        {/* Badge - Dynamically colored from product data */}
         <div className="absolute top-4 left-4 z-10">
             <span className={`${product.badge.color} text-white text-[12px] font-bold px-3 py-1 rounded-[5px]`}>
                 {product.badge.text}
@@ -17,7 +15,6 @@ const ProductCard = ({ product }) => (
                 alt={product.name}
                 className="h-[180px] w-auto object-contain transition-transform duration-700 group-hover:scale-110"
             />
-            {/* Action Buttons */}
             <div className="absolute top-4 right-[-60px] group-hover:right-4 transition-all duration-500 flex flex-col gap-2 z-20">
                 <button className="w-10 h-10 bg-white dark:bg-[#1a1c1e] shadow-sm rounded-full flex items-center justify-center text-[#253d4e] dark:text-white hover:bg-[#f17840] hover:text-white transition-all duration-300">
                     <Heart size={18} />
@@ -32,18 +29,15 @@ const ProductCard = ({ product }) => (
         </div>
 
         <div className="flex flex-col flex-grow">
-            {/* Price */}
             <div className="flex items-center gap-3 mb-3">
                 <span className="text-[#f17840] text-xl font-extrabold">${product.price}</span>
                 <span className="text-gray-400 dark:text-gray-500 line-through text-base font-medium">${product.oldPrice}</span>
             </div>
 
-            {/* Title */}
             <h3 className="text-[#253d4e] dark:text-white font-extrabold text-[17px] leading-tight mb-4 line-clamp-2 min-h-[42px]">
                 {product.name}
             </h3>
 
-            {/* Ratings */}
             <div className="flex items-center gap-2 mb-6">
                 <div className="flex items-center text-[#ffc107]">
                     {[...Array(5)].map((_, i) => (
@@ -53,7 +47,6 @@ const ProductCard = ({ product }) => (
                 <span className="text-gray-400 dark:text-gray-500 text-sm font-medium ml-1">({product.reviews} Ratings)</span>
             </div>
 
-            {/* Add to Cart Button */}
             <div className="relative group/btn overflow-hidden w-full h-[50px]">
                 <button className="w-full h-full bg-white dark:bg-transparent text-[#f17840] rounded-[5px] font-bold text-[15px] transition-all duration-700 border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-center gap-2">
                     Add To Cart
@@ -66,7 +59,6 @@ const ProductCard = ({ product }) => (
     </div>
 );
 
-// Continuous Infinite Slider Section
 const Section6 = () => {
     const sliderRef = useRef(null);
 
@@ -113,10 +105,8 @@ const Section6 = () => {
         },
     ];
 
-    // Repeat products for seamless scroll
     const repeatedProducts = [...products, ...products, ...products, ...products];
 
-    // Initialize scroll position to the middle copy for seamless start
     React.useEffect(() => {
         if (sliderRef.current) {
             const { scrollWidth } = sliderRef.current;
@@ -129,17 +119,13 @@ const Section6 = () => {
         const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
         const setWidth = scrollWidth / 4; // Because we repeated 4 times for extra safety
 
-        // Seamess loop: Jump back/forward by exactly one set width when approaching ends
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
-            // Hit right end, shift back by one set width
             sliderRef.current.scrollLeft = scrollLeft - setWidth;
         } else if (scrollLeft <= 10) {
-            // Hit left end, shift forward by one set width
             sliderRef.current.scrollLeft = scrollLeft + setWidth;
         }
     };
 
-    // Manual scroll with buttons
     const scroll = (direction) => {
         if (sliderRef.current) {
             const cardWidth = 332; // card width + gap
@@ -172,7 +158,6 @@ const Section6 = () => {
                     </div>
                 </div>
 
-                {/* Slider - Updated with onScroll and removed scroll-smooth from container */}
                 <div
                     ref={sliderRef}
                     onScroll={handleScroll}
@@ -187,7 +172,6 @@ const Section6 = () => {
 
             </div>
 
-            {/* Hide scrollbar */}
             <style dangerouslySetInnerHTML={{
                 __html: `
         .no-scrollbar::-webkit-scrollbar { display: none; }

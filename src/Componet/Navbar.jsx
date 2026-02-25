@@ -5,7 +5,7 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import React from "react";  
+import React from "react";
 
 const Navbar = () => {
 
@@ -94,6 +94,9 @@ const Navbar = () => {
         } else if (sub === "Cart") {
             navigate("/cart");
             setMobileOpen(false);
+        } else if (sub === "My Account") {
+            navigate("/my-account");
+            setMobileOpen(false);
         }
     };
 
@@ -104,7 +107,6 @@ const Navbar = () => {
             <div className="bg-[#512da8] text-white text-[13px] w-full relative z-[100] border-b border-white/10">
                 <div className="w-full px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
 
-                    {/* Contact Info */}
                     <div className="flex items-center justify-center md:justify-start gap-4 sm:gap-6">
                         <div className="flex items-center gap-2 hover:text-orange-300 transition-colors cursor-pointer">
                             <FaPhoneAlt size={14} />
@@ -116,14 +118,11 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Promo Text */}
                     <div className="font-medium text-[15px] animate-pulse-slow">
                         Save up to <span className="text-lg text-orange-400 font-bold">50%</span> off on your first order
                     </div>
 
-                    {/* Language & Currency */}
                     <div className="flex items-center justify-center gap-6 sm:gap-8">
-                        {/* Language */}
                         <div className="relative group">
                             <button
                                 onClick={() => {
@@ -147,7 +146,6 @@ const Navbar = () => {
                             </div>
                         </div>
 
-                        {/* Currency */}
                         <div className="relative group">
                             <button
                                 onClick={() => {
@@ -182,7 +180,6 @@ const Navbar = () => {
                     onClick={() => setSearchModalOpen(true)}
                 />
 
-                {/* Icons with Badge style for mobile */}
                 <div className="relative cursor-pointer group">
                     <GitCompare size={24} className="text-gray-700 dark:text-gray-300 group-hover:text-[#f17840]" strokeWidth={1.5} />
                     <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
@@ -205,7 +202,6 @@ const Navbar = () => {
             <div className={`fixed inset-0 bg-black/60 z-[300] flex items-center justify-center px-4 transition-all duration-300 ${searchModalOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
                 <div className={`bg-white dark:bg-[#1a1c1e] w-full max-w-[500px] rounded-[10px] p-6 shadow-2xl transform transition-all duration-300 ${searchModalOpen ? "scale-100 translate-y-0" : "scale-90 translate-y-4"}`}>
 
-                    {/* Close Button */}
                     <div className="flex justify-end mb-4">
                         <FaTimes
                             size={20}
@@ -214,7 +210,6 @@ const Navbar = () => {
                         />
                     </div>
 
-                    {/* Search Form Card */}
                     <div className="border border-gray-200 rounded-[5px] mb-6 shadow-sm overflow-hidden">
                         <div className="relative">
                             <button
@@ -249,7 +244,6 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    {/* Location Selection */}
                     <div className="relative mb-8">
                         <button
                             onClick={() => setLocationOpen(!locationOpen)}
@@ -273,7 +267,6 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Support Center */}
                     <div className="flex items-center gap-5 pt-4 border-t border-gray-100">
                         <div className="w-16 h-16 bg-gray-50 dark:bg-[#151618] rounded-full flex items-center justify-center border ">
                             <Headphones className="text-gray-900 dark:text-white" size={32} strokeWidth={1} />
@@ -290,7 +283,6 @@ const Navbar = () => {
             <div className="w-full bg-white dark:bg-[#0b0c0d] transition-colors duration-300 border-b lg:border-none">
                 <div className="w-full py-4 px-4 flex items-center justify-between gap-4">
 
-                    {/* Logo (Centered on mobile if needed, but left in screenshot) */}
                     <div className="flex items-center flex-shrink-0">
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
@@ -299,7 +291,6 @@ const Navbar = () => {
                         />
                     </div>
 
-                    {/* Desktop Search Section (Hidden on Mobile/Tablet) */}
                     <div className="hidden lg:flex flex-1 items-center max-w-[700px] h-12 bg-white dark:bg-[#151618] border border-gray-200 rounded-[5px] transition-colors duration-300 overflow-hidden">
                         <div className="relative">
                             <button onClick={() => setCategoryOpen(!categoryOpen)} className="flex items-center gap-2 px-4 h-full text-sm font-medium whitespace-nowrap text-[#253d4e] dark:!text-white">
@@ -320,7 +311,6 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    {/* Desktop Location Selection (Hidden on Mobile) */}
                     <div className="hidden lg:block relative min-w-[160px]">
                         <button onClick={() => setLocationOpen(!locationOpen)} className="w-full flex items-center justify-between border border-gray-200 rounded-[5px] px-4 py-3 text-sm dark:!text-white">
                             <div className="flex items-center gap-2">
@@ -338,7 +328,6 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Desktop Support (Hidden on Mobile/Tablet) */}
                     <div className="hidden lg:flex items-center gap-3 ml-4">
                         <Headphones className="text-gray-900 dark:text-white" size={36} strokeWidth={1} />
                         <div className="flex flex-col">
@@ -347,7 +336,6 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* Mobile Hamburger Menu Button */}
                     <button
                         className="lg:hidden w-11 h-11 border border-gray-200 flex items-center justify-center rounded-full text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#151618] focus:outline-none transition-colors"
                         onClick={() => setMobileOpen(!mobileOpen)}
@@ -362,7 +350,6 @@ const Navbar = () => {
             <div className="w-full bg-white dark:bg-[#0b0c0d] hidden lg:block border-b border-gray-100 dark:border-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
                 <div className="max-w-[1400px] mx-auto px-4 lg:px-6 flex items-center justify-between">
 
-                    {/* Browse Categories - More defined button */}
                     <div className="relative py-2 flex-shrink-0">
                         <button className="bg-[#f17840] hover:bg-[#e06b35] text-white px-7 py-3.5 rounded-[5px] flex items-center gap-3 text-sm font-bold lg:min-w-[220px] xl:min-w-[280px] transition-all duration-300 shadow-md">
                             <FaBars size={16} />
@@ -371,11 +358,9 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    {/* Central Navigation Menu */}
                     <nav className="flex items-center gap-4 xl:gap-10 mx-2 xl:mx-8">
                         {menuItems.map((item, index) => (
                             <div key={index} className="relative group py-6 cursor-pointer">
-                                {/* Main Menu */}
                                 <div className="flex items-center gap-1.5 group-hover:text-[#f17840] transition-colors duration-300">
                                     <span className="text-[15px] font-extrabold text-[#253d4e] dark:!text-white group-hover:text-[#f17840]">
                                         {item.name}
@@ -388,7 +373,6 @@ const Navbar = () => {
                                     )}
                                 </div>
 
-                                {/* Refined Dropdown */}
                                 {item.submenu.length > 0 && (
                                     <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 border-t-2 border-[#f17840]">
                                         <ul className="py-2">
@@ -410,7 +394,6 @@ const Navbar = () => {
                                                         </div>
                                                         <ChevronRight size={14} className={`transition-all duration-300 ${hasNested ? "text-[#f17840]" : "text-gray-300"}`} />
 
-                                                        {/* Nested Submenu (Appears on the left) */}
                                                         {hasNested && (
                                                             <div className="absolute right-full top-0 w-60 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-lg opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible -translate-x-2 group-hover/sub:translate-x-0 transition-all duration-300 z-[60] overflow-hidden">
                                                                 <ul className="py-2">
@@ -444,9 +427,7 @@ const Navbar = () => {
                         ))}
                     </nav>
 
-                    {/* Actions / Utility Icons - Better Spacing & Premium Badges */}
                     <div className="flex items-center gap-3 xl:gap-7 ml-auto">
-                        {/* Compare */}
                         <div className="flex items-center gap-2.5 cursor-pointer group">
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <GitCompare size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
@@ -455,7 +436,6 @@ const Navbar = () => {
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Compare</span>
                         </div>
 
-                        {/* Wishlist */}
                         <div className="flex items-center gap-2.5 cursor-pointer group">
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <Heart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
@@ -464,7 +444,6 @@ const Navbar = () => {
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Wishlist</span>
                         </div>
 
-                        {/* Cart */}
                         <div
                             className="flex items-center gap-2.5 cursor-pointer group"
                             onClick={() => navigate("/cart")}
@@ -476,8 +455,7 @@ const Navbar = () => {
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Cart</span>
                         </div>
 
-                        {/* Account */}
-                        <div className="flex items-center gap-2.5 cursor-pointer group pr-2">
+                        <div className="flex items-center gap-2.5 cursor-pointer group pr-2" onClick={() => navigate("/my-account")}>
                             <div className="bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <User size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                             </div>

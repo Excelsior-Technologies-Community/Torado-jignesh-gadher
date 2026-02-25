@@ -4,7 +4,6 @@ import React, { useRef } from "react";
 
 const BlogCard = ({ blog }) => (
     <div className="group flex flex-col h-full">
-        {/* Image Box */}
         <div className="relative overflow-hidden rounded-[10px] mb-6 aspect-[16/10]">
             <img
                 src={blog.image}
@@ -13,7 +12,6 @@ const BlogCard = ({ blog }) => (
             />
         </div>
 
-        {/* Meta Info */}
         <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
                 <User size={16} className="text-[#f17840]" />
@@ -30,12 +28,10 @@ const BlogCard = ({ blog }) => (
             </div>
         </div>
 
-        {/* Title */}
         <h3 className="text-[#253d4e] dark:text-white font-black text-[22px] leading-tight mb-6 line-clamp-2 cursor-pointer transition-colors hover:text-[#f17840]">
             {blog.title}
         </h3>
 
-        {/* Read More Button */}
         <div className="mt-auto">
             <button className="bg-[#f8f9fa] dark:bg-[#151618] text-[#253d4e] dark:text-white font-extrabold py-3 px-10 rounded-[5px] transition-all duration-300 hover:bg-[#f17840] hover:text-white cursor-pointer text-[15px] border border-transparent">
                 Read More
@@ -96,10 +92,8 @@ const Section8 = () => {
         }
     ];
 
-    // Repeat blogs for seamless scroll
     const repeatedBlogs = [...blogs, ...blogs, ...blogs];
 
-    // Initialize to middle copy
     React.useEffect(() => {
         if (sliderRef.current) {
             const { scrollWidth } = sliderRef.current;
@@ -135,7 +129,6 @@ const Section8 = () => {
     return (
         <section className="w-full bg-white dark:bg-[#0b0c0d] py-16 px-4 md:px-6 overflow-hidden transition-colors duration-300">
             <div className="max-w-[1440px] mx-auto">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-12">
                     <h2 className="text-[32px] font-black text-[#253d4e] dark:text-white">From The Blog</h2>
                     <div className="flex gap-3">
@@ -154,7 +147,6 @@ const Section8 = () => {
                     </div>
                 </div>
 
-                {/* Horizontal Slider with Infinity Loop */}
                 <div
                     ref={sliderRef}
                     onScroll={handleInfiniteScroll}
@@ -218,7 +210,6 @@ const Section8 = () => {
                 </div>
             </div>
 
-            {/* Styles for scrollbars and infinite animation */}
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .no-scrollbar::-webkit-scrollbar { display: none; }

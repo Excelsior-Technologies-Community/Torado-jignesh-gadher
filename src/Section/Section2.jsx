@@ -24,7 +24,6 @@ const Section2 = () => {
         { name: "Grind Tools", items: 12, Icon: Layout },
     ];
 
-    // Triple the items for infinite slider effect
     const categories = [...baseCategories, ...baseCategories, ...baseCategories];
 
     useEffect(() => {
@@ -41,12 +40,9 @@ const Section2 = () => {
         const { scrollLeft, scrollWidth, clientWidth } = container;
         const setWidth = scrollWidth / 3;
 
-        // Seamless loop: Jump instantly when crossing copies boundaries
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
-            // Near right end, shift back by one set width
             container.scrollLeft = scrollLeft - setWidth;
         } else if (scrollLeft <= 5) {
-            // Near left end, shift forward by one set width
             container.scrollLeft = scrollLeft + setWidth;
         }
     };
@@ -99,7 +95,6 @@ const Section2 = () => {
                             key={index}
                             className="flex flex-col items-center group cursor-pointer min-w-[200px] flex-shrink-0"
                         >
-                            {/* Card Box */}
                             <div className="w-full aspect-square bg-[#f8f9fa] dark:bg-[#151618] rounded-[5px] flex items-center justify-center mb-5 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg group-hover:bg-white dark:group-hover:bg-[#1f2022] border border-transparent dark:border-none group-hover:border-gray-100 mb-5">
                                 <category.Icon
                                     strokeWidth={1.2}
@@ -107,7 +102,6 @@ const Section2 = () => {
                                 />
                             </div>
 
-                            {/* Text Info */}
                             <div className="text-center">
                                 <h3 className="font-extrabold text-[17px] text-black dark:text-white mb-1 group-hover:text-[#f17840] transition-colors whitespace-nowrap">
                                     {category.name}

@@ -1,6 +1,5 @@
 import { ChevronLeft, ChevronRight, GitCompare, Heart, Maximize, Star } from "lucide-react";
 import React, { useRef } from "react";
-// Product Card Component
 const ProductCard = ({ product }) => (
     <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 border border-gray-100 dark:border-none hover:border-[#f17840]/30 transition-all duration-500 flex flex-col h-full">
         <div className="absolute top-4 left-4 z-10">
@@ -59,7 +58,6 @@ const ProductCard = ({ product }) => (
     </div>
 );
 
-// Continuous Infinite Slider Section
 const Section3 = () => {
     const sliderRef = useRef(null);
 
@@ -106,10 +104,8 @@ const Section3 = () => {
         },
     ];
 
-    // Repeat products for seamless scroll
     const repeatedProducts = [...products, ...products, ...products,];
 
-    // Initialize scroll position to the middle copy for seamless start
     React.useEffect(() => {
         if (sliderRef.current) {
             const { scrollWidth } = sliderRef.current;
@@ -122,17 +118,13 @@ const Section3 = () => {
         const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
         const setWidth = scrollWidth / 3;
 
-        // Seamess loop: Jump back/forward by exactly one set width when approaching ends
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
-            // Hit right end, shift back by one set width
             sliderRef.current.scrollLeft = scrollLeft - setWidth;
         } else if (scrollLeft <= 10) {
-            // Hit left end, shift forward by one set width
             sliderRef.current.scrollLeft = scrollLeft + setWidth;
         }
     };
 
-    // Manual scroll with buttons
     const scroll = (direction) => {
         if (sliderRef.current) {
             const cardWidth = 332; // card width + gap
@@ -165,7 +157,6 @@ const Section3 = () => {
                     </div>
                 </div>
 
-                {/* Slider - Updated with onScroll and removed scroll-smooth from container */}
                 <div
                     ref={sliderRef}
                     onScroll={handleScroll}
@@ -180,7 +171,6 @@ const Section3 = () => {
 
                 {/* Promo Cards Section */}
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Card 1 */}
                     <div className="relative overflow-hidden bg-[#f3f4f9] dark:bg-white rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300">
                         <div className="z-10 text-center md:text-left relative">
                             <span className="text-[#f17840] font-bold text-xs md:text-sm tracking-[2px] uppercase mb-4 block">New Arrivals</span>
@@ -213,7 +203,6 @@ const Section3 = () => {
                         </div>
                     </div>
 
-                    {/* Card 2 */}
                     <div className="relative overflow-hidden bg-[#edf4f3] dark:bg-white rounded-[15px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between group min-h-[300px] transition-colors duration-300">
                         <div className="z-10 text-center md:text-left relative">
                             <span className="text-[#f17840] font-bold text-xs md:text-sm tracking-[2px] uppercase mb-4 block">Flash Deals</span>
@@ -245,7 +234,6 @@ const Section3 = () => {
                 </div>
             </div>
 
-            {/* Hide scrollbar */}
             <style dangerouslySetInnerHTML={{
                 __html: `
         .no-scrollbar::-webkit-scrollbar { display: none; }

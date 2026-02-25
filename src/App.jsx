@@ -4,11 +4,12 @@ import Cart from "./Pages/Cart.jsx";
 import Error from "./Pages/Error.jsx";
 import Faq from "./Pages/Faq.jsx";
 import Home from "./Pages/Home.jsx";
+import Myaccount from "./Pages/Myaccount.jsx";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import ShopGrid from "./Pages/ShopGrid.jsx";
 import StoreLocation from "./Pages/storelocation.jsx";
 import TermsofService from "./Pages/TermsofService.jsx";
-import React from "react";  
+import React from "react";    
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/shop-grid" element={<ShopGrid />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/my-account" element={<Myaccount />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

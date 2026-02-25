@@ -3,7 +3,6 @@ import React, { useRef } from "react";
 
 const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
     <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl md:border-transparent h-full w-full">
-        {/* Image Container - Taller on mobile */}
         <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-white rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white border-transparent group-hover:border-gray-100">
             <img
                 src={image}
@@ -12,7 +11,6 @@ const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
             />
         </div>
 
-        {/* Content */}
         <div className="flex flex-col justify-center py-2 flex-grow text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-1.5">
                 <span className="text-[#f17840] font-bold text-[22px] md:text-[23px]">${price}</span>
@@ -180,19 +178,16 @@ const Section5 = () => {
                 {/* Content Area */}
                 <div className="w-full lg:w-[72%] flex flex-col">
                     <div>
-                        {/* Header */}
                         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-5">
                             <div className="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
                                 <h2 className="text-[26px] md:text-[30px] font-black text-[#1a123a] dark:text-white">Flash Deals</h2>
 
-                                {/* Timer */}
                                 <div className="bg-[#1a123a] dark:bg-[#1a1c1e] text-white px-5 py-2.5 rounded-[5px] flex items-center gap-2 font-bold text-[13px] md:text-[14px] shadow-lg">
                                     <span className="text-gray-400 font-medium whitespace-nowrap">End In</span>
                                     <span className="tracking-wider whitespace-nowrap">0 d : 0 h : 00m : 00 s</span>
                                 </div>
                             </div>
 
-                            {/* Nav - Hidden on mobile */}
                             <div className="hidden md:flex gap-2">
                                 <button onClick={() => scroll('left')} className="w-10 h-10 rounded-full border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-sm">
                                     <ChevronLeft size={20} />
@@ -203,7 +198,6 @@ const Section5 = () => {
                             </div>
                         </div>
 
-                        {/* Slider Container */}
                         <div
                             ref={sliderRef}
                             onScroll={handleScroll}
@@ -214,7 +208,6 @@ const Section5 = () => {
                             ))}
                         </div>
 
-                        {/* Mobile Navigation Arrows - At Bottom */}
                         <div className="flex md:hidden items-center justify-center gap-4 mt-10">
                             <button onClick={() => scroll('left')} className="w-12 h-12 rounded-full border border-gray-200 bg-white dark:bg-[#151618] flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-[#f17840] hover:text-white transition-all shadow-md">
                                 <ChevronLeft size={24} />
