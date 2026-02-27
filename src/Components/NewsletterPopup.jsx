@@ -1,12 +1,15 @@
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import React from "react";   
+import React from "react";  
+
 
 const NewsletterPopup = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState('');
     const location = useLocation();
+
+    if (location.pathname === '/dashboard') return null;
 
     useEffect(() => {
         const isHidden = localStorage.getItem('hideNewsletterPopup');

@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./admin/Dashboard.jsx";
 import NewsletterPopup from "./Components/NewsletterPopup.jsx";
 import Cart from "./Pages/Cart.jsx";
 import Error from "./Pages/Error.jsx";
@@ -9,24 +10,28 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
 import ShopGrid from "./Pages/ShopGrid.jsx";
 import StoreLocation from "./Pages/storelocation.jsx";
 import TermsofService from "./Pages/TermsofService.jsx";
-import React from "react";    
+import React from "react";  
+import { CartProvider } from "./context/CartContext.jsx";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <NewsletterPopup />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/storelocation" element={<StoreLocation />} />
-        <Route path="/faq" element={<Faq />} />
-        <Route path="/terms-of-service" element={<TermsofService />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/shop-grid" element={<ShopGrid />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/my-account" element={<Myaccount />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <NewsletterPopup />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/storelocation" element={<StoreLocation />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/terms-of-service" element={<TermsofService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/shop-grid" element={<ShopGrid />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/my-account" element={<Myaccount />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   );
 };
 export default App;

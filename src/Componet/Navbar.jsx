@@ -1,13 +1,16 @@
-import { ChevronDown, ChevronRight, GitCompare, Headphones, Heart, MapPin, Search, ShoppingCart, User } from "lucide-react";
+import { ChevronDown, ChevronRight, GitCompare, Headphones, Heart, MapPin, Search, ShoppingCart, User, X } from "lucide-react";
 import { useState } from "react";
 import { FaBars, FaEnvelope, FaPhoneAlt, FaTimes } from "react-icons/fa";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import { useCart } from "../context/CartContext.jsx";
+import React from "react";      
 
 const Navbar = () => {
+    const { cartItems, removeItem } = useCart();
+    const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     const menuItems = [
         {
@@ -190,9 +193,12 @@ const Navbar = () => {
                     <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
                 </div>
 
-                <div className="relative cursor-pointer group">
+                <div
+                    className="relative cursor-pointer group"
+                    onClick={() => navigate("/cart")}
+                >
                     <ShoppingCart size={24} className="text-gray-700 dark:text-gray-300 group-hover:text-[#f17840]" strokeWidth={1.5} />
-                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">5</span>
+                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{cartCount}</span>
                 </div>
 
                 <User size={24} className="text-gray-700 dark:text-gray-300 cursor-pointer hover:text-[#f17840]" strokeWidth={1.5} />
@@ -445,14 +451,76 @@ const Navbar = () => {
                         </div>
 
                         <div
-                            className="flex items-center gap-2.5 cursor-pointer group"
+                            className="relative flex items-center gap-2.5 cursor-pointer group"
                             onClick={() => navigate("/cart")}
                         >
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <ShoppingCart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">5</span>
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{cartCount}</span>
                             </div>
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Cart</span>
+
+                            {/* HOVER DROPDOWN - EXACTLY AS IN PHOTO */}
+                            <div className="absolute right-0 top-full mt-0 w-[350px] bg-white dark:bg-[#1a1c1e] shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-b-lg border-t-2 border-[#f17840] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100] cursor-default">
+                                <div className="max-h-[400px] overflow-y-auto">
+                                    {cartItems.length > 0 ? (
+                                        cartItems.map((item) => (
+                                            <div key={item.id} className="flex items-center gap-4 p-4 border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group/item relative">
+                                                <div
+                                                    className="absolute left-3 p-1.5 text-gray-300 hover:text-red-500 cursor-pointer transition-colors bg-white dark:bg-[#151618] rounded-full border border-gray-100 dark:border-gray-800 shadow-sm z-10"
+                                                    onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}
+                                                >
+                                                    <X size={14} strokeWidth={3} />
+                                                </div>
+                                                <div className="w-20 h-20 bg-gray-50 dark:bg-white rounded-[5px] p-2 flex items-center justify-center ml-6">
+                                                    <img src={item.image} alt={item.name} className="max-h-full max-w-full object-contain" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h4 className="text-[15px] font-black text-[#253d4e] dark:text-white line-clamp-1 hover:text-[#f17840] transition-colors">{item.name}</h4>
+                                                    <div className="flex items-center gap-1 mt-1">
+                                                        <span className="text-[14px] text-gray-400 font-bold">{item.quantity} x</span>
+                                                        <span className="text-[14px] text-[#f17840] font-black">₹{item.price}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="p-10 text-center text-gray-500 font-bold">Your cart is empty</div>
+                                    )}
+                                </div>
+
+                                {cartItems.length > 0 && (
+                                    <div className="p-6">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <span className="text-[15px] font-black text-[#253d4e] dark:text-white uppercase tracking-tight">Payable Total</span>
+                                            <span className="text-[18px] font-black text-[#f17840]">
+                                                ₹{Math.round(cartItems.reduce((acc, item) => {
+                                                    let itemTotal = item.price * item.quantity;
+                                                    if (item.badge) {
+                                                        const match = item.badge.match(/(\d+)%/);
+                                                        if (match) {
+                                                            const percent = parseInt(match[1]);
+                                                            itemTotal -= (itemTotal * percent) / 100;
+                                                        }
+                                                    }
+                                                    return acc + itemTotal;
+                                                }, 0))}
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); navigate("/cart"); }}
+                                                className="w-full py-3.5 bg-[#151618] text-white rounded-[5px] font-black text-[13px] hover:bg-black transition-colors uppercase tracking-wider"
+                                            >
+                                                View Cart
+                                            </button>
+                                            <button className="w-full py-3.5 bg-[#f17840] text-white rounded-[5px] font-black text-[13px] hover:bg-[#e06b35] transition-colors shadow-md uppercase tracking-wider">
+                                                Checkout
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         <div className="flex items-center gap-2.5 cursor-pointer group pr-2" onClick={() => navigate("/my-account")}>
