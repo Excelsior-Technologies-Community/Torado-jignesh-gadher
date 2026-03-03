@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
-import React from "react";  
+import { Link } from "react-router-dom";
+import React from "react";      
 
 
 const Section1 = () => {
@@ -57,20 +58,20 @@ const Section1 = () => {
                         </p>
 
                         <div className="flex items-center gap-4 sm:gap-8">
-                            <div className="relative group overflow-hidden w-fit">
+                            <Link to="/shop-grid" className="relative group overflow-hidden w-fit">
                                 <button className="bg-[#f17840] group-hover:bg-white dark:group-hover:bg-[#1a1c1e] text-white group-hover:text-[#f17840] px-10 py-4 rounded-[5px] font-bold text-base transition-all duration-700 w-fit cursor-pointer shadow-lg outline-none border-none">
                                     <p>Shop Now</p>
                                 </button>
                                 <div className="absolute top-14 -right-20 rounded-[5px] w-full h-full bg-white dark:bg-[#1a1c1e] text-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-base cursor-pointer">
                                     Shop Now
                                 </div>
-                            </div>
+                            </Link>
 
                             <div className="flex items-center gap-2">
                                 <span className="text-[#7e7e7e] dark:text-gray-400 text-sm sm:text-base">From</span>
                                 <span className="text-[#253d4e] dark:text-white font-extrabold 
                                  text-xl sm:text-3xl">
-                                    $20.14
+                                    ₹20000
                                 </span>
                             </div>
                         </div>
@@ -113,7 +114,7 @@ const Section1 = () => {
                             <h3 className="text-2xl font-extrabold text-[#253d4e] dark:text-[#253d4e] mb-6 leading-tight">
                                 New Lower <br /> Prices
                             </h3>
-                            <div className="relative group overflow-hidden w-fit">
+                            <Link to="/shop-grid" className="relative group overflow-hidden w-fit">
                                 <button className="bg-white group-hover:bg-[#f17840] group-hover:text-white 
                                text-[#253d4e] px-6 py-2  
                                rounded-[4px] font-bold text-sm shadow-sm 
@@ -121,7 +122,7 @@ const Section1 = () => {
                                     <p>Shop Now</p>
                                 </button>
                                 <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer"> Shop Now</div>
-                            </div>
+                            </Link>
                         </div>
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/hero/hero-img-2.webp"
@@ -136,7 +137,7 @@ const Section1 = () => {
                             <h3 className="text-2xl font-extrabold text-[#253d4e] dark:text-[#253d4e] mb-6 leading-tight">
                                 Socket <br /> Wrenches
                             </h3>
-                            <div className="relative group overflow-hidden w-fit">
+                            <Link to="/shop-grid" className="relative group overflow-hidden w-fit">
                                 <button className="bg-white group-hover:bg-[#f17840] group-hover:text-white 
                                text-[#253d4e] px-6 py-2  
                                rounded-[4px] font-bold text-sm shadow-sm 
@@ -144,7 +145,7 @@ const Section1 = () => {
                                     <p>Shop Now</p>
                                 </button>
                                 <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer"> Shop Now</div>
-                            </div>
+                            </Link>
                         </div>
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/hero/hero-img-3.webp"

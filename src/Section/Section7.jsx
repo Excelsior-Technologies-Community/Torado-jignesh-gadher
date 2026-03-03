@@ -1,87 +1,51 @@
+import axios from 'axios';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Section7 = () => {
+    const [sections, setSections] = React.useState([
+        { title: "Special Offer", products: [] },
+        { title: "Popular Products", products: [] },
+        { title: "Top Rated Products", products: [] }
+    ]);
+    const [loading, setLoading] = React.useState(true);
 
-    const sections = [
-        {
-            title: "Special Offer",
-            products: [
+    const fetchProducts = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/products");
+            const formattedProducts = res.data.map(p => ({
+                ...p,
+                image: p.image?.startsWith('http')
+                    ? p.image
+                    : `https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/${p.image || 'product-1.webp'}`
+            }));
+
+            // Just splitting for demonstration since we don't have explicit flags for these categories in the current schema
+            // In a real app, you'd filter by category or specific tags
+            setSections([
                 {
-                    id: 1,
-                    title: "Cordless Drill Professional Combo Drill And Screwdriver",
-                    price: 300,
-                    oldPrice: 500,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-7.webp",
+                    title: "Special Offer",
+                    products: formattedProducts.slice(0, 3)
                 },
                 {
-                    id: 2,
-                    title: "DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool",
-                    price: 300,
-                    oldPrice: 400,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-6.webp",
+                    title: "Popular Products",
+                    products: formattedProducts.slice(3, 6)
                 },
                 {
-                    id: 3,
-                    title: "Professional Cordless Drill Power Tools Set Competitive Price",
-                    price: 250,
-                    oldPrice: 400,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-1.webp",
+                    title: "Top Rated Products",
+                    products: formattedProducts.slice(6, 9)
                 }
-            ]
-        },
-        {
-            title: "Popular Products",
-            products: [
-                {
-                    id: 4,
-                    title: "Professional Cordless Drill Power Tools Set Competitive Price",
-                    price: 200,
-                    oldPrice: 500,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-8.webp",
-                },
-                {
-                    id: 5,
-                    title: "Power Tools Set Chinese Drill Manufacturer Production",
-                    price: 240,
-                    oldPrice: 450,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-9.webp",
-                },
-                {
-                    id: 6,
-                    title: "High Quality Electric Hand Planer 4-3/8-Inch",
-                    price: 320,
-                    oldPrice: 400,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-5.webp",
-                }
-            ]
-        },
-        {
-            title: "Top Rated Products",
-            products: [
-                {
-                    id: 7,
-                    title: "Good Quality Electric Cordless Drill Machine Tools",
-                    price: 200,
-                    oldPrice: 300,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-10.webp",
-                },
-                {
-                    id: 8,
-                    title: "High Quality Steel Clamp Tool Abrasive Steel",
-                    price: 100,
-                    oldPrice: 300,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-11.webp",
-                },
-                {
-                    id: 9,
-                    title: "90 Degree Angle Square Drill Combination Handle",
-                    price: 120,
-                    oldPrice: 200,
-                    image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-12.webp",
-                }
-            ]
+            ]);
+        } catch (err) {
+            console.error("Failed to fetch products for section 7", err);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
+
+    React.useEffect(() => {
+        fetchProducts();
+    }, []);
 
     const promoCards = [
         {
@@ -130,14 +94,14 @@ const Section7 = () => {
                                 ))}
                             </h3>
 
-                            <div className="relative group/btn overflow-hidden w-fit">
+                            <Link to="/shop-grid" className="relative group/btn overflow-hidden w-fit">
                                 <button className="bg-white dark:bg-[#f17840] group-hover/btn:bg-[#f17840] dark:group-hover/btn:bg-[#e06b35] group-hover/btn:text-white text-[#253d4e] dark:text-white px-8 py-2.5 rounded-[4px] font-bold text-sm shadow-sm transition-all duration-700">
                                     Shop Now
                                 </button>
                                 <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 flex items-center justify-center font-bold text-white text-sm">
                                     Shop Now
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
                         <img
@@ -179,8 +143,8 @@ const Section7 = () => {
 
                                         <div className="flex flex-col w-full">
                                             <div className="flex items-center gap-3 mb-2 sm:mb-1.5 mt-3 sm:mt-0">
-                                                <span className="text-[#f17840] font-black text-xl">${product.price}</span>
-                                                <span className="text-gray-400 dark:text-gray-500 line-through text-lg">${product.oldPrice}</span>
+                                                <span className="text-[#f17840] font-black text-xl">₹{product.price}</span>
+                                                <span className="text-gray-400 dark:text-gray-500 line-through text-lg">₹{product.oldPrice}</span>
                                             </div>
                                             <h3 className="text-[#253d4e] dark:text-white font-bold text-[18px] sm:text-[19px] leading-snug mb-3 line-clamp-2 transition-colors duration-300 group-hover:text-[#f17840]">
                                                 {product.title}

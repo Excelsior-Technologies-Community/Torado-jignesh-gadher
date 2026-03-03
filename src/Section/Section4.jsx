@@ -1,94 +1,62 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import axios from "axios";
+import { ChevronLeft, ChevronRight, GitCompare } from "lucide-react";
 import React, { useRef } from "react";
 import {
-    FiHeart, FiMaximize, FiRefreshCw,
+    FiHeart, FiMaximize
 } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import QuickViewModal from "../Components/QuickViewModal";
+import { useCart } from "../context/CartContext.jsx";
+import { useCompare } from "../context/CompareContext";
+import { useWishlist } from "../context/WishlistContext";
 
-
-const products = [
-    {
-        id: 1,
-        title: "High Power Carbon Steel Hammer Multifunctional Drill",
-        price: 300,
-        oldPrice: 400,
-        tag: "Sale",
-        tagColor: "bg-red-500",
-        image:
-            "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-7.webp",
-        ratings: "2k+ Ratings",
-    },
-    {
-        id: 2,
-        title: "Electric Hand Planner 4/3 Inch Drill Machine",
-        price: 400,
-        oldPrice: 500,
-        tag: "New",
-        tagColor: "bg-green-500",
-        image:
-            "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-4.webp",
-        ratings: "7k+ Ratings",
-    },
-    {
-        id: 3,
-        title: "High Quality Electric Hand Planner 4/3 Inch Drill",
-        price: 200,
-        oldPrice: 300,
-        tag: "10% Off",
-        tagColor: "bg-red-400",
-        image:
-            "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-5.webp",
-        ratings: "1k+ Ratings",
-    },
-    {
-        id: 4,
-        title: "Heavy Duty Professional Rotary Hammer Drill",
-        price: 350,
-        oldPrice: 450,
-        tag: "Sale",
-        tagColor: "bg-red-500",
-        image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-12.webp",
-        ratings: "3k+ Ratings",
-    },
-    {
-        id: 5,
-        title: "Compact Cordless Driver Drill with Case",
-        price: 150,
-        oldPrice: 200,
-        tag: "New",
-        tagColor: "bg-green-500",
-        image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-2.webp",
-        ratings: "5k+ Ratings",
-    },
-    {
-        id: 6,
-        title: "Electric Bench Grinder with Eye Shields",
-        price: 280,
-        oldPrice: 350,
-        tag: "15% Off",
-        tagColor: "bg-red-400",
-        image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-3.webp",
-        ratings: "1.5k+ Ratings",
-    }
-];
 
 const Section4 = () => {
     const sliderRef = useRef(null);
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
+    const [products, setProducts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
-    const repeatedProducts = [
-        ...products,
-        ...products,
-        ...products,
-    ];
+    const fetchProducts = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/products");
+            const formattedProducts = res.data.map(p => ({
+                ...p,
+                title: p.title,
+                name: p.title,
+                price: p.price,
+                oldPrice: p.old_price || p.oldPrice || (p.price + 50),
+                tag: p.badge || "Sale",
+                tagColor: p.badge_type === 'new' ? 'bg-green-500' : 'bg-red-500',
+                image: p.image?.startsWith('http')
+                    ? p.image
+                    : `https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/${p.image || 'product-1.webp'}`,
+                ratings: p.reviews_count ? `${p.reviews_count} Ratings` : "1k+ Ratings"
+            }));
+            setProducts(formattedProducts);
+        } catch (err) {
+            console.error("Failed to fetch products for section 4", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     React.useEffect(() => {
-        if (sliderRef.current) {
+        fetchProducts();
+    }, []);
+
+    const repeatedProducts = products.length > 0 ? [...products, ...products, ...products] : [];
+
+    React.useEffect(() => {
+        if (sliderRef.current && products.length > 0) {
             const { scrollWidth } = sliderRef.current;
             sliderRef.current.scrollLeft = scrollWidth / 3;
         }
-    }, []);
+    }, [products]);
 
     const handleScroll = () => {
-        if (!sliderRef.current) return;
+        if (!sliderRef.current || products.length === 0) return;
         const { scrollLeft, scrollWidth } = sliderRef.current;
         const setWidth = scrollWidth / 3;
 
@@ -107,6 +75,14 @@ const Section4 = () => {
                 behavior: "smooth",
             });
         }
+    };
+
+    const [selectedProduct, setSelectedProduct] = React.useState(null);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+    const handleQuickView = (product) => {
+        setSelectedProduct(product);
+        setIsModalOpen(true);
     };
 
     return (
@@ -140,73 +116,93 @@ const Section4 = () => {
                         onScroll={handleScroll}
                         className="flex gap-6 overflow-x-auto no-scrollbar pb-4 h-full"
                     >
-                        {repeatedProducts.map((product, idx) => (
-                            <div
-                                key={idx}
-                                className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none transition duration-300 flex flex-col transition-colors"
-                            >
-                                <span
-                                    className={`absolute top-4 left-4 text-white text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider z-20 ${product.tagColor}`}
+                        {repeatedProducts.map((product, idx) => {
+                            const { addToWishlist, isInWishlist } = useWishlist();
+                            const { addToCompare, isInCompare } = useCompare();
+                            const isWishlisted = isInWishlist(product.id);
+                            const isCompared = isInCompare(product.id);
+                            return (
+                                <div
+                                    key={idx}
+                                    className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none transition duration-300 flex flex-col transition-colors"
                                 >
-                                    {product.tag}
-                                </span>
-
-                                <div className="absolute top-6 right-4 flex flex-col gap-3 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-20">
-                                    <button className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#1a1c1e] rounded-full shadow dark:text-white hover:bg-orange-500 hover:text-white transition">
-                                        <FiHeart size={18} />
-                                    </button>
-                                    <button className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#1a1c1e] rounded-full shadow dark:text-white hover:bg-orange-500 hover:text-white transition">
-                                        <FiRefreshCw size={18} />
-                                    </button>
-                                    <button className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#1a1c1e] rounded-full shadow dark:text-white hover:bg-orange-500 hover:text-white transition">
-                                        <FiMaximize size={18} />
-                                    </button>
-                                </div>
-
-                                <div className="bg-[#f8f9fa] dark:bg-white rounded-lg p-6 mb-6 flex items-center justify-center h-[200px] overflow-hidden group-hover:bg-white transition-colors duration-500">
-                                    <img
-                                        src={product.image}
-                                        alt={product.title}
-                                        className="h-40 object-contain transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col flex-grow">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-orange-500 font-extrabold text-[20px]">
-                                            ${product.price}
-                                        </span>
-                                        <span className="line-through text-gray-400 dark:text-gray-500 text-sm font-medium">
-                                            ${product.oldPrice}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] leading-[1.3] mb-3 line-clamp-2 min-h-[42px] group-hover:text-orange-500 transition-colors">
-                                        {product.title}
-                                    </h3>
-
-                                    <div className="flex items-center gap-1 mb-6">
-                                        <div className="flex items-center text-yellow-500">
-                                            {[...Array(5)].map((_, i) => (
-                                                <span key={i} className="text-[14px]">★</span>
-                                            ))}
-                                        </div>
-                                        <span className="text-gray-400 dark:text-gray-500 text-[13px] font-medium ml-1">
-                                            ({product.ratings})
-                                        </span>
-                                    </div>
-
-                                    <div className="relative group/btn overflow-hidden w-fit h-[40px] mt-auto">
-                                        <button className="w-full h-full px-8 bg-white dark:bg-transparent text-orange-500 border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center">
-                                            Add To Cart
+                                    <span
+                                        className={`absolute top-4 left-4 text-white text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider z-20 ${product.tagColor}`}
+                                    >
+                                        {product.tag}
+                                    </span>
+                                    <div className="absolute top-6 right-4 flex flex-col gap-3 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-20">
+                                        <button
+                                            onClick={() => addToWishlist({ ...product, name: product.title })}
+                                            className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-all duration-300 ${isWishlisted ? 'bg-orange-500 text-white' : 'bg-white dark:bg-[#1a1c1e] text-[#253d4e] dark:text-white hover:bg-orange-500 hover:text-white'}`}
+                                        >
+                                            <FiHeart size={18} fill={isWishlisted ? "currentColor" : "none"} />
                                         </button>
-                                        <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-orange-500 opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer">
-                                            Add To Cart
+                                        <button
+                                            onClick={() => { addToCompare({ ...product, name: product.title }); navigate("/compare"); }}
+                                            className={`w-10 h-10 flex items-center justify-center rounded-full shadow transition-all duration-300 ${isCompared ? 'bg-orange-500 text-white' : 'bg-white dark:bg-[#1a1c1e] text-[#253d4e] dark:text-white hover:bg-orange-500 hover:text-white'}`}
+                                        >
+                                            <GitCompare size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => handleQuickView(product)}
+                                            className="w-10 h-10 flex items-center justify-center bg-white dark:bg-[#1a1c1e] rounded-full shadow dark:text-white hover:bg-orange-500 hover:text-white transition"
+                                        >
+                                            <FiMaximize size={18} />
+                                        </button>
+                                    </div>
+
+                                    <div className="bg-[#f8f9fa] dark:bg-white rounded-lg p-6 mb-6 flex items-center justify-center h-[200px] overflow-hidden group-hover:bg-white transition-colors duration-500">
+                                        <img
+                                            src={product.image}
+                                            alt={product.title}
+                                            className="h-40 object-contain transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col flex-grow">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="text-orange-500 font-extrabold text-[20px]">
+                                                ₹{product.price}
+                                            </span>
+                                            <span className="line-through text-gray-400 dark:text-gray-500 text-sm font-medium">
+                                                ₹{product.oldPrice}
+                                            </span>
+                                        </div>
+
+                                        <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] leading-[1.3] mb-3 line-clamp-2 min-h-[42px] group-hover:text-orange-500 transition-colors">
+                                            {product.title}
+                                        </h3>
+
+                                        <div className="flex items-center gap-1 mb-6">
+                                            <div className="flex items-center text-yellow-500">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <span key={i} className="text-[14px]">★</span>
+                                                ))}
+                                            </div>
+                                            <span className="text-gray-400 dark:text-gray-500 text-[13px] font-medium ml-1">
+                                                ({product.ratings})
+                                            </span>
+                                        </div>
+
+                                        <div className="relative group/btn overflow-hidden w-fit h-[40px] mt-auto">
+                                            <button
+                                                onClick={() => { addToCart({ ...product, name: product.title }); navigate("/cart"); }}
+                                                className="w-full h-full px-8 bg-white dark:bg-transparent text-orange-500 border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center"
+                                            >
+                                                Add To Cart
+                                            </button>
+                                            <div
+                                                onClick={() => { addToCart({ ...product, name: product.title }); navigate("/cart"); }}
+                                                className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-orange-500 opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer"
+                                            >
+                                                Add To Cart
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -219,7 +215,7 @@ const Section4 = () => {
                         <h3 className="text-2xl font-black text-[#253d4e] dark:text-[#253d4e] mt-2 mb-8 leading-tight">
                             Magnetic Impact Power
                         </h3>
-                        <div className="relative group overflow-hidden w-fit">
+                        <Link to="/shop-grid" className="relative group overflow-hidden w-fit">
                             <button className="bg-white dark:bg-[#f17840] group-hover:bg-[#f17840] group-hover:text-white 
                            text-[#253d4e] dark:text-white px-8 py-3  
                            rounded-[5px] font-bold text-sm shadow-sm 
@@ -229,7 +225,7 @@ const Section4 = () => {
                             <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer">
                                 Shop Now
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="mt-10 overflow-hidden flex-grow flex items-end justify-center">
@@ -240,6 +236,12 @@ const Section4 = () => {
                         />
                     </div>
                 </div>
+
+                <QuickViewModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    product={selectedProduct}
+                />
             </div>
 
             <style dangerouslySetInnerHTML={{

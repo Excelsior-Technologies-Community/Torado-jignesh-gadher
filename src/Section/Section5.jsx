@@ -1,33 +1,35 @@
+import axios from "axios";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 
-const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
+const DealProductCard = ({ image, price, old_price, oldPrice, name, title, ratings, reviews_count }) => (
     <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl md:border-transparent h-full w-full">
         <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-white rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white border-transparent group-hover:border-gray-100">
             <img
                 src={image}
-                alt={title}
+                alt={title || name}
                 className="w-[85%] h-[80%] object-contain transition-transform duration-500 group-hover:scale-110"
             />
         </div>
 
         <div className="flex flex-col justify-center py-2 flex-grow text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 mb-1.5">
-                <span className="text-[#f17840] font-bold text-[22px] md:text-[23px]">${price}</span>
-                <span className="text-gray-400 dark:text-gray-500 line-through text-[14px] md:text-[15px] font-medium">${oldPrice}</span>
+                <span className="text-[#f17840] font-bold text-[22px] md:text-[23px]">₹{price}</span>
+                <span className="text-gray-400 dark:text-gray-500 line-through text-[14px] md:text-[15px] font-medium">₹{oldPrice || old_price}</span>
             </div>
 
             <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] md:text-[17px] leading-tight mb-3 line-clamp-2 max-w-full md:max-w-[240px] group-hover:text-[#f17840] transition-colors">
-                {title}
+                {title || name}
             </h3>
 
             <div className="flex items-center justify-center md:justify-start gap-1 mb-5">
                 <div className="flex items-center text-[#ffc107]">
                     {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={14} fill="currentColor" strokeWidth={0} />
+                        <Star key={i} size={14} fill={i < 4 ? "currentColor" : "none"} strokeWidth={i < 4 ? 0 : 2} />
                     ))}
                 </div>
-                <span className="text-gray-500 dark:text-gray-500 text-[12px] md:text-[13px] font-medium ml-1">({ratings})</span>
+                <span className="text-gray-500 dark:text-gray-500 text-[12px] md:text-[13px] font-medium ml-1">({reviews_count || ratings || '1k+'}) Ratings</span>
             </div>
 
             <div className="relative group/btn overflow-hidden w-full md:w-fit h-[45px] mt-2">
@@ -44,74 +46,35 @@ const DealProductCard = ({ image, price, oldPrice, title, ratings }) => (
 
 const Section5 = () => {
     const sliderRef = useRef(null);
+    const [products, setProducts] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
-    const dealProducts = [
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-1.webp",
-            price: 230,
-            oldPrice: 300,
-            title: "Wall Polishing Square Sander Electric Machine Drill",
-            ratings: "1k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-7.webp",
-            price: 320,
-            oldPrice: 400,
-            title: "Rubber Handle Hand Tools Drill 12 Inch Drill Machine",
-            ratings: "2k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-11.webp",
-            price: 450,
-            oldPrice: 500,
-            title: "Professional Straight Cutting Scissor Drill Machine Tool",
-            ratings: "3k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-6.webp",
-            price: 200,
-            oldPrice: 300,
-            title: "Hammer Drill Carbon Fiber Mutifuntional Service",
-            ratings: "6k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-12.webp",
-            price: 450,
-            oldPrice: 500,
-            title: "Professional Straight Cutting Scissor Drill Machine Tool",
-            ratings: "3k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-13.webp",
-            price: 450,
-            oldPrice: 500,
-            title: "Professional Straight Cutting Scissor Drill Machine Tool",
-            ratings: "3k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-13.webp",
-            price: 450,
-            oldPrice: 500,
-            title: "Professional Straight Cutting Scissor Drill Machine Tool",
-            ratings: "3k+ Ratings"
-        },
-        {
-            image: "https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/shop-13.webp",
-            price: 450,
-            oldPrice: 500,
-            title: "Professional Straight Cutting Scissor Drill Machine Tool",
-            ratings: "3k+ Ratings"
+    const fetchProducts = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/products");
+            const formattedProducts = res.data.map(p => ({
+                ...p,
+                name: p.title,
+                image: p.image?.startsWith('http')
+                    ? p.image
+                    : `https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/shop/${p.image || 'product-1.webp'}`
+            }));
+            setProducts(formattedProducts);
+        } catch (err) {
+            console.error("Failed to fetch products for section 5", err);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
 
-    const repeatedProducts = [
-        ...dealProducts,
-        ...dealProducts,
-        ...dealProducts,
-    ];
+    React.useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const repeatedProducts = products.length > 0 ? [...products, ...products, ...products] : [];
 
     const scroll = (direction) => {
-        if (!sliderRef.current) return;
+        if (!sliderRef.current || products.length === 0) return;
         const scrollAmount = sliderRef.current.clientWidth;
 
         sliderRef.current.scrollBy({
@@ -120,16 +83,15 @@ const Section5 = () => {
         });
     };
 
-    // Set initial scroll position to the middle to allow bidirectional infinite scrolling
     React.useEffect(() => {
-        if (sliderRef.current) {
+        if (sliderRef.current && products.length > 0) {
             const { scrollWidth } = sliderRef.current;
             sliderRef.current.scrollTo({ left: scrollWidth / 3, behavior: 'auto' });
         }
-    }, []);
+    }, [products]);
 
     const handleScroll = () => {
-        if (!sliderRef.current) return;
+        if (!sliderRef.current || products.length === 0) return;
         const { scrollLeft, scrollWidth } = sliderRef.current;
         const setWidth = scrollWidth / 3;
 
@@ -153,7 +115,7 @@ const Section5 = () => {
                         <h3 className="text-black dark:text-black font-extrabold text-[26px] md:text-[30px] leading-tight mb-6">
                             Good Quality Tools
                         </h3>
-                        <div className="relative group overflow-hidden w-fit">
+                        <Link to="/shop-grid" className="relative group overflow-hidden w-fit">
                             <button className="bg-white dark:bg-[#f17840] group-hover:bg-[#f17840] group-hover:text-white 
                            text-black dark:text-white px-8 py-3  
                            rounded-[4px] font-bold text-sm shadow-sm 
@@ -163,7 +125,7 @@ const Section5 = () => {
                             <div className="absolute top-10 -right-20 rounded-[4px] w-full h-full bg-[#f17840] opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:top-0 group-hover:right-0 text-center flex items-center justify-center font-bold text-white text-sm cursor-pointer">
                                 Shop Now
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <div className="mt-8 md:mt-auto relative z-10 flex justify-center">

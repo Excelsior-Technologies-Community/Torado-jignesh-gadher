@@ -6,30 +6,30 @@ import { IoIosArrowDown } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
-import React from "react";      
+import { useCompare } from "../context/CompareContext.jsx";
+import { useWishlist } from "../context/WishlistContext.jsx";
+import React from "react";
 
 const Navbar = () => {
     const { cartItems, removeItem } = useCart();
+    const { wishlistItems } = useWishlist();
+    const { compareItems } = useCompare();
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const wishlistCount = wishlistItems.length;
+    const compareCount = compareItems.length;
 
     const menuItems = [
         {
             name: "Home",
-            submenu: [
-                "Home One",
-                "Home Two",
-                "Home Three",
-            ],
+            submenu: ["Home One", "Home Two", "Home Three"],
+        },
+        {
+            name: "About",
+            submenu: [],
         },
         {
             name: "Pages",
-            submenu: [
-                "Store Locations",
-                "FAQ",
-                "Terms of Service",
-                "Privacy Policy",
-                "404 Error Page",
-            ],
+            submenu: ["Store Locations", "FAQ", "Terms of Service", "Privacy Policy", "404 Error Page"],
         },
         {
             name: "Shop",
@@ -38,21 +38,12 @@ const Navbar = () => {
                     name: "Shop Layout",
                     submenu: ["Shop Grid", "Shop Left sidebar", "Shop Right sidebar"]
                 },
-                "Shop Details",
-                "Cart",
-                "Wishlist",
-                "Compare Products",
-                "Checkout",
-                "Track Orders",
-                "My Account",
+                "Shop Details", "Cart", "Wishlist", "Compare Products", "Checkout", "Track Orders", "My Account",
             ],
         },
         {
             name: "Blog",
-            submenu: [
-                "Blog Layout",
-                "Blog Details",
-            ],
+            submenu: ["Blog Layout", "Blog Details"],
         },
         {
             name: "Contact Us",
@@ -70,6 +61,8 @@ const Navbar = () => {
     const categories = ["Machine Tools", "Hand Tools"];
     const locations = ["New York", "Florida", "Georgia"];
     const [searchModalOpen, setSearchModalOpen] = useState(false);
+    const [activeMobileSubmenu, setActiveMobileSubmenu] = useState(null);
+    const [activeMobileNestedSubmenu, setActiveMobileNestedSubmenu] = useState(null);
     const navigate = useNavigate();
 
     const handleSubmenuClick = (sub) => {
@@ -97,8 +90,38 @@ const Navbar = () => {
         } else if (sub === "Cart") {
             navigate("/cart");
             setMobileOpen(false);
+        } else if (sub === "Wishlist") {
+            navigate("/wishlist");
+            setMobileOpen(false);
         } else if (sub === "My Account") {
             navigate("/my-account");
+            setMobileOpen(false);
+        } else if (sub === "Contact Us") {
+            navigate("/contact-us");
+            setMobileOpen(false);
+        } else if (sub === "Checkout") {
+            navigate("/checkout");
+            setMobileOpen(false);
+        } else if (sub === "About" || sub === "About Us") {
+            navigate("/about-us");
+            setMobileOpen(false);
+        } else if (sub === "Compare Products" || sub === "Compare") {
+            navigate("/compare");
+            setMobileOpen(false);
+        } else if (sub === "Blog Layout" || sub === "Blog") {
+            navigate("/blog-grid");
+            setMobileOpen(false);
+        } else if (sub === "Single Blog" || sub === "Blog Details") {
+            navigate("/blog-details");
+            setMobileOpen(false);
+        } else if (sub === "Store Locations") {
+            navigate("/store-location");
+            setMobileOpen(false);
+        } else if (sub === "Shop Details") {
+            navigate("/shop-details");
+            setMobileOpen(false);
+        } else if (sub === "Track Orders") {
+            navigate("/track-order");
             setMobileOpen(false);
         }
     };
@@ -183,14 +206,20 @@ const Navbar = () => {
                     onClick={() => setSearchModalOpen(true)}
                 />
 
-                <div className="relative cursor-pointer group">
+                <div
+                    className="relative cursor-pointer group"
+                    onClick={() => navigate("/compare")}
+                >
                     <GitCompare size={24} className="text-gray-700 dark:text-gray-300 group-hover:text-[#f17840]" strokeWidth={1.5} />
-                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{compareCount}</span>
                 </div>
 
-                <div className="relative cursor-pointer group">
+                <div
+                    className="relative cursor-pointer group"
+                    onClick={() => navigate("/wishlist")}
+                >
                     <Heart size={24} className="text-gray-700 dark:text-gray-300 group-hover:text-[#f17840]" strokeWidth={1.5} />
-                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+                    <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{wishlistCount}</span>
                 </div>
 
                 <div
@@ -298,14 +327,18 @@ const Navbar = () => {
                     </div>
 
                     <div className="hidden lg:flex flex-1 items-center max-w-[700px] h-12 bg-white dark:bg-[#151618] border border-gray-200 rounded-[5px] transition-colors duration-300 overflow-hidden">
-                        <div className="relative">
-                            <button onClick={() => setCategoryOpen(!categoryOpen)} className="flex items-center gap-2 px-4 h-full text-sm font-medium whitespace-nowrap text-[#253d4e] dark:!text-white">
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setCategoryOpen(true)}
+                            onMouseLeave={() => setCategoryOpen(false)}
+                        >
+                            <button className="flex items-center gap-2 px-4 h-full text-sm font-medium whitespace-nowrap text-[#253d4e] dark:!text-white">
                                 {selectedCategory} <ChevronDown size={14} className="text-gray-400" />
                             </button>
                             {categoryOpen && (
-                                <div className="absolute left-0 top-full mt-1 w-48 bg-white dark:bg-[#1a1c1e] border rounded-md shadow-lg z-50 py-1">
+                                <div className="absolute left-0 top-full mt-0 w-48 bg-white dark:bg-[#1a1c1e] shadow-2xl z-[110] py-1 text-gray-800 dark:text-white rounded-lg pt-2">
                                     {categories.map(cat => (
-                                        <div key={cat} onClick={() => { setSelectedCategory(cat); setCategoryOpen(false); }} className="px-4 py-2 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm dark:!text-white">{cat}</div>
+                                        <div key={cat} onClick={() => { setSelectedCategory(cat); setCategoryOpen(false); }} className="px-4 py-2 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm">{cat}</div>
                                     ))}
                                 </div>
                             )}
@@ -317,8 +350,12 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    <div className="hidden lg:block relative min-w-[160px]">
-                        <button onClick={() => setLocationOpen(!locationOpen)} className="w-full flex items-center justify-between border border-gray-200 rounded-[5px] px-4 py-3 text-sm dark:!text-white">
+                    <div
+                        className="hidden lg:block relative min-w-[160px]"
+                        onMouseEnter={() => setLocationOpen(true)}
+                        onMouseLeave={() => setLocationOpen(false)}
+                    >
+                        <button className="w-full flex items-center justify-between border border-gray-200 rounded-[5px] px-4 py-3 text-sm dark:!text-white">
                             <div className="flex items-center gap-2">
                                 <MapPin size={18} className="text-[#f17840]" strokeWidth={2} />
                                 <span className="font-medium">{selectedLocation}</span>
@@ -326,9 +363,9 @@ const Navbar = () => {
                             <ChevronDown size={14} className="text-gray-400" />
                         </button>
                         {locationOpen && (
-                            <div className="absolute right-0 top-full mt-1 w-full bg-white dark:bg-[#1a1c1e] border rounded-md shadow-lg z-50 py-1">
+                            <div className="absolute right-0 top-full mt-0 w-full bg-white dark:bg-[#1a1c1e] shadow-2xl z-[110] py-1 text-gray-800 dark:text-white rounded-lg pt-2">
                                 {locations.map(loc => (
-                                    <div key={loc} onClick={() => { setSelectedLocation(loc); setLocationOpen(false); }} className="px-4 py-3 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm font-medium border-b last:border-0 dark:text-gray-300">{loc}</div>
+                                    <div key={loc} onClick={() => { setSelectedLocation(loc); setLocationOpen(false); }} className="px-4 py-3 hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-orange-600 cursor-pointer text-sm font-medium border-b last:border-0 border-gray-50 dark:border-gray-800">{loc}</div>
                                 ))}
                             </div>
                         )}
@@ -364,11 +401,15 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    <nav className="flex items-center gap-4 xl:gap-10 mx-2 xl:mx-8">
+                    <nav className="flex items-center gap-6 xl:gap-10 mx-2 xl:mx-8">
                         {menuItems.map((item, index) => (
-                            <div key={index} className="relative group py-6 cursor-pointer">
+                            <div
+                                key={index}
+                                onClick={() => item.submenu.length === 0 && handleSubmenuClick(item.name)}
+                                className="relative group py-6 cursor-pointer"
+                            >
                                 <div className="flex items-center gap-1.5 group-hover:text-[#f17840] transition-colors duration-300">
-                                    <span className="text-[15px] font-extrabold text-[#253d4e] dark:!text-white group-hover:text-[#f17840]">
+                                    <span className={`text-[15px] font-extrabold whitespace-nowrap transition-colors duration-300 ${item.name === "Contact Us" ? "text-[#f17840]" : "text-[#253d4e] dark:!text-white group-hover:text-[#f17840]"}`}>
                                         {item.name}
                                     </span>
                                     {item.submenu.length > 0 && (
@@ -380,7 +421,7 @@ const Navbar = () => {
                                 </div>
 
                                 {item.submenu.length > 0 && (
-                                    <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 border-t-2 border-[#f17840]">
+                                    <div className="absolute left-0 top-full mt-0 w-64 bg-white dark:bg-[#1a1c1e] shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-[100] border-t-2 border-[#f17840]">
                                         <ul className="py-2">
                                             {item.submenu.map((sub, i) => {
                                                 const hasNested = typeof sub === "object" && sub.submenu;
@@ -434,18 +475,24 @@ const Navbar = () => {
                     </nav>
 
                     <div className="flex items-center gap-3 xl:gap-7 ml-auto">
-                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                        <div
+                            className="flex items-center gap-2.5 cursor-pointer group"
+                            onClick={() => navigate("/compare")}
+                        >
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <GitCompare size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">1</span>
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{compareCount}</span>
                             </div>
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Compare</span>
                         </div>
 
-                        <div className="flex items-center gap-2.5 cursor-pointer group">
+                        <div
+                            className="flex items-center gap-2.5 cursor-pointer group"
+                            onClick={() => navigate("/wishlist")}
+                        >
                             <div className="relative bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <Heart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
-                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">3</span>
+                                <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{wishlistCount}</span>
                             </div>
                             <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Wishlist</span>
                         </div>
@@ -514,7 +561,10 @@ const Navbar = () => {
                                             >
                                                 View Cart
                                             </button>
-                                            <button className="w-full py-3.5 bg-[#f17840] text-white rounded-[5px] font-black text-[13px] hover:bg-[#e06b35] transition-colors shadow-md uppercase tracking-wider">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); navigate("/checkout"); }}
+                                                className="w-full py-3.5 bg-[#f17840] text-white rounded-[5px] font-black text-[13px] hover:bg-[#e06b35] transition-colors shadow-md uppercase tracking-wider"
+                                            >
                                                 Checkout
                                             </button>
                                         </div>
@@ -534,31 +584,133 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Nav Overlay Drawer */}
-            <div className={`fixed inset-0 bg-black/50 z-[200] transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"}`} onClick={() => setMobileOpen(false)}>
-                <div className={`absolute right-0 top-0 h-full w-64 bg-white dark:bg-[#0b0c0d] shadow-xl transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
-                    <div className="p-6 space-y-6">
-                        <div className="flex justify-between items-center">
-                            <span className="font-bold text-xl text-purple-900 dark:text-white">Torado</span>
-                            <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full cursor-pointer" onClick={() => setMobileOpen(false)}><FaTimes size={18} className="text-gray-600 dark:text-gray-400" /></div>
+            <div
+                className={`fixed inset-0 bg-black/50 z-[200] transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+                onClick={() => setMobileOpen(false)}
+            >
+                <div
+                    className={`absolute right-0 top-0 h-full w-[300px] bg-white dark:bg-[#0b0c0d] shadow-2xl transform transition-transform duration-300 overflow-y-auto ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="p-6">
+                        <div className="flex justify-between items-center mb-8">
+                            <img
+                                src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
+                                alt="logo"
+                                className="h-8 dark:brightness-0 dark:invert"
+                            />
+                            <div
+                                className="w-10 h-10 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-950/20 group transition-colors"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                <FaTimes size={18} className="text-gray-500 group-hover:text-[#f17840]" />
+                            </div>
                         </div>
-                        <div className="space-y-4 text-gray-700 dark:text-white font-medium">
-                            <div className="flex items-center gap-3 py-2 border-b"><FaPhoneAlt className="text-[#f17840]" /> +11 222 3333</div>
-                            <div className="flex items-center gap-3 py-2 border-b"><FaEnvelope className="text-[#f17840]" /> hello@torado.com</div>
-                            {['Home', 'Shop', 'Pages', 'Blogs', 'Contact'].map(link => (
-                                <div
-                                    key={link}
-                                    className="py-2 border-b flex justify-between items-center cursor-pointer"
-                                    onClick={() => {
-                                        if (link === 'Pages') {
-                                            // Optional: If you want clicking 'Pages' itself to navigate
-                                            // navigate("/storelocation");
-                                            // setMobileOpen(false);
-                                        }
-                                    }}
-                                >
-                                    {link} <ChevronDown size={14} className="text-gray-400 dark:text-white" />
+
+                        <div className="space-y-1">
+                            {menuItems.map((item) => {
+                                const isExpanded = activeMobileSubmenu === item.name;
+                                const hasSubmenu = item.submenu.length > 0;
+
+                                return (
+                                    <div key={item.name} className="border-b border-gray-50 dark:border-gray-800/50 last:border-0">
+                                        <div
+                                            className={`flex items-center justify-between py-4 cursor-pointer transition-colors ${isExpanded ? "text-[#f17840]" : "text-[#253d4e] dark:text-white"}`}
+                                            onClick={() => {
+                                                if (hasSubmenu) {
+                                                    setActiveMobileSubmenu(isExpanded ? null : item.name);
+                                                } else {
+                                                    handleSubmenuClick(item.name);
+                                                    setMobileOpen(false);
+                                                }
+                                            }}
+                                        >
+                                            <span className="text-[16px] font-black">{item.name}</span>
+                                            {hasSubmenu && (
+                                                <ChevronDown
+                                                    size={16}
+                                                    className={`transition-transform duration-300 text-gray-400 ${isExpanded ? "rotate-180 text-[#f17840]" : ""}`}
+                                                />
+                                            )}
+                                        </div>
+
+                                        {/* Submenu Level 1 */}
+                                        <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? "max-h-[1000px] opacity-100 mb-4" : "max-h-0 opacity-0"}`}>
+                                            <div className="pl-4 space-y-1">
+                                                {item.submenu.map((sub, i) => {
+                                                    const hasNested = typeof sub === "object" && sub.submenu;
+                                                    const subName = hasNested ? sub.name : sub;
+                                                    const isNestedExpanded = activeMobileNestedSubmenu === subName;
+
+                                                    return (
+                                                        <div key={i}>
+                                                            <div
+                                                                className={`flex items-center justify-between py-3 cursor-pointer text-[14px] font-bold ${isNestedExpanded ? "text-[#f17840]" : "text-gray-600 dark:text-gray-400 hover:text-[#f17840]"}`}
+                                                                onClick={() => {
+                                                                    if (hasNested) {
+                                                                        setActiveMobileNestedSubmenu(isNestedExpanded ? null : subName);
+                                                                    } else {
+                                                                        handleSubmenuClick(subName);
+                                                                        setMobileOpen(false);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <span>{subName}</span>
+                                                                {hasNested && (
+                                                                    <ChevronDown
+                                                                        size={14}
+                                                                        className={`transition-transform duration-300 ${isNestedExpanded ? "rotate-180" : ""}`}
+                                                                    />
+                                                                )}
+                                                            </div>
+
+                                                            {/* Nested Submenu Level 2 */}
+                                                            {hasNested && (
+                                                                <div className={`overflow-hidden transition-all duration-300 pl-4 border-l-2 border-orange-50 dark:border-orange-950/20 ${isNestedExpanded ? "max-h-[500px] opacity-100 mb-2 mt-1" : "max-h-0 opacity-0"}`}>
+                                                                    {sub.submenu.map((nested, j) => (
+                                                                        <div
+                                                                            key={j}
+                                                                            className="py-2.5 text-[13px] font-bold text-gray-500 dark:text-gray-500 hover:text-[#f17840] cursor-pointer"
+                                                                            onClick={() => {
+                                                                                handleSubmenuClick(nested);
+                                                                                setMobileOpen(false);
+                                                                            }}
+                                                                        >
+                                                                            {nested}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="mt-10 pt-10 border-t border-gray-100 dark:border-gray-800 space-y-6">
+                            <div className="flex items-center gap-4 group cursor-pointer">
+                                <div className="w-12 h-12 bg-gray-50 dark:bg-[#151618] rounded-full flex items-center justify-center border border-gray-100 dark:border-gray-800 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20">
+                                    <FaPhoneAlt size={16} className="text-[#f17840]" />
                                 </div>
-                            ))}
+                                <div>
+                                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Call Us</p>
+                                    <p className="text-[17px] font-black text-[#253d4e] dark:text-white">+11 222 3333</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-4 group cursor-pointer">
+                                <div className="w-12 h-12 bg-gray-50 dark:bg-[#151618] rounded-full flex items-center justify-center border border-gray-100 dark:border-gray-800 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20">
+                                    <FaEnvelope size={16} className="text-[#f17840]" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Email Us</p>
+                                    <p className="text-[17px] font-black text-[#253d4e] dark:text-white">hello@torado.com</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

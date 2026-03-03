@@ -1,12 +1,14 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext.jsx";
-import React from "react";      
+import React from "react";  
 
 const Cart = () => {
     const { cartItems, updateQuantity, removeItem } = useCart();
+    const navigate = useNavigate();
 
 
 
@@ -166,7 +168,10 @@ const Cart = () => {
                             </div>
                         </div>
 
-                        <button className="w-full bg-[#f17840] hover:bg-[#e06b35] text-white py-5 rounded-[5px] font-black text-[18px] mt-10 transition-all shadow-lg active:scale-[0.98] cursor-pointer uppercase tracking-tight">
+                        <button
+                            onClick={() => navigate("/checkout")}
+                            className="w-full bg-[#f17840] hover:bg-[#e06b35] text-white py-5 rounded-[5px] font-black text-[18px] mt-10 transition-all shadow-lg active:scale-[0.98] cursor-pointer uppercase tracking-tight"
+                        >
                             Proceed To Checkout
                         </button>
                     </div>
