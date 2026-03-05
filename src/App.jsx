@@ -1,10 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminLogin from "./admin/AdminLogin.jsx";
 import Dashboard from "./admin/Dashboard.jsx";
+import ProtectedRoute from "./admin/ProtectedRoute.jsx";
 import NewsletterPopup from "./Components/NewsletterPopup.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { CompareProvider } from "./context/CompareContext.jsx";
 import { WishlistProvider } from "./context/WishlistContext.jsx";
 import About from "./Pages/About.jsx";
+import BlogDetails from "./Pages/BlogDetails.jsx";
+import BlogStandard from "./Pages/BlogStandard.jsx";
 import Cart from "./Pages/Cart.jsx";
 import Checkout from "./Pages/Checkout.jsx";
 import Compare from "./Pages/Compare.jsx";
@@ -18,8 +22,8 @@ import ShopGrid from "./Pages/ShopGrid.jsx";
 import StoreLocation from "./Pages/storelocation.jsx";
 import TermsofService from "./Pages/TermsofService.jsx";
 import Wishlist from "./Pages/Wishlist.jsx";
-import React from "react";  
-
+import AdminRegister from "./admin/AdminRegister.jsx";
+import React from "react";
 
 const App = () => {
   return (
@@ -42,10 +46,16 @@ const App = () => {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/about-us" element={<About />} />
               <Route path="/compare" element={<Compare />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/blog-grid" element={<BlogStandard />} />
+              <Route path="/blog-details" element={<BlogDetails />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/register" element={<AdminRegister />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<Error />} />
-              <Route path="/compare" element={<Compare />} />
-
 
             </Routes>
           </BrowserRouter>

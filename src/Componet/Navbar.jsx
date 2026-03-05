@@ -43,7 +43,16 @@ const Navbar = () => {
         },
         {
             name: "Blog",
-            submenu: ["Blog Layout", "Blog Details"],
+            submenu: [
+                {
+                    name: "Blog Layout",
+                    submenu: ["Blog Standard", "Blog Left Sidebar", "Blog Right Sidebar"]
+                },
+                {
+                    name: "Single Blog",
+                    submenu: ["Blog Details"]
+                },
+            ],
         },
         {
             name: "Contact Us",
@@ -108,7 +117,7 @@ const Navbar = () => {
         } else if (sub === "Compare Products" || sub === "Compare") {
             navigate("/compare");
             setMobileOpen(false);
-        } else if (sub === "Blog Layout" || sub === "Blog") {
+        } else if (sub === "Blog Layout" || sub === "Blog" || sub === "Blog Standard" || sub === "Blog Left Sidebar" || sub === "Blog Right Sidebar") {
             navigate("/blog-grid");
             setMobileOpen(false);
         } else if (sub === "Single Blog" || sub === "Blog Details") {
@@ -401,7 +410,7 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    <nav className="flex items-center gap-6 xl:gap-10 mx-2 xl:mx-8">
+                    <nav className="hidden xl:flex items-center gap-4 xl:gap-8 mx-2 xl:mx-8">
                         {menuItems.map((item, index) => (
                             <div
                                 key={index}
@@ -409,7 +418,7 @@ const Navbar = () => {
                                 className="relative group py-6 cursor-pointer"
                             >
                                 <div className="flex items-center gap-1.5 group-hover:text-[#f17840] transition-colors duration-300">
-                                    <span className={`text-[15px] font-extrabold whitespace-nowrap transition-colors duration-300 ${item.name === "Contact Us" ? "text-[#f17840]" : "text-[#253d4e] dark:!text-white group-hover:text-[#f17840]"}`}>
+                                    <span className={`text-[15px] font-extrabold whitespace-nowrap transition-colors duration-300 ${item.name === "Contact Us" ? "" : "text-[#253d4e] dark:!text-white group-hover:text-[#f17840]"}`}>
                                         {item.name}
                                     </span>
                                     {item.submenu.length > 0 && (
@@ -434,10 +443,7 @@ const Navbar = () => {
                                                         className="group/sub relative flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
                                                     >
                                                         <div className="flex items-center gap-2">
-                                                            {(subName === "FAQ" || hasNested) && (
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>
-                                                            )}
-                                                            <span className={(subName === "FAQ" || hasNested) ? "text-[#f17840]" : ""}>{subName}</span>
+                                                            <span>{subName}</span>
                                                         </div>
                                                         <ChevronRight size={14} className={`transition-all duration-300 ${hasNested ? "text-[#f17840]" : "text-gray-300"}`} />
 
@@ -454,10 +460,7 @@ const Navbar = () => {
                                                                             className="flex justify-between items-center px-6 py-3.5 text-[14px] font-bold text-[#253d4e] dark:!text-white hover:bg-orange-50 dark:hover:bg-orange-950/20 hover:text-[#f17840] transition-all cursor-pointer border-b border-gray-50 last:border-0"
                                                                         >
                                                                             <div className="flex items-center gap-2">
-                                                                                {nested === "Shop Grid" && (
-                                                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#f17840]"></span>
-                                                                                )}
-                                                                                <span className={nested === "Shop Grid" ? "text-[#f17840]" : ""}>{nested}</span>
+                                                                                <span>{nested}</span>
                                                                             </div>
                                                                         </li>
                                                                     ))}
@@ -474,7 +477,7 @@ const Navbar = () => {
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-3 xl:gap-7 ml-auto">
+                    <div className="flex items-center gap-2 xl:gap-5 ml-auto">
                         <div
                             className="flex items-center gap-2.5 cursor-pointer group"
                             onClick={() => navigate("/compare")}
@@ -483,7 +486,7 @@ const Navbar = () => {
                                 <GitCompare size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{compareCount}</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Compare</span>
+                            <span className="hidden 2xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Compare</span>
                         </div>
 
                         <div
@@ -494,7 +497,7 @@ const Navbar = () => {
                                 <Heart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{wishlistCount}</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Wishlist</span>
+                            <span className="hidden 2xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Wishlist</span>
                         </div>
 
                         <div
@@ -505,7 +508,7 @@ const Navbar = () => {
                                 <ShoppingCart size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                                 <span className="absolute -top-1.5 -right-1.5 bg-[#f17840] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm transition-transform group-hover:scale-110">{cartCount}</span>
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Cart</span>
+                            <span className="hidden 2xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Cart</span>
 
                             {/* HOVER DROPDOWN - EXACTLY AS IN PHOTO */}
                             <div className="absolute right-0 top-full mt-0 w-[350px] bg-white dark:bg-[#1a1c1e] shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-b-lg border-t-2 border-[#f17840] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[100] cursor-default">
@@ -577,7 +580,7 @@ const Navbar = () => {
                             <div className="bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <User size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                             </div>
-                            <span className="hidden xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Account</span>
+                            <span className="hidden 2xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Account</span>
                         </div>
                     </div>
                 </div>

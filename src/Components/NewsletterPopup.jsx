@@ -3,15 +3,14 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import React from 'react';
 
-
 const NewsletterPopup = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState('');
     const location = useLocation();
 
-    if (location.pathname === '/dashboard') return null;
-
     useEffect(() => {
+        if (location.pathname === '/dashboard') return;
+
         const isHidden = localStorage.getItem('hideNewsletterPopup');
         if (!isHidden) {
             const timer = setTimeout(() => {
@@ -20,6 +19,8 @@ const NewsletterPopup = () => {
             return () => clearTimeout(timer);
         }
     }, [location.pathname]);
+
+    if (location.pathname === '/dashboard') return null;
 
     const handleClose = () => {
         setIsOpen(false);
@@ -33,70 +34,73 @@ const NewsletterPopup = () => {
         }
     };
 
-    
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm transition-all duration-300">
-            <div className="relative bg-white dark:bg-[#1a1c1e] w-full max-w-[850px] max-h-[95vh] flex flex-col md:flex-row rounded-[20px] shadow-[0_25px_70px_rgba(0,0,0,0.4)] animate-in fade-in zoom-in duration-500 overflow-hidden">
+            <div className="relative bg-white dark:bg-[#1a1c1e] w-full max-w-[900px] flex flex-col md:flex-row rounded-0 shadow-[0_30px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in duration-500 overflow-hidden mx-4 max-h-[95vh] overflow-y-auto no-scrollbar">
 
-                {/* Close Button - Optimized for Mobile */}
+                {/* Close Button - Top Right of the entire container */}
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 z-[70] w-9 h-9 bg-white md:bg-black text-black md:text-white rounded-full flex items-center justify-center hover:bg-[#f17840] hover:text-white transition-all duration-300 shadow-xl border border-gray-100 md:border-none focus:outline-none"
+                    className="absolute top-0 right-0 z-[110] bg-black text-white p-2.5 hover:bg-[#f17840] transition-colors duration-300"
                     aria-label="Close"
                 >
                     <X size={20} strokeWidth={3} />
                 </button>
 
-                <div className="md:w-[45%] h-[250px] sm:h-[280px] md:h-auto overflow-hidden flex-shrink-0">
+                {/* Image Section */}
+                <div className="w-full md:w-1/2 h-[300px] sm:h-[350px] md:h-auto overflow-hidden">
                     <img
                         src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/faq/faq-1.webp"
                         alt="Newsletter"
-                        className="w-full h-full object-cover object-top transform hover:scale-110 transition-transform duration-1000"
+                        className="w-full h-full object-cover object-center"
                     />
                 </div>
 
-                <div className="md:w-[55%] p-6 md:p-10 flex flex-col justify-center overflow-y-auto no-scrollbar">
-                    <div className="mb-6">
-                        <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-extrabold text-[#253d4e] dark:text-white leading-[1.2] mb-3">
+                {/* Content Section */}
+                <div className="w-full md:w-1/2 p-6 sm:p-10 md:p-12 flex flex-col justify-center bg-white dark:bg-[#1a1c1e]">
+                    <div className="mb-6 md:mb-8">
+                        <h2 className="text-[24px] sm:text-[28px] md:text-[34px] font-black text-[#253d4e] dark:text-white leading-tight mb-3 md:mb-4">
                             Subscribe To Our Newsletter
                         </h2>
-                        <p className="text-gray-500 dark:text-gray-400 font-bold text-sm leading-relaxed">
+                        <p className="text-gray-500 dark:text-gray-400 font-bold text-[14px] md:text-[16px] leading-relaxed">
                             Subscribe Our Newsletter To Get Our Update News
                         </p>
                     </div>
 
-                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                    <form onSubmit={(e) => e.preventDefault()} className="space-y-4 md:space-y-6">
                         <div className="relative">
                             <input
                                 type="email"
                                 placeholder="Your Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-5 py-3.5 bg-[#f8f9fa] dark:bg-[#151618] border border-gray-100 dark:border-gray-800 rounded-lg focus:outline-none focus:border-[#f17840] dark:text-white font-bold text-sm transition-all"
+                                className="w-full px-5 py-4 bg-[#f4f4f4] dark:bg-[#252729] border-none outline-none dark:text-white font-bold text-[15px]"
                                 required
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full bg-[#f17840] hover:bg-[#e06b35] text-white font-black py-3.5 rounded-lg transition-all shadow-md hover:shadow-lg uppercase tracking-wider text-sm"
+                            className="w-full bg-[#f17840] hover:bg-[#e06b35] text-white font-black py-4 rounded-none transition-all text-base md:text-lg shadow-md uppercase tracking-wide"
                         >
-                            Subscribe Now
+                            Subscribe
                         </button>
 
-                        <div className="flex items-center gap-3 pt-2 group cursor-pointer">
-                            <div className="relative flex items-center h-5">
+                        <div className="flex items-center gap-3 pt-4 cursor-pointer">
+                            <label className="relative flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
                                     id="dontShow"
                                     onChange={handleDontShowAgain}
-                                    className="w-4 h-4 cursor-pointer accent-[#f17840] rounded border-gray-300 focus:ring-0"
+                                    className="sr-only peer"
                                 />
-                            </div>
-                            <label htmlFor="dontShow" className="text-xs font-black text-gray-400 dark:text-gray-500 cursor-pointer group-hover:text-[#f17840] transition-colors uppercase tracking-tight">
-                                Don't Show This Again
+                                <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:bg-[#f17840] peer-checked:border-[#f17840] transition-all bg-white dark:bg-[#1a1c1e]"></div>
+                            </label>
+                            <label htmlFor="dontShow" className="text-[14px] md:text-[15px] font-bold text-gray-400 dark:text-gray-500 cursor-pointer hover:text-[#f17840] transition-colors">
+                                Don't Show This Message Again
                             </label>
                         </div>
                     </form>

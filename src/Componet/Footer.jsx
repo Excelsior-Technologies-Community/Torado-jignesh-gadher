@@ -139,7 +139,7 @@ const Footer = () => {
                                 </button>
                             </div>
 
-                            <div className="flex items-center gap-6 mt-8">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mt-8">
                                 <h5 className="text-[20px] font-black whitespace-nowrap">Follow Us:</h5>
                                 <div className="flex gap-4">
                                     {[
@@ -169,9 +169,9 @@ const Footer = () => {
                         © <span className="text-[#f17840] font-bold">Torado</span> is proudly owned by <span className="text-[#f17840] font-bold">EnvyTheme</span>
                     </p>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                         <span className="text-gray-300 text-[15px] font-medium mr-2">We accept payment via</span>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                             <img src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/payment/payment-1.webp" alt="Card" className="h-6 object-contain" />
                             <img src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/payment/payment-2.webp" alt="Card" className="h-6 object-contain" />
                             <img src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/payment/payment-3.webp" alt="Card" className="h-6 object-contain" />

@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import React from "react";      
+import React from "react";
 
 
 const Section1 = () => {
@@ -27,10 +27,10 @@ const Section1 = () => {
                                 key={index}
                                 className="group border-b border-gray-100 dark:border-gray-800 last:border-0"
                             >
-                                <div className="px-6 py-4 flex items-center justify-between text-[#253d4e] dark:text-gray-300 hover:text-[#f17840] cursor-pointer transition-all duration-300 font-medium">
+                                <Link to="/shop-grid" className="px-6 py-4 flex items-center justify-between text-[#253d4e] dark:text-gray-300 hover:text-[#f17840] cursor-pointer transition-all duration-300 font-medium">
                                     <span className="text-[15px]">{item}</span>
                                     <ChevronRight size={14} className="text-gray-300 group-hover:text-[#f17840] dark:group-hover:text-[#f17840] group-hover:translate-x-1 transition-all" />
-                                </div>
+                                </Link>
                             </li>
                         ))}
                     </ul>
