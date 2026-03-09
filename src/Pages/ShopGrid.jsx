@@ -8,8 +8,9 @@ import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext.jsx";
 import { useCompare } from "../context/CompareContext";
+import { useCurrency } from "../context/CurrencyContext";
 import { useWishlist } from "../context/WishlistContext";
-import React from "react";  
+import React from "react";
 
 const ProductCard = ({ product, onQuickView }) => {
     const navigate = useNavigate();
@@ -18,18 +19,20 @@ const ProductCard = ({ product, onQuickView }) => {
     const { addToCompare, isInCompare } = useCompare();
     const isWishlisted = isInWishlist(product.id);
     const isCompared = isInCompare(product.id);
+    const { formatPrice } = useCurrency();
     return (
         <div className="group bg-white dark:bg-[#151618] rounded-[10px] p-4 border border-gray-100 dark:border-none hover:border-[#f17840]/30 transition-all duration-500 flex flex-col h-full shadow-sm hover:shadow-lg">
             {/* Image & Badge Container */}
             <div className="relative bg-[#f8f9fa] dark:bg-white rounded-[10px] p-6 mb-4 overflow-hidden flex items-center justify-center min-h-[240px]">
-                {/* Dynamic Badge - Green for New, Orange for Discount, Red for Sale */}
-                {product.badge && (
+                {/* Dynamic Badge - Green for New, Orange for Discount, Red for Sale, Black for Out of Stock */}
+                {(product.badge || product.stock_quantity === 0) && (
                     <div className="absolute top-3 left-3 z-30">
-                        <span className={`text-white text-[13px] font-bold px-3 py-1.5 rounded-[5px] shadow-sm whitespace-nowrap ${product.badge_type === 'new' ? 'bg-[#10b981]' :
-                            product.badge_type === 'discount' ? 'bg-[#f59e0b]' :
-                                'bg-[#ef4444]'
+                        <span className={`text-white text-[13px] font-bold px-3 py-1.5 rounded-[5px] shadow-sm whitespace-nowrap ${product.stock_quantity === 0 ? 'bg-black dark:bg-gray-800' :
+                            product.badge_type === 'new' ? 'bg-[#10b981]' :
+                                product.badge_type === 'discount' ? 'bg-[#f59e0b]' :
+                                    'bg-[#ef4444]'
                             }`}>
-                            {product.badge}
+                            {product.stock_quantity === 0 ? "Out of Stock" : product.badge}
                         </span>
                     </div>
                 )}
@@ -67,9 +70,9 @@ const ProductCard = ({ product, onQuickView }) => {
             {/* Content Section */}
             <div className="flex flex-col flex-grow px-2">
                 <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[#f17840] text-xl font-black">₹{product.price}</span>
+                    <span className="text-[#f17840] text-xl font-black">{formatPrice(product.price)}</span>
                     {product.old_price && (
-                        <span className="text-gray-400 line-through text-base font-bold">₹{product.old_price}</span>
+                        <span className="text-gray-400 line-through text-base font-bold">{formatPrice(product.old_price)}</span>
                     )}
                 </div>
 
@@ -98,15 +101,20 @@ const ProductCard = ({ product, onQuickView }) => {
 
                 {/* Add To Cart Button with Section1 Effect */}
                 <div
-                    className="relative group/btn overflow-hidden w-full mt-auto cursor-pointer"
-                    onClick={() => { addToCart(product); navigate("/cart"); }}
+                    className={`relative group/btn overflow-hidden w-full mt-auto ${product.stock_quantity !== 0 ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                    onClick={() => { if (product.stock_quantity !== 0) { addToCart(product); navigate("/cart"); } }}
                 >
-                    <button className="w-full py-3.5 bg-white border-2 border-gray-100 text-[#f17840] group-hover/btn:bg-[#f17840] group-hover/btn:text-white group-hover/btn:border-[#f17840] rounded-xl font-black text-[15px] transition-all duration-700 pointer-events-none">
-                        Add To Cart
+                    <button
+                        disabled={product.stock_quantity === 0}
+                        className={`w-full py-3.5 ${product.stock_quantity !== 0 ? 'bg-white border-2 border-gray-100 text-[#f17840] group-hover/btn:bg-[#f17840] group-hover/btn:text-white group-hover/btn:border-[#f17840]' : 'bg-gray-100 border-gray-200 text-gray-400'} rounded-xl font-black text-[15px] transition-all duration-700 pointer-events-none`}
+                    >
+                        {product.stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
                     </button>
-                    <div className="absolute top-14 -right-20 rounded-xl w-full h-full bg-[#f17840] text-white opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-black text-[15px]">
-                        Add To Cart
-                    </div>
+                    {product.stock_quantity !== 0 && (
+                        <div className="absolute top-14 -right-20 rounded-xl w-full h-full bg-[#f17840] text-white opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-black text-[15px]">
+                            Add To Cart
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

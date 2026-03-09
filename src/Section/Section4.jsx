@@ -8,12 +8,16 @@ import { Link, useNavigate } from "react-router-dom";
 import QuickViewModal from "../Components/QuickViewModal";
 import { useCart } from "../context/CartContext.jsx";
 import { useCompare } from "../context/CompareContext";
+import { useCurrency } from "../context/CurrencyContext";
 import { useWishlist } from "../context/WishlistContext";
 
 
 const Section4 = () => {
     const sliderRef = useRef(null);
     const { addToCart } = useCart();
+    const { addToWishlist, isInWishlist } = useWishlist();
+    const { addToCompare, isInCompare } = useCompare();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -117,8 +121,6 @@ const Section4 = () => {
                         className="flex gap-6 overflow-x-auto no-scrollbar pb-4 h-full"
                     >
                         {repeatedProducts.map((product, idx) => {
-                            const { addToWishlist, isInWishlist } = useWishlist();
-                            const { addToCompare, isInCompare } = useCompare();
                             const isWishlisted = isInWishlist(product.id);
                             const isCompared = isInCompare(product.id);
                             return (
@@ -127,9 +129,9 @@ const Section4 = () => {
                                     className="min-w-[260px] md:min-w-[300px] group relative bg-white dark:bg-[#151618] rounded-xl p-5 md:p-6 shadow dark:shadow-none transition duration-300 flex flex-col transition-colors"
                                 >
                                     <span
-                                        className={`absolute top-4 left-4 text-white text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider z-20 ${product.tagColor}`}
+                                        className={`absolute top-4 left-4 text-white text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider z-20 ${product.stock_quantity === 0 ? 'bg-black dark:bg-gray-800' : product.tagColor}`}
                                     >
-                                        {product.tag}
+                                        {product.stock_quantity === 0 ? "Out of Stock" : product.tag}
                                     </span>
                                     <div className="absolute top-6 right-4 flex flex-col gap-3 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-20">
                                         <button
@@ -163,10 +165,10 @@ const Section4 = () => {
                                     <div className="flex flex-col flex-grow">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="text-orange-500 font-extrabold text-[20px]">
-                                                ₹{product.price}
+                                                {formatPrice(product.price)}
                                             </span>
                                             <span className="line-through text-gray-400 dark:text-gray-500 text-sm font-medium">
-                                                ₹{product.oldPrice}
+                                                {formatPrice(product.oldPrice)}
                                             </span>
                                         </div>
 
@@ -187,17 +189,20 @@ const Section4 = () => {
 
                                         <div className="relative group/btn overflow-hidden w-fit h-[40px] mt-auto">
                                             <button
-                                                onClick={() => { addToCart({ ...product, name: product.title }); navigate("/cart"); }}
-                                                className="w-full h-full px-8 bg-white dark:bg-transparent text-orange-500 border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center"
+                                                onClick={() => { if (product.stock_quantity !== 0) { addToCart({ ...product, name: product.title }); navigate("/cart"); } }}
+                                                disabled={product.stock_quantity === 0}
+                                                className={`w-full h-full px-8 ${product.stock_quantity !== 0 ? "bg-white dark:bg-transparent text-orange-500 hover:text-white" : "bg-gray-100 text-gray-400 cursor-not-allowed"} border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center`}
                                             >
-                                                Add To Cart
+                                                {product.stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
                                             </button>
-                                            <div
-                                                onClick={() => { addToCart({ ...product, name: product.title }); navigate("/cart"); }}
-                                                className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-orange-500 opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer"
-                                            >
-                                                Add To Cart
-                                            </div>
+                                            {product.stock_quantity !== 0 && (
+                                                <div
+                                                    onClick={() => { addToCart({ ...product, name: product.title }); navigate("/cart"); }}
+                                                    className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-orange-500 opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer"
+                                                >
+                                                    Add To Cart
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

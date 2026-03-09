@@ -1,9 +1,11 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCurrency } from "../context/CurrencyContext";
 import React from "react";
 
 
 const Section1 = () => {
+    const { formatPrice } = useCurrency();
     return (
         <section className="w-full bg-white dark:bg-[#0b0c0d] py-8 px-4 md:px-6 transition-colors duration-300">
             <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -71,7 +73,7 @@ const Section1 = () => {
                                 <span className="text-[#7e7e7e] dark:text-gray-400 text-sm sm:text-base">From</span>
                                 <span className="text-[#253d4e] dark:text-white font-extrabold 
                                  text-xl sm:text-3xl">
-                                    ₹20000
+                                    {formatPrice(20000)}
                                 </span>
                             </div>
                         </div>

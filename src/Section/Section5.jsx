@@ -2,47 +2,62 @@ import axios from "axios";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useCurrency } from "../context/CurrencyContext";
 
-const DealProductCard = ({ image, price, old_price, oldPrice, name, title, ratings, reviews_count }) => (
-    <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl md:border-transparent h-full w-full">
-        <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-white rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white border-transparent group-hover:border-gray-100">
-            <img
-                src={image}
-                alt={title || name}
-                className="w-[85%] h-[80%] object-contain transition-transform duration-500 group-hover:scale-110"
-            />
-        </div>
-
-        <div className="flex flex-col justify-center py-2 flex-grow text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-1.5">
-                <span className="text-[#f17840] font-bold text-[22px] md:text-[23px]">₹{price}</span>
-                <span className="text-gray-400 dark:text-gray-500 line-through text-[14px] md:text-[15px] font-medium">₹{oldPrice || old_price}</span>
-            </div>
-
-            <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] md:text-[17px] leading-tight mb-3 line-clamp-2 max-w-full md:max-w-[240px] group-hover:text-[#f17840] transition-colors">
-                {title || name}
-            </h3>
-
-            <div className="flex items-center justify-center md:justify-start gap-1 mb-5">
-                <div className="flex items-center text-[#ffc107]">
-                    {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={14} fill={i < 4 ? "currentColor" : "none"} strokeWidth={i < 4 ? 0 : 2} />
-                    ))}
+const DealProductCard = ({ image, price, old_price, oldPrice, name, title, ratings, reviews_count, stock_quantity }) => {
+    const { formatPrice } = useCurrency();
+    return (
+        <div className="snap-start flex flex-col md:flex-row gap-5 bg-white dark:bg-[#151618] p-5 md:p-3 transition-all duration-300 group rounded-xl md:border-transparent h-full w-full relative">
+            {/* Out of Stock Overlay/Badge */}
+            {stock_quantity === 0 && (
+                <div className="absolute top-2 left-2 z-20">
+                    <span className="bg-black text-white text-[10px] font-bold px-2 py-1 rounded">Out of Stock</span>
                 </div>
-                <span className="text-gray-500 dark:text-gray-500 text-[12px] md:text-[13px] font-medium ml-1">({reviews_count || ratings || '1k+'}) Ratings</span>
+            )}
+            <div className="w-full md:w-[165px] h-[240px] md:h-[190px] bg-[#f8f9fa] dark:bg-white rounded-[10px] flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-white border-transparent group-hover:border-gray-100">
+                <img
+                    src={image}
+                    alt={title || name}
+                    className="w-[85%] h-[80%] object-contain transition-transform duration-500 group-hover:scale-110"
+                />
             </div>
 
-            <div className="relative group/btn overflow-hidden w-full md:w-fit h-[45px] mt-2">
-                <button className="w-full h-full px-8 bg-white dark:bg-transparent text-[#f17840] border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center">
-                    Add To Cart
-                </button>
-                <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer">
-                    Add To Cart
+            <div className="flex flex-col justify-center py-2 flex-grow text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-1.5">
+                    <span className="text-[#f17840] font-bold text-[22px] md:text-[23px]">{formatPrice(price)}</span>
+                    <span className="text-gray-400 dark:text-gray-500 line-through text-[14px] md:text-[15px] font-medium">{formatPrice(oldPrice || old_price)}</span>
+                </div>
+
+                <h3 className="text-[#253d4e] dark:text-white font-bold text-[16px] md:text-[17px] leading-tight mb-3 line-clamp-2 max-w-full md:max-w-[240px] group-hover:text-[#f17840] transition-colors">
+                    {title || name}
+                </h3>
+
+                <div className="flex items-center justify-center md:justify-start gap-1 mb-5">
+                    <div className="flex items-center text-[#ffc107]">
+                        {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={14} fill={i < 4 ? "currentColor" : "none"} strokeWidth={i < 4 ? 0 : 2} />
+                        ))}
+                    </div>
+                    <span className="text-gray-500 dark:text-gray-500 text-[12px] md:text-[13px] font-medium ml-1">({reviews_count || ratings || '1k+'}) Ratings</span>
+                </div>
+
+                <div className={`relative group/btn overflow-hidden w-full md:w-fit h-[45px] mt-2 ${stock_quantity === 0 ? 'cursor-not-allowed' : ''}`}>
+                    <button
+                        disabled={stock_quantity === 0}
+                        className={`w-full h-full px-8 ${stock_quantity !== 0 ? 'bg-white dark:bg-transparent text-[#f17840] group-hover/btn:text-white' : 'bg-gray-100 text-gray-400'} border border-gray-100 dark:border-gray-800 rounded-[5px] font-bold text-[14px] transition-all duration-700 shadow-sm flex items-center justify-center`}
+                    >
+                        {stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
+                    </button>
+                    {stock_quantity !== 0 && (
+                        <div className="absolute top-10 -right-20 rounded-[5px] w-full h-full bg-[#f17840] opacity-0 group-hover/btn:opacity-100 transition-all duration-700 group-hover/btn:top-0 group-hover/btn:right-0 text-center flex items-center justify-center font-bold text-white text-[14px] cursor-pointer">
+                            Add To Cart
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const Section5 = () => {
     const sliderRef = useRef(null);

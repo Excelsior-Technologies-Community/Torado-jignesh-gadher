@@ -1,10 +1,11 @@
 import { Minus, Plus, ShoppingCart, Star, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import React from "react";
+import { useCurrency } from "../context/CurrencyContext";
 
 const QuickViewModal = ({ product, isOpen, onClose }) => {
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
     const [quantity, setQuantity] = useState(1);
 
     if (!isOpen || !product) return null;
@@ -64,9 +65,9 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
                         </h2>
 
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="text-3xl font-black text-[#f17840]">₹{product.price}</span>
+                            <span className="text-3xl font-black text-[#f17840]">{formatPrice(product.price)}</span>
                             {product.old_price && (
-                                <span className="text-gray-400 line-through text-xl font-bold">₹{product.old_price}</span>
+                                <span className="text-gray-400 line-through text-xl font-bold">{formatPrice(product.old_price)}</span>
                             )}
                         </div>
 
@@ -88,7 +89,9 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
                         <div className="space-y-4 mb-8">
                             <div className="flex items-center gap-2">
                                 <span className="text-[#253d4e] dark:text-white font-black text-[15px] uppercase w-32">Availability :</span>
-                                <span className="text-[#21bf73] font-bold">In Stock</span>
+                                <span className={`${product.stock_quantity === 0 ? "text-red-500" : "text-[#21bf73]"} font-bold`}>
+                                    {product.stock_quantity === 0 ? "Out of Stock" : "In Stock"}
+                                </span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="text-[#253d4e] dark:text-white font-black text-[15px] uppercase w-32">Category :</span>
@@ -119,10 +122,11 @@ const QuickViewModal = ({ product, isOpen, onClose }) => {
 
                             <button
                                 onClick={handleAddToCart}
-                                className="flex-1 bg-[#f17840] hover:bg-[#e06b35] text-white h-14 rounded-xl font-black flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-orange-500/20 active:scale-95"
+                                disabled={product.stock_quantity === 0}
+                                className={`flex-1 ${product.stock_quantity !== 0 ? "bg-[#f17840] hover:bg-[#e06b35] shadow-lg hover:shadow-orange-500/20 active:scale-95" : "bg-gray-400 cursor-not-allowed"} text-white h-14 rounded-xl font-black flex items-center justify-center gap-3 transition-all`}
                             >
                                 <ShoppingCart size={22} strokeWidth={2.5} />
-                                Add To Cart
+                                {product.stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
                             </button>
                         </div>
                     </div>

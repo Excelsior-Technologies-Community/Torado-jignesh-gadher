@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useCurrency } from "../context/CurrencyContext";
 
 const Section7 = () => {
     const [sections, setSections] = React.useState([
@@ -8,6 +9,7 @@ const Section7 = () => {
         { title: "Popular Products", products: [] },
         { title: "Top Rated Products", products: [] }
     ]);
+    const { formatPrice } = useCurrency();
     const [loading, setLoading] = React.useState(true);
 
     const fetchProducts = async () => {
@@ -143,8 +145,8 @@ const Section7 = () => {
 
                                         <div className="flex flex-col w-full">
                                             <div className="flex items-center gap-3 mb-2 sm:mb-1.5 mt-3 sm:mt-0">
-                                                <span className="text-[#f17840] font-black text-xl">₹{product.price}</span>
-                                                <span className="text-gray-400 dark:text-gray-500 line-through text-lg">₹{product.oldPrice}</span>
+                                                <span className="text-[#f17840] font-black text-xl">{formatPrice(product.price)}</span>
+                                                <span className="text-gray-400 dark:text-gray-500 line-through text-lg">{formatPrice(product.oldPrice)}</span>
                                             </div>
                                             <h3 className="text-[#253d4e] dark:text-white font-bold text-[18px] sm:text-[19px] leading-snug mb-3 line-clamp-2 transition-colors duration-300 group-hover:text-[#f17840]">
                                                 {product.title}

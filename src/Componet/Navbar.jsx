@@ -3,17 +3,18 @@ import { useState } from "react";
 import { FaBars, FaEnvelope, FaPhoneAlt, FaTimes } from "react-icons/fa";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
-import { MdAttachMoney } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
 import { useCompare } from "../context/CompareContext.jsx";
+import { useCurrency } from "../context/CurrencyContext.jsx";
 import { useWishlist } from "../context/WishlistContext.jsx";
-import React from "react";
+import React from "react";  
 
 const Navbar = () => {
     const { cartItems, removeItem } = useCart();
     const { wishlistItems } = useWishlist();
     const { compareItems } = useCompare();
+    const { currency, setCurrency, formatPrice, getSymbol } = useCurrency();
     const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
     const wishlistCount = wishlistItems.length;
     const compareCount = compareItems.length;
@@ -189,8 +190,8 @@ const Navbar = () => {
                                 }}
                                 className="flex items-center gap-2 hover:text-orange-300 transition-colors"
                             >
-                                <MdAttachMoney className="text-lg" />
-                                <span>USD</span>
+                                <span className="font-bold">{getSymbol()}</span>
+                                <span>{currency}</span>
                                 <IoIosArrowDown
                                     className={`transition-transform duration-300 ${currencyOpen ? "rotate-180" : ""}`}
                                 />
@@ -198,7 +199,16 @@ const Navbar = () => {
                             <div className={`absolute right-0 mt-3 w-32 bg-white text-gray-800 rounded-md shadow-2xl overflow-hidden transform transition-all duration-300 origin-top z-[110] ${currencyOpen ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"}`}>
                                 <div className="p-1">
                                     {["USD", "EUR", "INR"].map(c => (
-                                        <div key={c} className="px-4 py-2 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition rounded-sm">{c}</div>
+                                        <div
+                                            key={c}
+                                            onClick={() => {
+                                                setCurrency(c);
+                                                setCurrencyOpen(false);
+                                            }}
+                                            className={`px-4 py-2 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition rounded-sm ${currency === c ? 'bg-purple-50 text-purple-700 font-bold' : ''}`}
+                                        >
+                                            {c}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -529,7 +539,7 @@ const Navbar = () => {
                                                     <h4 className="text-[15px] font-black text-[#253d4e] dark:text-white line-clamp-1 hover:text-[#f17840] transition-colors">{item.name}</h4>
                                                     <div className="flex items-center gap-1 mt-1">
                                                         <span className="text-[14px] text-gray-400 font-bold">{item.quantity} x</span>
-                                                        <span className="text-[14px] text-[#f17840] font-black">₹{item.price}</span>
+                                                        <span className="text-[14px] text-[#f17840] font-black">{formatPrice(item.price)}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -544,7 +554,7 @@ const Navbar = () => {
                                         <div className="flex items-center justify-between mb-6">
                                             <span className="text-[15px] font-black text-[#253d4e] dark:text-white uppercase tracking-tight">Payable Total</span>
                                             <span className="text-[18px] font-black text-[#f17840]">
-                                                ₹{Math.round(cartItems.reduce((acc, item) => {
+                                                {formatPrice(cartItems.reduce((acc, item) => {
                                                     let itemTotal = item.price * item.quantity;
                                                     if (item.badge) {
                                                         const match = item.badge.match(/(\d+)%/);
@@ -580,7 +590,24 @@ const Navbar = () => {
                             <div className="bg-gray-50 dark:bg-[#151618] p-2.5 rounded-full group-hover:bg-orange-50 dark:group-hover:bg-orange-950/20 transition-colors duration-300">
                                 <User size={24} className="text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors" strokeWidth={1.5} />
                             </div>
-                            <span className="hidden 2xl:block text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">Account</span>
+                            <div className="hidden 2xl:flex flex-col">
+                                <span className="text-[14px] font-bold text-[#253d4e] dark:!text-white group-hover:text-[#f17840] transition-colors">
+                                    {localStorage.getItem("token") ? JSON.parse(localStorage.getItem("user") || "{}").name || "Account" : "Account"}
+                                </span>
+                                {localStorage.getItem("token") && (
+                                    <span
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            localStorage.removeItem("token");
+                                            localStorage.removeItem("user");
+                                            navigate("/my-account");
+                                        }}
+                                        className="text-[11px] text-[#f17840] hover:underline font-black uppercase tracking-widest"
+                                    >
+                                        Logout
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

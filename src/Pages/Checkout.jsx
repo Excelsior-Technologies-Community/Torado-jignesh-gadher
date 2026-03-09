@@ -2,18 +2,29 @@ import axios from "axios";
 import {
     ChevronDown, CreditCard, Info, Lock, MapPin, ShieldCheck, Truck
 } from "lucide-react";
-import { useState } from "react";
-import React from "react";      
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext";
+import { useCurrency } from "../context/CurrencyContext";
 
 const Checkout = () => {
     const { cartItems, clearCart } = useCart();
+    const { formatPrice, currency, convertPrice } = useCurrency();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
+
+    React.useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/my-account", { state: { from: "/checkout", action: "register" } });
+        } else {
+            setIsAuthChecked(true);
+        }
+    }, [navigate]);
 
     // Form States
     const [formData, setFormData] = useState({
@@ -33,6 +44,8 @@ const Checkout = () => {
     });
 
     const [paymentMethod, setPaymentMethod] = useState("bank");
+
+    if (!isAuthChecked) return null;
 
     // Calculations
     const subtotal = cartItems.reduce((acc, item) => {
@@ -80,7 +93,9 @@ const Checkout = () => {
         setLoading(true);
 
         try {
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
             const orderPayload = {
+                user_id: user.id || null,
                 customer_name: `${formData.firstName} ${formData.lastName}`,
                 email: formData.email,
                 phone: formData.phone,
@@ -88,18 +103,21 @@ const Checkout = () => {
                 city: formData.city,
                 state: formData.state,
                 zip: formData.zip,
-                total_amount: total,
+                total_amount: convertPrice(total).toFixed(2),
+                currency: currency,
                 payment_method: paymentMethod,
                 order_note: formData.orderNote,
-                items: cartItems
+                items: cartItems.map(item => ({
+                    ...item,
+                    price: convertPrice(item.price).toFixed(2)
+                }))
             };
 
             const response = await axios.post("http://localhost:5000/api/orders", orderPayload);
 
             if (response.data.orderId) {
-                alert("🎉 Order Placed Successfully! Your Order ID: " + response.data.orderId);
                 clearCart();
-                navigate("/");
+                navigate(`/order-success/${response.data.orderId}`, { state: { email: formData.email } });
             }
         } catch (err) {
             console.error("Order error:", err);
@@ -357,20 +375,20 @@ const Checkout = () => {
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center text-gray-600 dark:text-gray-400 font-bold">
                                     <span>Subtotal</span>
-                                    <span className="text-[#253d4e] dark:text-white">₹{subtotal.toFixed(2)}</span>
+                                    <span className="text-[#253d4e] dark:text-white">{formatPrice(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-gray-600 dark:text-gray-400 font-bold">
                                     <span>Shipping</span>
-                                    <span className="text-[#253d4e] dark:text-white">₹{shipping.toFixed(2)}</span>
+                                    <span className="text-[#253d4e] dark:text-white">{formatPrice(shipping)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-gray-600 dark:text-gray-400 font-bold">
                                     <span>Discount</span>
-                                    <span className="text-green-500">-₹{discount.toFixed(2)}</span>
+                                    <span className="text-green-500">-{formatPrice(discount)}</span>
                                 </div>
 
                                 <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
                                     <span className="text-[18px] font-black text-[#253d4e] dark:text-white uppercase">Total</span>
-                                    <span className="text-[22px] font-black text-[#f17840]">₹{total.toFixed(2)}</span>
+                                    <span className="text-[22px] font-black text-[#f17840]">{formatPrice(total)}</span>
                                 </div>
 
                                 <button

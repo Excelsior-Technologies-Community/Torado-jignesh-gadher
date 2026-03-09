@@ -3,9 +3,10 @@ import { ChevronLeft, ChevronRight, GitCompare, Heart, Maximize, Star } from "lu
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
+import { useCurrency } from "../context/CurrencyContext";
 import { useWishlist } from "../context/WishlistContext";
 
-const ProductCard = ({ product, addToWishlist, isInWishlist }) => {
+const ProductCard = ({ product, addToWishlist, isInWishlist, formatPrice }) => {
     const { addToCart } = useCart();
     const navigate = useNavigate();
     return (
@@ -40,8 +41,8 @@ const ProductCard = ({ product, addToWishlist, isInWishlist }) => {
 
             <div className="flex flex-col flex-grow">
                 <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[#f17840] text-xl font-extrabold">₹{product.price}</span>
-                    <span className="text-gray-400 dark:text-gray-500 line-through text-base font-medium">₹{product.oldPrice || product.old_price}</span>
+                    <span className="text-[#f17840] text-xl font-extrabold">{formatPrice(product.price)}</span>
+                    <span className="text-gray-400 dark:text-gray-500 line-through text-base font-medium">{formatPrice(product.oldPrice || product.old_price)}</span>
                 </div>
 
                 <h3 className="text-[#253d4e] dark:text-white font-extrabold text-[17px] leading-tight mb-4 line-clamp-2 min-h-[42px]">
@@ -78,6 +79,8 @@ const ProductCard = ({ product, addToWishlist, isInWishlist }) => {
 
 const Section6 = () => {
     const sliderRef = useRef(null);
+    const { addToWishlist, isInWishlist } = useWishlist();
+    const { formatPrice } = useCurrency();
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
 
@@ -162,13 +165,13 @@ const Section6 = () => {
                     className="flex gap-8 overflow-x-auto no-scrollbar whitespace-nowrap pb-4"
                 >
                     {repeatedProducts.map((product, idx) => {
-                        const { addToWishlist, isInWishlist } = useWishlist();
                         return (
                             <div key={idx} className="inline-block min-w-[300px]">
                                 <ProductCard
                                     product={product}
                                     addToWishlist={addToWishlist}
                                     isInWishlist={isInWishlist}
+                                    formatPrice={formatPrice}
                                 />
                             </div>
                         );

@@ -5,12 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import QuickViewModal from "../Components/QuickViewModal";
 import { useCart } from "../context/CartContext.jsx";
 import { useCompare } from "../context/CompareContext";
+import { useCurrency } from "../context/CurrencyContext";
 import { useWishlist } from "../context/WishlistContext";
 
 const ProductCard = ({ product, addToWishlist, isInWishlist, onQuickView }) => {
     const { addToCart } = useCart();
     const { addToCompare, isInCompare } = useCompare();
     const isCompared = isInCompare(product.id);
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
     return (
         <div className="group relative bg-white dark:bg-[#151618] rounded-[10px] p-5 border border-gray-100 dark:border-none hover:border-[#f17840]/30 transition-all duration-500 flex flex-col h-full">
@@ -50,8 +52,8 @@ const ProductCard = ({ product, addToWishlist, isInWishlist, onQuickView }) => {
 
             <div className="flex flex-col flex-grow">
                 <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[#f17840] text-xl font-extrabold">₹{product.price}</span>
-                    <span className="text-gray-400 dark:text-gray-500 line-through text-base font-medium">₹{product.oldPrice || product.old_price}</span>
+                    <span className="text-[#f17840] text-xl font-extrabold">{formatPrice(product.price)}</span>
+                    <span className="text-gray-400 dark:text-gray-500 line-through text-base font-medium">{formatPrice(product.oldPrice || product.old_price)}</span>
                 </div>
 
                 <h3 className="text-[#253d4e] dark:text-white font-extrabold text-[17px] leading-tight mb-4 line-clamp-2">
@@ -88,6 +90,7 @@ const ProductCard = ({ product, addToWishlist, isInWishlist, onQuickView }) => {
 
 const Section3 = () => {
     const sliderRef = useRef(null);
+    const { addToWishlist, isInWishlist } = useWishlist();
     const [products, setProducts] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
 
@@ -180,7 +183,6 @@ const Section3 = () => {
                     className="flex gap-8 overflow-x-auto no-scrollbar whitespace-nowrap pb-4"
                 >
                     {repeatedProducts.map((product, idx) => {
-                        const { addToWishlist, isInWishlist } = useWishlist();
                         return (
                             <div key={idx} className="inline-block min-w-[300px]">
                                 <ProductCard

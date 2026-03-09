@@ -4,10 +4,12 @@ import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext.jsx";
-import React from "react";  
+import { useCurrency } from "../context/CurrencyContext.jsx";
+import React from "react";
 
 const Cart = () => {
     const { cartItems, updateQuantity, removeItem } = useCart();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
 
 
@@ -90,7 +92,7 @@ const Cart = () => {
                                         </span>
                                     </td>
                                     <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
-                                        <span className="text-gray-500 dark:text-gray-400 font-bold">₹{item.price}</span>
+                                        <span className="text-gray-500 dark:text-gray-400 font-bold">{formatPrice(item.price)}</span>
                                     </td>
                                     <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
                                         <div className="flex items-center justify-center">
@@ -117,7 +119,7 @@ const Cart = () => {
                                         </div>
                                     </td>
                                     <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
-                                        <span className="text-gray-500 dark:text-gray-400 font-bold">₹{(item.price * item.quantity)}</span>
+                                        <span className="text-gray-500 dark:text-gray-400 font-bold">{formatPrice(item.price * item.quantity)}</span>
                                     </td>
                                 </tr>
                             ))}
@@ -152,24 +154,31 @@ const Cart = () => {
                         <div className="space-y-6">
                             <div className="flex items-center justify-between">
                                 <span className="font-bold text-[17px] text-[#253d4e] dark:text-gray-300">Subtotal</span>
-                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">₹{subtotal}</span>
+                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">{formatPrice(subtotal)}</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <span className="font-bold text-[17px] text-[#253d4e] dark:text-gray-300">Shipping</span>
-                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">₹{shipping}</span>
+                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">{formatPrice(shipping)}</span>
                             </div>
                             <div className="flex items-center justify-between pb-8 border-b border-gray-100 dark:border-gray-800">
                                 <span className="font-bold text-[17px] text-[#253d4e] dark:text-gray-300">Discount</span>
-                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">₹{discount}</span>
+                                <span className="font-black text-[17px] text-[#253d4e] dark:text-white">{formatPrice(discount)}</span>
                             </div>
                             <div className="flex items-center justify-between pt-2">
                                 <span className="text-[#253d4e] dark:text-white font-black text-[20px]">Payable Total</span>
-                                <span className="text-[#253d4e] dark:text-white font-black text-[22px]">₹{total}</span>
+                                <span className="text-[#253d4e] dark:text-white font-black text-[22px]">{formatPrice(total)}</span>
                             </div>
                         </div>
 
                         <button
-                            onClick={() => navigate("/checkout")}
+                            onClick={() => {
+                                const token = localStorage.getItem("token");
+                                if (token) {
+                                    navigate("/checkout");
+                                } else {
+                                    navigate("/my-account", { state: { from: "/checkout", action: "register" } });
+                                }
+                            }}
                             className="w-full bg-[#f17840] hover:bg-[#e06b35] text-white py-5 rounded-[5px] font-black text-[18px] mt-10 transition-all shadow-lg active:scale-[0.98] cursor-pointer uppercase tracking-tight"
                         >
                             Proceed To Checkout

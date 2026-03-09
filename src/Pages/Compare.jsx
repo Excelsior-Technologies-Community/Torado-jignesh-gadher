@@ -4,11 +4,13 @@ import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext";
 import { useCompare } from "../context/CompareContext";
-import React from "react";  
+import { useCurrency } from "../context/CurrencyContext";
+import React from "react";
 
 const Compare = () => {
     const { compareItems, removeFromCompare } = useCompare();
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
     const navigate = useNavigate();
 
     return (
@@ -69,7 +71,7 @@ const Compare = () => {
                                     <td className="p-6 text-center font-bold text-[#253d4e] dark:text-gray-400">Price</td>
                                     {compareItems.map((product) => (
                                         <td key={product.id} className="p-6 text-center font-black text-[#253d4e] dark:text-white text-lg">
-                                            ₹{product.price}
+                                            {formatPrice(product.price)}
                                         </td>
                                     ))}
                                 </tr>
@@ -106,8 +108,8 @@ const Compare = () => {
                                     <td className="p-6 text-center font-bold text-[#253d4e] dark:text-gray-400">Stock Status</td>
                                     {compareItems.map((product) => (
                                         <td key={product.id} className="p-6 text-center">
-                                            <span className="bg-[#e8fbf1] text-[#21bf73] px-4 py-1.5 rounded-[5px] font-bold text-sm">
-                                                In Stock
+                                            <span className={`${product.stock_quantity === 0 ? "bg-red-50 text-red-500" : "bg-[#e8fbf1] text-[#21bf73]"} px-4 py-1.5 rounded-[5px] font-bold text-sm`}>
+                                                {product.stock_quantity === 0 ? "Out of Stock" : "In Stock"}
                                             </span>
                                         </td>
                                     ))}
@@ -129,10 +131,11 @@ const Compare = () => {
                                     {compareItems.map((product) => (
                                         <td key={product.id} className="p-6 text-center">
                                             <button
-                                                onClick={() => { addToCart(product); navigate("/cart"); }}
-                                                className="bg-[#21bf73] hover:bg-[#199d5d] text-white px-6 py-3 rounded-[5px] font-black text-sm transition-all flex items-center gap-2 mx-auto"
+                                                onClick={() => { if (product.stock_quantity !== 0) { addToCart(product); navigate("/cart"); } }}
+                                                disabled={product.stock_quantity === 0}
+                                                className={`${product.stock_quantity !== 0 ? "bg-[#21bf73] hover:bg-[#199d5d] cursor-pointer" : "bg-gray-400 cursor-not-allowed"} text-white px-6 py-3 rounded-[5px] font-black text-sm transition-all flex items-center gap-2 mx-auto`}
                                             >
-                                                <ShoppingCart size={18} /> Add To Cart
+                                                <ShoppingCart size={18} /> {product.stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
                                             </button>
                                         </td>
                                     ))}

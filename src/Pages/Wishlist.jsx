@@ -4,13 +4,15 @@ import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
 import { useCart } from "../context/CartContext.jsx";
+import { useCurrency } from "../context/CurrencyContext";
 import { useWishlist } from "../context/WishlistContext";
-import React from "react";  
+import React from "react";
 
 const Wishlist = () => {
     const navigate = useNavigate();
     const { wishlistItems, removeFromWishlist } = useWishlist();
     const { addToCart } = useCart();
+    const { formatPrice } = useCurrency();
 
     return (
         <div className="min-h-screen bg-white dark:bg-[#0b0c0d]">
@@ -73,19 +75,20 @@ const Wishlist = () => {
                                             </span>
                                         </td>
                                         <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
-                                            <span className="text-gray-500 dark:text-gray-400 font-bold">₹{item.price}</span>
+                                            <span className="text-gray-500 dark:text-gray-400 font-bold">{formatPrice(item.price)}</span>
                                         </td>
                                         <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
-                                            <span className="text-gray-500 dark:text-gray-400 font-bold">
-                                                In Stock
+                                            <span className={`${item.stock_quantity === 0 ? "text-red-500" : "text-gray-500 dark:text-gray-400"} font-bold`}>
+                                                {item.stock_quantity === 0 ? "Out of Stock" : "In Stock"}
                                             </span>
                                         </td>
                                         <td className="border border-gray-100 dark:border-gray-800 px-6 py-4">
                                             <button
-                                                onClick={() => { addToCart(item); navigate("/cart"); }}
-                                                className="text-[#f17840] hover:text-[#e06b35] font-black text-base transition-colors cursor-pointer"
+                                                onClick={() => { if (item.stock_quantity > 0) { addToCart(item); navigate("/cart"); } }}
+                                                disabled={item.stock_quantity <= 0}
+                                                className={`${item.stock_quantity > 0 ? "text-[#f17840] hover:text-[#e06b35] cursor-pointer" : "text-gray-400 cursor-not-allowed"} font-black text-base transition-colors`}
                                             >
-                                                Add To Cart
+                                                {item.stock_quantity === 0 ? "Out of Stock" : "Add To Cart"}
                                             </button>
                                         </td>
                                     </tr>
