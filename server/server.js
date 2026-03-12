@@ -18,6 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
 
