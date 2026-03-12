@@ -4,7 +4,6 @@ import { useState } from "react";
 import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
 import Navbar from "../Componet/Navbar";
-import React from "react";
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({

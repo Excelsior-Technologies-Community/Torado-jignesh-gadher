@@ -1,77 +1,135 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AdminLogin from "./admin/AdminLogin.jsx";
-import AdminRegister from "./admin/AdminRegister.jsx";
-import Dashboard from "./admin/Dashboard.jsx";
-import ProtectedRoute from "./admin/ProtectedRoute.jsx";
-import NewsletterPopup from "./Components/NewsletterPopup.jsx";
-import { CartProvider } from "./context/CartContext.jsx";
-import { CompareProvider } from "./context/CompareContext.jsx";
-import { CurrencyProvider } from "./context/CurrencyContext.jsx";
-import { WishlistProvider } from "./context/WishlistContext.jsx";
-import About from "./Pages/About.jsx";
-import BlogDetails from "./Pages/BlogDetails.jsx";
-import BlogStandard from "./Pages/BlogStandard.jsx";
-import Cart from "./Pages/Cart.jsx";
-import Checkout from "./Pages/Checkout.jsx";
-import Compare from "./Pages/Compare.jsx";
-import ContactUs from "./Pages/ContactUs.jsx";
-import Error from "./Pages/Error.jsx";
-import Faq from "./Pages/Faq.jsx";
-import Home from "./Pages/Home.jsx";
-import Myaccount from "./Pages/Myaccount.jsx";
-import OrderSuccess from "./Pages/OrderSuccess.jsx";
-import PrivacyPolicy from "./Pages/PrivacyPolicy.jsx";
-import ShopGrid from "./Pages/ShopGrid.jsx";
-import StoreLocation from "./Pages/storelocation.jsx";
-import TermsofService from "./Pages/TermsofService.jsx";
-import TrackOrder from "./Pages/TrackOrder.jsx";
-import VerifyOTP from "./Pages/VerifyOTP.jsx";
-import Wishlist from "./Pages/Wishlist.jsx";
-import React from "react";
+  import React, { useEffect } from "react";
+import axios from "axios";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import "./App.css";
 
-const App = () => {
+// Pages
+import Home from "./Pages/Home";
+import About from "./Pages/About";
+import BlogDetails from "./Pages/BlogDetails";
+import BlogStandard from "./Pages/BlogStandard";
+import BlogDetailsLeftSidebar from "./Pages/blog-details-left-sidebar";
+import BlogLeftSidebar from "./Pages/blog-left-sidebar";
+import BlogRightSidebar from "./Pages/blog-righte-sidebar";
+import Cart from "./Pages/Cart";
+import Checkout from "./Pages/Checkout";
+import Compare from "./Pages/Compare";
+import ContactUs from "./Pages/ContactUs";
+import Error from "./Pages/Error";
+import Faq from "./Pages/Faq";
+import Myaccount from "./Pages/Myaccount";
+import OrderSuccess from "./Pages/OrderSuccess";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import ShopGrid from "./Pages/ShopGrid";
+import TermsofService from "./Pages/TermsofService";
+import TrackOrder from "./Pages/TrackOrder";
+import VerifyOTP from "./Pages/VerifyOTP";
+import Wishlist from "./Pages/Wishlist";
+import ShopDetails from "./Pages/shopdetails";
+import StoreLocation from "./Pages/storelocation";
+
+// Components
+import NewsletterPopup from "./Components/NewsletterPopup";
+import StickyActions from "./Components/StickyActions";
+
+// Admin
+import AdminLogin from "./admin/AdminLogin";
+import AdminRegister from "./admin/AdminRegister";
+import Dashboard from "./admin/Dashboard";
+import ProtectedRoute from "./admin/ProtectedRoute";
+
+// Context
+import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
+import { CompareProvider } from "./context/CompareContext";
+
+function App() {
+  // Activity Heartbeat
+  useEffect(() => {
+    const updateActivity = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const adminData = JSON.parse(localStorage.getItem("adminData"));
+      const email = user?.email || adminData?.email;
+
+      if (email) {
+        try {
+          await axios.post("http://localhost:5000/api/auth/ping", { email });
+        } catch (err) {
+          // Silent fail
+        }
+      }
+    };
+
+    updateActivity();
+    const interval = setInterval(updateActivity, 60 * 1000); // Ping every 1 min
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <CartProvider>
-      <CurrencyProvider>
+    <CurrencyProvider>
+      <CartProvider>
         <WishlistProvider>
           <CompareProvider>
-            <BrowserRouter>
-              <NewsletterPopup />
+            <Router>
               <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
-                <Route path="/storelocation" element={<StoreLocation />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/blog-standard" element={<BlogStandard />} />
+                <Route path="/blog-details" element={<BlogDetails />} />
+                <Route path="/blog-details-left-sidebar" element={<BlogDetailsLeftSidebar />} />
+                <Route path="/blog-left-sidebar" element={<BlogLeftSidebar />} />
+                <Route path="/blog-right-sidebar" element={<BlogRightSidebar />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/compare" element={<Compare />} />
+                <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/faq" element={<Faq />} />
-                <Route path="/terms-of-service" element={<TermsofService />} />
+                <Route path="/my-account" element={<Myaccount />} />
+                <Route path="/login" element={<Myaccount />} />
+                <Route path="/register" element={<Myaccount />} />
+                <Route path="/forgot-password" element={<Myaccount />} /> {/* Re-using Myaccount or create a separate one */}
+                <Route path="/order-success/:orderId" element={<OrderSuccess />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/shop-grid" element={<ShopGrid />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/contact-us" element={<ContactUs />} />
-                <Route path="/my-account" element={<Myaccount />} />
+                <Route path="/terms-of-service" element={<TermsofService />} />
+                <Route path="/terms" element={<TermsofService />} />
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/verify-otp" element={<VerifyOTP />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/about-us" element={<About />} />
-                <Route path="/compare" element={<Compare />} />
-                <Route path="/blog-grid" element={<BlogStandard />} />
-                <Route path="/blog-details" element={<BlogDetails />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/shop-details/:id" element={<ShopDetails />} />
+                <Route path="/shop-details" element={<ShopDetails />} />
+                <Route path="/store-location" element={<StoreLocation />} />
+
+                {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/register" element={<AdminRegister />} />
-                <Route path="/order-success/:orderId" element={<OrderSuccess />} />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
+                <Route 
+                  path="/admin/dashboard" 
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+
+                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="/Dashboard" element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="/ADMIN" element={<Navigate to="/admin/dashboard" replace />} />
+
+                {/* 404 Route */}
                 <Route path="*" element={<Error />} />
-
               </Routes>
-            </BrowserRouter>
-
+              <NewsletterPopup />
+              <StickyActions />
+            </Router>
           </CompareProvider>
         </WishlistProvider>
-      </CurrencyProvider>
-    </CartProvider>
+      </CartProvider>
+    </CurrencyProvider>
   );
-};
+}
+
 export default App;

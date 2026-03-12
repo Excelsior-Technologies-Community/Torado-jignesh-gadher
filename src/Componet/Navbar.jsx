@@ -8,8 +8,7 @@ import { useCart } from "../context/CartContext.jsx";
 import { useCompare } from "../context/CompareContext.jsx";
 import { useCurrency } from "../context/CurrencyContext.jsx";
 import { useWishlist } from "../context/WishlistContext.jsx";
-import React from "react";  
-
+import React from "react";
 const Navbar = () => {
     const { cartItems, removeItem } = useCart();
     const { wishlistItems } = useWishlist();
@@ -51,7 +50,7 @@ const Navbar = () => {
                 },
                 {
                     name: "Single Blog",
-                    submenu: ["Blog Details"]
+                    submenu: ["Blog Details", "Blog Details Left Sidebar"]
                 },
             ],
         },
@@ -76,62 +75,42 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const handleSubmenuClick = (sub) => {
-        if (sub === "Store Locations") {
-            navigate("/storelocation");
-            setMobileOpen(false);
-        } else if (sub === "Home One") {
-            navigate("/");
-            setMobileOpen(false);
-        } else if (sub === "FAQ") {
-            navigate("/faq");
-            setMobileOpen(false);
-        } else if (sub === "Terms of Service") {
-            navigate("/terms-of-service");
-            setMobileOpen(false);
-        } else if (sub === "Privacy Policy") {
-            navigate("/privacy-policy");
-            setMobileOpen(false);
-        } else if (sub === "404 Error Page") {
-            navigate("/404");
-            setMobileOpen(false);
-        } else if (sub === "Shop Grid") {
-            navigate("/shop-grid");
-            setMobileOpen(false);
-        } else if (sub === "Cart") {
-            navigate("/cart");
-            setMobileOpen(false);
-        } else if (sub === "Wishlist") {
-            navigate("/wishlist");
-            setMobileOpen(false);
-        } else if (sub === "My Account") {
-            navigate("/my-account");
-            setMobileOpen(false);
-        } else if (sub === "Contact Us") {
-            navigate("/contact-us");
-            setMobileOpen(false);
-        } else if (sub === "Checkout") {
-            navigate("/checkout");
-            setMobileOpen(false);
-        } else if (sub === "About" || sub === "About Us") {
-            navigate("/about-us");
-            setMobileOpen(false);
-        } else if (sub === "Compare Products" || sub === "Compare") {
-            navigate("/compare");
-            setMobileOpen(false);
-        } else if (sub === "Blog Layout" || sub === "Blog" || sub === "Blog Standard" || sub === "Blog Left Sidebar" || sub === "Blog Right Sidebar") {
-            navigate("/blog-grid");
-            setMobileOpen(false);
-        } else if (sub === "Single Blog" || sub === "Blog Details") {
-            navigate("/blog-details");
-            setMobileOpen(false);
-        } else if (sub === "Store Locations") {
-            navigate("/store-location");
-            setMobileOpen(false);
-        } else if (sub === "Shop Details") {
-            navigate("/shop-details");
-            setMobileOpen(false);
-        } else if (sub === "Track Orders") {
-            navigate("/track-order");
+        const routes = {
+            "Home": "/",
+            "Home One": "/",
+            "Home Two": "/",
+            "Home Three": "/",
+            "About": "/about",
+            "About Us": "/about",
+            "Store Locations": "/store-location",
+            "FAQ": "/faq",
+            "Terms of Service": "/terms-of-service",
+            "Privacy Policy": "/privacy-policy",
+            "404 Error Page": "/404",
+            "Shop": "/shop-grid",
+            "Shop Layout": "/shop-grid",
+            "Shop Grid": "/shop-grid",
+            "Shop Left sidebar": "/shop-grid",
+            "Shop Right sidebar": "/shop-grid",
+            "Shop Details": "/shop-details",
+            "Cart": "/cart",
+            "Wishlist": "/wishlist",
+            "Compare Products": "/compare",
+            "Compare": "/compare",
+            "Checkout": "/checkout",
+            "Track Orders": "/track-order",
+            "My Account": "/my-account",
+            "Blog": "/blog-standard",
+            "Blog Standard": "/blog-standard",
+            "Blog Left Sidebar": "/blog-left-sidebar",
+            "Blog Right Sidebar": "/blog-right-sidebar",
+            "Blog Details": "/blog-details",
+            "Blog Details Left Sidebar": "/blog-details-left-sidebar",
+            "Contact Us": "/contact-us"
+        };
+
+        if (routes[sub]) {
+            navigate(routes[sub]);
             setMobileOpen(false);
         }
     };
@@ -249,7 +228,12 @@ const Navbar = () => {
                     <span className="absolute -top-2 -right-2 bg-[#f17840] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{cartCount}</span>
                 </div>
 
-                <User size={24} className="text-gray-700 dark:text-gray-300 cursor-pointer hover:text-[#f17840]" strokeWidth={1.5} />
+                <User 
+                    size={24} 
+                    className="text-gray-700 dark:text-gray-300 cursor-pointer hover:text-[#f17840]" 
+                    strokeWidth={1.5} 
+                    onClick={() => navigate("/my-account")}
+                />
             </div>
 
             {/* Mobile Search Modal (Triggered by FaBars in Action Row) */}
@@ -337,7 +321,7 @@ const Navbar = () => {
             <div className="w-full bg-white dark:bg-[#0b0c0d] transition-colors duration-300 border-b lg:border-none">
                 <div className="w-full py-4 px-4 flex items-center justify-between gap-4">
 
-                    <div className="flex items-center flex-shrink-0">
+                    <div className="flex items-center flex-shrink-0 cursor-pointer" onClick={() => navigate("/")}>
                         <img
                             src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
                             alt="logo"
@@ -624,11 +608,12 @@ const Navbar = () => {
                 >
                     <div className="p-6">
                         <div className="flex justify-between items-center mb-8">
-                            <img
-                                src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
-                                alt="logo"
-                                className="h-8 dark:brightness-0 dark:invert"
-                            />
+                        <img
+                            src="https://torado.envytheme.com/machine-tools-parts-shop/default/assets/img/logo.webp"
+                            alt="logo"
+                            className="h-8 dark:brightness-0 dark:invert cursor-pointer"
+                            onClick={() => { navigate("/"); setMobileOpen(false); }}
+                        />
                             <div
                                 className="w-10 h-10 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-orange-50 dark:hover:bg-orange-950/20 group transition-colors"
                                 onClick={() => setMobileOpen(false)}

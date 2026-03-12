@@ -2,8 +2,6 @@ import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCurrency } from "../context/CurrencyContext";
 import React from "react";
-
-
 const Section1 = () => {
     const { formatPrice } = useCurrency();
     return (

@@ -26,7 +26,7 @@ const AdminLogin = () => {
             if (res.data.success) {
                 localStorage.setItem("adminToken", res.data.token);
                 localStorage.setItem("adminData", JSON.stringify(res.data.admin));
-                navigate("/dashboard");
+                navigate("/admin/dashboard");
             }
         } catch (err) {
             setError(err.response?.data?.error || "Login failed. Please check your credentials.");

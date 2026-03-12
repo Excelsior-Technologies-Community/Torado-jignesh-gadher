@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import StickyActions from '../Components/StickyActions';
 import Footer from '../Componet/Footer';
 import Navbar from '../Componet/Navbar';
-import React from 'react';
+import React from "react";
 
 const Myaccount = () => {
     // Login State
@@ -145,7 +145,7 @@ const Myaccount = () => {
                             <span className="text-4xl font-black">{JSON.parse(localStorage.getItem("user") || "{}").name?.[0] || "U"}</span>
                         </div>
                         <h2 className="text-[#253d4e] dark:text-white text-3xl font-black mb-2">Welcome Back!</h2>
-                        <p className="text-gray-500 mb-8 font-bold">{JSON.parse(localStorage.getItem("user") || "{}").email}</p>
+                        <p className="text-gray-500 mb-8 font-bold">{JSON.parse (localStorage.getItem("user") || "{}").email}</p>
 
                         <div className="grid grid-cols-1 gap-4">
                             <button
@@ -158,6 +158,8 @@ const Myaccount = () => {
                                 onClick={() => {
                                     localStorage.removeItem("token");
                                     localStorage.removeItem("user");
+                                    localStorage.removeItem("adminToken");
+                                    localStorage.removeItem("adminData");
                                     window.location.reload();
                                 }}
                                 className="w-full bg-white dark:bg-transparent border-2 border-gray-200 dark:border-gray-800 text-[#253d4e] dark:text-gray-300 py-4 rounded-[5px] font-black text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"

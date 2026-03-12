@@ -62,7 +62,8 @@ const ProductCard = ({ product, onQuickView }) => {
                 <img
                     src={product.image}
                     alt={product.name}
-                    className="h-[180px] w-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                    onClick={() => navigate(`/shop-details/${product.id}`)}
+                    className="h-[180px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 cursor-pointer"
                     onError={(e) => { e.target.src = "https://premium-shop.envytheme.com/assets/img/products/product-1.webp"; }}
                 />
             </div>
@@ -84,7 +85,10 @@ const ProductCard = ({ product, onQuickView }) => {
                     </span>
                 </div>
 
-                <h3 className="text-[#253d4e] dark:text-white font-black text-[17px] leading-tight mb-3 line-clamp-2 hover:text-[#f17840] transition-colors cursor-pointer">
+                <h3
+                    onClick={() => navigate(`/shop-details/${product.id}`)}
+                    className="text-[#253d4e] dark:text-white font-black text-[17px] leading-tight mb-3 line-clamp-2 hover:text-[#f17840] transition-colors cursor-pointer"
+                >
                     {product.name}
                 </h3>
 

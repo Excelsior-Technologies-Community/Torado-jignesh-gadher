@@ -4,10 +4,11 @@ import { FaPinterestP } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import StickyActions from "../Components/StickyActions";
 import Footer from "../Componet/Footer";
-import Navbar from "../Componet/Navbar";
+import { useCurrency } from "../context/CurrencyContext";
 import React from "react";  
 
 const About = () => {
+    const { getSymbol } = useCurrency();
     const [isHovered, setIsHovered] = useState(false);
     const [isPartnerHovered, setIsPartnerHovered] = useState(false);
     const teamSliderRef = useRef(null);

@@ -9,18 +9,42 @@ const NewsletterPopup = () => {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === '/dashboard') return;
+        // Reset popup state on route change
+        setIsOpen(false);
 
+        const token = localStorage.getItem("token");
+        const adminToken = localStorage.getItem("adminToken");
         const isHidden = localStorage.getItem('hideNewsletterPopup');
-        if (!isHidden) {
-            const timer = setTimeout(() => {
-                setIsOpen(true);
-            }, 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [location.pathname]);
+        const isDashboard = location.pathname === '/admin/dashboard';
 
-    if (location.pathname === '/dashboard') return null;
+        // Check conditions
+        const isUserLoggedIn = !!token;
+        const isAdminLoggedIn = !!adminToken;
+        const isPopupDismissed = !!isHidden;
+
+        // Log for debugging
+        console.log("Newsletter Status Check:", {
+            isUserLoggedIn,
+            isAdminLoggedIn,
+            isPopupDismissed,
+            isDashboard,
+            path: location.pathname
+        });
+
+        // DO NOT show if any login exists or if dismissed or on dashboard
+        if (isUserLoggedIn || isAdminLoggedIn || isPopupDismissed || isDashboard) {
+            console.log("Popup will NOT show because one of the conditions above is true.");
+            return;
+        }
+
+        // Show popup after 2 seconds
+        const timer = setTimeout(() => {
+            console.log("Success! Showing Newsletter Popup now.");
+            setIsOpen(true);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
 
     const handleClose = () => {
         setIsOpen(false);
@@ -34,14 +58,13 @@ const NewsletterPopup = () => {
         }
     };
 
-
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm transition-all duration-300">
             <div className="relative bg-white dark:bg-[#1a1c1e] w-full max-w-[900px] flex flex-col md:flex-row rounded-0 shadow-[0_30px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in duration-500 overflow-hidden mx-4 max-h-[95vh] overflow-y-auto no-scrollbar">
 
-                {/* Close Button - Top Right of the entire container */}
+                {/* Close Button */}
                 <button
                     onClick={handleClose}
                     className="absolute top-0 right-0 z-[110] bg-black text-white p-2.5 hover:bg-[#f17840] transition-colors duration-300"

@@ -14,46 +14,85 @@ const CustomBarChart = ({ data }) => {
     </div>
   );
 
-  const maxVal = Math.max(...data.map(d => d.sales || 0), 1);
+  const currencies = ['INR', 'EUR', 'USD'];
+  const colors = {
+    INR: { from: '#f17840', to: '#ff9d6c', label: 'INR (₹)', rate: 1 },
+    EUR: { from: '#411151', to: '#6a1b8a', label: 'EUR (€)', rate: 91 }, // Conversion rate to INR
+    USD: { from: '#10b981', to: '#34d399', label: 'USD ($)', rate: 83 }  // Conversion rate to INR
+  };
+
+  // Calculate normalized values for correct height comparison
+  const getNormalized = (item) => ({
+    INR: (item.INR || 0) * colors.INR.rate,
+    EUR: (item.EUR || 0) * colors.EUR.rate,
+    USD: (item.USD || 0) * colors.USD.rate
+  });
+
+  const allNormalized = data.map(getNormalized);
+  const maxVal = Math.max(...allNormalized.flatMap(d => [d.INR, d.EUR, d.USD]), 1);
 
   return (
-    <div className="w-full h-full overflow-x-auto custom-scrollbar-hide select-none">
-      <div className="flex items-end justify-between h-full min-w-full gap-2 sm:gap-4 px-2 pb-8 pt-6" style={{ width: data.length > 7 ? `${data.length * 60}px` : '100%' }}>
-        {data.map((item, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center group relative h-full justify-end">
-            {/* Value Label (Top of Bar) */}
-            <span className="text-[10px] font-black text-[#f17840] mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              ₹{(item.sales / 1000).toFixed(1)}k
-            </span>
+    <div className="w-full h-full flex flex-col overflow-hidden select-none">
+      {/* Bars Scrolling Area */}
+      <div className="flex-1 overflow-x-auto overflow-y-hidden custom-scrollbar-hide">
+        <div className="flex items-end justify-between h-full min-w-full gap-4 sm:gap-6 px-4 pb-6 pt-12" style={{ width: data.length > 7 ? `${data.length * 100}px` : '100%' }}>
+          {data.map((item, i) => {
+            const normalized = getNormalized(item);
+            return (
+              <div key={i} className="flex-1 flex flex-col items-center group/day relative h-full justify-end min-w-[70px]">
+                
+                {/* Grouped Bars Container */}
+                <div className="flex items-end justify-center gap-1.5 w-full h-[85%] pb-2">
+                  {currencies.map(curr => {
+                    const val = item[curr] || 0;
+                    const normVal = normalized[curr];
+                    return (
+                      <div key={curr} className="flex-1 flex flex-col items-center group relative h-full justify-end">
+                        {/* Tooltip */}
+                        <div className="absolute -top-16 left-1/2 -translate-x-1/2 bg-[#253d4e] text-white text-[10px] py-2 px-3 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-black shadow-2xl z-40 scale-90 group-hover:scale-100 pointer-events-none mb-1">
+                          <div className="flex flex-col items-center">
+                            <span className="text-gray-400 text-[8px] uppercase tracking-widest mb-0.5">{curr} Sales</span>
+                            <span>{curr === 'INR' ? '₹' : curr === 'EUR' ? '€' : '$'}{val.toLocaleString()}</span>
+                          </div>
+                          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#253d4e] rotate-45"></div>
+                        </div>
 
-            {/* Bar */}
-            <div
-              className="w-full max-w-[40px] bg-gradient-to-t from-[#f17840] to-[#ff9d6c] hover:from-[#253d4e] hover:to-[#405d71] transition-all duration-500 rounded-t-xl relative group cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1"
-              style={{ height: `${(item.sales / maxVal) * 85}%` }}
-            >
-              {/* Tooltip */}
-              <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[#253d4e] text-white text-[11px] py-2 px-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap font-black shadow-2xl z-30 scale-90 group-hover:scale-100 pointer-events-none">
-                <div className="flex flex-col items-center">
-                  <span className="text-gray-400 text-[9px] uppercase tracking-widest mb-0.5">{item.name} Sales</span>
-                  <span>₹{item.sales.toLocaleString()}</span>
+                        {/* Bar */}
+                        <div
+                          className="w-full max-w-[14px] sm:max-w-[18px] transition-all duration-500 rounded-t-lg relative group cursor-pointer shadow-sm hover:shadow-lg hover:-translate-y-0.5"
+                          style={{ 
+                            height: val > 0 ? `${(normVal / maxVal) * 100}%` : '2px',
+                            background: val > 0 ? `linear-gradient(to top, ${colors[curr].from}, ${colors[curr].to})` : '#f3f4f6', 
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg overflow-hidden">
+                            <div className="w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000"></div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                {/* Tooltip Arrow */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#253d4e] rotate-45"></div>
-              </div>
 
-              {/* Shine Effect */}
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-xl overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000"></div>
+                {/* X-Axis Label */}
+                <div className="mt-2 flex flex-col items-center h-[15%]">
+                  <span className="text-[10px] sm:text-[11px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-tighter group-hover/day:text-[#f17840] transition-colors leading-none">
+                    {item.name}
+                  </span>
+                  <div className="w-1.5 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mt-1.5 group-hover/day:bg-[#f17840] transition-colors"></div>
+                </div>
               </div>
-            </div>
-
-            {/* X-Axis Label */}
-            <div className="mt-4 flex flex-col items-center">
-              <span className="text-[10px] sm:text-[11px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-tighter group-hover:text-[#f17840] transition-colors">
-                {item.name}
-              </span>
-              <div className="w-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-full mt-1.5 group-hover:bg-[#f17840] transition-colors"></div>
-            </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      {/* Legend - Outside scrolling area */}
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-8 py-4 border-t border-gray-50 dark:border-gray-800/50 mt-2">
+        {currencies.map(curr => (
+          <div key={curr} className="flex items-center gap-2.5">
+            <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: colors[curr].from }}></div>
+            <span className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">{colors[curr].label}</span>
           </div>
         ))}
       </div>
@@ -68,7 +107,7 @@ const CustomBarChart = ({ data }) => {
 };
 
 // Custom CSS-based Progress Circle (Pie Chart Replacement)
-const CustomPieChart = ({ categories }) => {
+const CustomPieChart = ({ categories, label = "Stock" }) => {
   const totalValue = categories.reduce((acc, cat) => acc + cat.value, 0);
 
   return (
@@ -91,7 +130,7 @@ const CustomPieChart = ({ categories }) => {
               {totalValue.toLocaleString()}
             </span>
             <div className="w-10 h-0.5 bg-[#f17840] mx-auto my-1 rounded-full"></div>
-            <span className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] block">Stock</span>
+            <span className="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] block">{label}</span>
           </div>
         </div>
       </div>
@@ -149,35 +188,99 @@ const Dashboard = () => {
   const [messages, setMessages] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar state
 
-  // Mock data for charts
-  const salesHistory = [
-    { name: "Mon", sales: 4000 },
-    { name: "Tue", sales: 3000 },
-    { name: "Wed", sales: 2000 },
-    { name: "Thu", sales: 2780 },
-    { name: "Fri", sales: 1890 },
-    { name: "Sat", sales: 2390 },
-    { name: "Sun", sales: 3490 },
-  ];
-
-  const categoryShare = [
-    { name: "Machine Tools", value: 400, color: "#f17840" },
-    { name: "Hand Tools", value: 300, color: "#253d4e" },
-    { name: "Power Tools", value: 300, color: "#10b981" },
-  ];
   const [orders, setOrders] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [isEditing, setIsEditing] = useState(null);
   const [errorStatus, setErrorStatus] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const adminData = JSON.parse(localStorage.getItem("adminData") || "{}");
+  const adminData = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("adminData") || "{}");
+    } catch (e) {
+      console.error("Failed to parse adminData:", e);
+      return {};
+    }
+  })() || {};
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminData");
     navigate("/admin/login");
   };
+
+  // Calculate dynamic sales history for the bar chart (last 7 days grouped by currency)
+  const salesHistory = (() => {
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const history = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dayName = days[date.getDay()];
+
+      const dayOrders = (orders || []).filter(order => new Date(order.created_at).toDateString() === date.toDateString());
+
+      // Helper to match currencies (ignoring symbols vs names)
+      const getSumForCurrency = (currencyArray) => {
+        return dayOrders
+          .filter(o => currencyArray.includes(o.currency?.toUpperCase()))
+          .reduce((sum, order) => sum + parseFloat(order.total_amount || 0), 0);
+      };
+
+      const eurSales = getSumForCurrency(['EUR', '€']);
+      const inrSales = getSumForCurrency(['INR', '₹']);
+      const usdSales = getSumForCurrency(['USD', '$']);
+
+      // Calculate others/unmapped and add to INR (as default) or keep track if you want
+      const mappedCurrencies = ['EUR', '€', 'INR', '₹', 'USD', '$'];
+      const otherSales = dayOrders
+        .filter(o => !mappedCurrencies.includes(o.currency?.toUpperCase()))
+        .reduce((sum, order) => sum + parseFloat(order.total_amount || 0), 0);
+
+      history.push({
+        name: dayName,
+        INR: inrSales + otherSales,
+        EUR: eurSales,
+        USD: usdSales
+      });
+    }
+    return history;
+  })();
+
+  // Calculate dynamic inventory/sales share for the pie chart
+  const categoryShare = (() => {
+    const categories = [
+      { id: 1, name: "Machine Tools", value: 0, color: "#f17840" },
+      { id: 2, name: "Hand Tools", value: 0, color: "#253d4e" },
+      { id: 3, name: "Power Tools", value: 0, color: "#10b981" },
+    ];
+
+    (orders || []).forEach(order => {
+      if (order.items && Array.isArray(order.items)) {
+        order.items.forEach(item => {
+          // Match product by title or id to find its category
+          const product = (products || []).find(p => p.title === item.name || p.id === item.product_id);
+          const catId = product ? product.category_id : 3; // Default to 3 if not found
+          const cat = categories.find(c => c.id == catId);
+          if (cat) {
+            const price = parseFloat(item.price || 0);
+            const qty = parseInt(item.qty || 0);
+            cat.value += price * qty;
+          }
+        });
+      }
+    });
+
+    // If no sales yet, show stock distribution instead so it's not empty
+    if (categories.every(c => c.value === 0)) {
+      (products || []).forEach(p => {
+        const cat = categories.find(c => c.id == p.category_id);
+        if (cat) cat.value += parseInt(p.stock_quantity || 0);
+      });
+    }
+
+    return categories;
+  })();
 
   const [form, setForm] = useState({
     title: "",
@@ -236,7 +339,11 @@ const Dashboard = () => {
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/products");
-      setProducts(res.data);
+      if (Array.isArray(res.data)) {
+        setProducts(res.data);
+      } else {
+        console.warn("Products API returned non-array data:", res.data);
+      }
     } catch (err) {
       console.error("Failed to fetch products", err);
       setErrorStatus("Failed to fetch products: " + err.message);
@@ -246,7 +353,9 @@ const Dashboard = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/users");
-      setUsers(res.data);
+      if (Array.isArray(res.data)) {
+        setUsers(res.data);
+      }
     } catch (err) {
       console.error("Failed to fetch users", err);
       setErrorStatus("Failed to fetch users: " + err.message);
@@ -256,7 +365,9 @@ const Dashboard = () => {
   const fetchMessages = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/contact");
-      setMessages(res.data);
+      if (Array.isArray(res.data)) {
+        setMessages(res.data);
+      }
     } catch (err) {
       console.error("Failed to fetch messages", err);
     }
@@ -265,7 +376,9 @@ const Dashboard = () => {
   const fetchOrders = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/orders");
-      setOrders(res.data);
+      if (Array.isArray(res.data)) {
+        setOrders(res.data);
+      }
     } catch (err) {
       console.error("Failed to fetch orders", err);
     }
@@ -274,7 +387,9 @@ const Dashboard = () => {
   const fetchBlogComments = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/blog-comments");
-      setBlogComments(res.data);
+      if (Array.isArray(res.data)) {
+        setBlogComments(res.data);
+      }
     } catch (err) {
       console.error("Failed to fetch blog comments", err);
     }
@@ -351,7 +466,20 @@ const Dashboard = () => {
     }
   };
 
-  const totalSales = orders.reduce((acc, curr) => acc + parseFloat(curr.total_amount), 0);
+  const deleteUser = async (id) => {
+    if (window.confirm("Are you sure you want to delete this customer?")) {
+      try {
+        await axios.delete(`http://localhost:5000/api/users/${id}`);
+        alert("✅ Customer deleted successfully!");
+        fetchUsers();
+      } catch (err) {
+        console.error("Delete user failed", err);
+        alert("❌ Failed to delete customer.");
+      }
+    }
+  };
+
+  const totalSales = (orders || []).reduce((acc, curr) => acc + parseFloat(curr.total_amount || 0), 0);
   const unreadMessagesCount = messages.filter(m => m.status === 'unread').length;
 
   // Calculate real active users (active in last 5 minutes)
@@ -604,10 +732,11 @@ const Dashboard = () => {
                             </td>
                             <td className="px-6 sm:px-8 py-4 sm:py-6 text-center">
                               <div className="flex items-center justify-center gap-2 sm:gap-3">
-                                <button className="p-1.5 sm:p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-all shadow-sm">
-                                  <Edit size={16} className="sm:w-[18px] sm:h-[18px]" />
-                                </button>
-                                <button className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all shadow-sm">
+                                <button
+                                  onClick={() => deleteUser(user.id)}
+                                  className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all shadow-sm"
+                                  title="Delete Customer"
+                                >
                                   <Trash2 size={16} className="sm:w-[18px] sm:h-[18px]" />
                                 </button>
                               </div>
@@ -654,7 +783,7 @@ const Dashboard = () => {
                         .map((order) => (
                           <tr key={order.id} className="hover:bg-gray-50/50 dark:hover:bg-[#1a1c1e] transition-colors group">
                             <td className="px-6 sm:px-8 py-4 sm:py-6">
-                              <p className="font-black text-[#f17840] text-sm mb-1">#TRD-{1000 + parseInt(order.id)}</p>
+                              <p className="font-black text-[#f17840] text-sm mb-1 whitespace-nowrap">#TRD-{1000 + parseInt(order.id)}</p>
                               <p className="text-[10px] text-gray-400 font-bold uppercase">{new Date(order.created_at).toLocaleDateString()}</p>
                             </td>
                             <td className="px-6 sm:px-8 py-4 sm:py-6">
@@ -1123,12 +1252,25 @@ const Dashboard = () => {
                 <div className="bg-white dark:bg-[#151618] p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                   <div className="flex justify-between items-center mb-10">
                     <div>
-                      <h3 className="text-xl font-black text-[#253d4e] dark:text-white">Sales Analytics</h3>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-xl font-black text-[#253d4e] dark:text-white">Sales Analytics</h3>
+                        <span className="px-2 py-0.5 bg-green-500/10 text-green-600 text-[10px] font-black rounded-full border border-green-500/20 animate-pulse">LIVE</span>
+                      </div>
                       <p className="text-sm font-bold text-gray-400">Past 7 days performance</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 bg-[#f17840] rounded-full"></span>
-                      <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Revenue</span>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 bg-[#f17840] rounded-full"></span>
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-wider">INR</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 bg-[#411151] rounded-full"></span>
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-wider">EUR</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 bg-[#10b981] rounded-full"></span>
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-wider">USD</span>
+                      </div>
                     </div>
                   </div>
                   <div className="h-[350px] w-full">
@@ -1160,11 +1302,17 @@ const Dashboard = () => {
                 {/* Categories Share */}
                 <div className="bg-white dark:bg-[#151618] p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                   <div className="mb-6">
-                    <h3 className="text-xl font-black text-[#253d4e] dark:text-white">Inventory Share</h3>
-                    <p className="text-sm font-bold text-gray-400">Distribution by category</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-xl font-black text-[#253d4e] dark:text-white">Category Distribution</h3>
+                      <span className="px-2 py-0.5 bg-green-500/10 text-green-600 text-[10px] font-black rounded-full border border-green-500/20 animate-pulse">LIVE</span>
+                    </div>
+                    <p className="text-sm font-bold text-gray-400">Performance by category</p>
                   </div>
                   <div className="h-[380px] w-full">
-                    <CustomPieChart categories={categoryShare} />
+                    <CustomPieChart
+                      categories={categoryShare}
+                      label={orders.length > 0 ? "Sales" : "Stock"}
+                    />
                   </div>
                 </div>
               </div>
@@ -1197,7 +1345,7 @@ const Dashboard = () => {
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                       {orders.slice(0, 5).map((order) => (
                         <tr key={order.id} className="hover:bg-gray-50/50 dark:hover:bg-[#1a1c1e] transition-colors">
-                          <td className="px-6 sm:px-8 py-4 sm:py-6">
+                          <td className="px-6 sm:px-8 py-4 sm:py-6 whitespace-nowrap">
                             <span className="font-black text-[#253d4e] dark:text-white text-sm">#TRD-{1000 + parseInt(order.id)}</span>
                           </td>
                           <td className="px-6 sm:px-8 py-4 sm:py-6">
