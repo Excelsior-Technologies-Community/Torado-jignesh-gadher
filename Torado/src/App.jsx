@@ -1,22 +1,19 @@
-  import React, { useEffect } from "react";
-import axios from "axios";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+  import axios from "axios";
+import { useEffect } from "react";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 
 // Pages
-import Home from "./Pages/Home";
 import About from "./Pages/About";
 import BlogDetails from "./Pages/BlogDetails";
 import BlogStandard from "./Pages/BlogStandard";
-import BlogDetailsLeftSidebar from "./Pages/blog-details-left-sidebar";
-import BlogLeftSidebar from "./Pages/blog-left-sidebar";
-import BlogRightSidebar from "./Pages/blog-righte-sidebar";
 import Cart from "./Pages/Cart";
 import Checkout from "./Pages/Checkout";
 import Compare from "./Pages/Compare";
 import ContactUs from "./Pages/ContactUs";
 import Error from "./Pages/Error";
 import Faq from "./Pages/Faq";
+import Home from "./Pages/Home";
 import Myaccount from "./Pages/Myaccount";
 import OrderSuccess from "./Pages/OrderSuccess";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
@@ -25,6 +22,9 @@ import TermsofService from "./Pages/TermsofService";
 import TrackOrder from "./Pages/TrackOrder";
 import VerifyOTP from "./Pages/VerifyOTP";
 import Wishlist from "./Pages/Wishlist";
+import BlogDetailsLeftSidebar from "./Pages/blog-details-left-sidebar";
+import BlogLeftSidebar from "./Pages/blog-left-sidebar";
+import BlogRightSidebar from "./Pages/blog-righte-sidebar";
 import ShopDetails from "./Pages/shopdetails";
 import StoreLocation from "./Pages/storelocation";
 
@@ -33,6 +33,7 @@ import NewsletterPopup from "./Components/NewsletterPopup";
 import StickyActions from "./Components/StickyActions";
 
 // Admin
+
 import AdminLogin from "./admin/AdminLogin";
 import AdminRegister from "./admin/AdminRegister";
 import Dashboard from "./admin/Dashboard";
@@ -40,9 +41,9 @@ import ProtectedRoute from "./admin/ProtectedRoute";
 
 // Context
 import { CartProvider } from "./context/CartContext";
-import { WishlistProvider } from "./context/WishlistContext";
-import { CurrencyProvider } from "./context/CurrencyContext";
 import { CompareProvider } from "./context/CompareContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
+import { WishlistProvider } from "./context/WishlistContext";
 
 function App() {
   // Activity Heartbeat
